@@ -1,13 +1,8 @@
 package org.carrot2.labs.smartsprites;
 
+import com.google.common.hash.Hashing;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -179,38 +174,10 @@ public class SpriteImage
     }
 
     /**
-     * Computes
-     * @throws IOException 
+     * Computes Md5 using guava.
      */
-    private static String computeMd5(byte [] image) throws IOException
+    private static String computeMd5(byte[] image)
     {
-        try
-        {
-            final byte [] buffer = new byte [4069];
-            final MessageDigest digest = MessageDigest.getInstance("MD5");
-            try (InputStream is = new ByteArrayInputStream(image);
-                 InputStream digestInputStream = new DigestInputStream(is, digest))
-            {
-                while (digestInputStream.read(buffer) >= 0)
-                {
-                }
-
-                byte [] bytes = digest.digest();
-                return new BigInteger(1, bytes).toString(16);
-            }
-            catch (IOException e)
-            {
-                // Should not happen because we're reading from memory
-                throw new RuntimeException(e);
-            }
-            finally
-            {
-                digest.reset();
-            }
-        }
-        catch (NoSuchAlgorithmException nsaex)
-        {
-            throw new RuntimeException(nsaex);
-        }
+        return Hashing.md5().hashBytes(image).toString();
     }
 }
