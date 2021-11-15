@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ import org.carrot2.util.BufferedImageUtils;
 import org.carrot2.util.FileUtils;
 
 import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Closeables;
 
@@ -410,7 +410,7 @@ public class SpriteImageBuilder
     static Map<Integer, SpriteReferenceReplacement> getSpriteReplacementsByLineNumber(
         Collection<SpriteReferenceReplacement> spriteReferenceReplacements)
     {
-        final Map<Integer, SpriteReferenceReplacement> result = Maps.newHashMap();
+        final Map<Integer, SpriteReferenceReplacement> result = new HashMap<>();
 
         for (final SpriteReferenceReplacement spriteReferenceReplacement : spriteReferenceReplacements)
         {
@@ -428,7 +428,7 @@ public class SpriteImageBuilder
     static Map<Integer, SpriteImageOccurrence> getSpriteImageOccurrencesByLineNumber(
         Collection<SpriteImageOccurrence> spriteImageOccurrences)
     {
-        final Map<Integer, SpriteImageOccurrence> result = Maps.newHashMap();
+        final Map<Integer, SpriteImageOccurrence> result = new HashMap<>();
 
         for (final SpriteImageOccurrence spriteImageOccurrence : spriteImageOccurrences)
         {
