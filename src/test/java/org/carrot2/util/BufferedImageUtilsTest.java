@@ -1,42 +1,42 @@
 package org.carrot2.util;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Color;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test cases for {@link BufferedImageUtils}.
  */
-public class BufferedImageUtilsTest extends BufferedImageTestBase
+class BufferedImageUtilsTest extends BufferedImageTestBase
 {
     @Test
-    public void testHasAlphaTransparencyPartial() throws IOException
+    void testHasAlphaTransparencyPartial() throws IOException
     {
         assertTrue(
             BufferedImageUtils.hasTransparency(image("full-alpha.png")));
     }
 
     @Test
-    public void testHasAlphaTransparencyBitmask() throws IOException
+    void testHasAlphaTransparencyBitmask() throws IOException
     {
         assertTrue(
             BufferedImageUtils.hasTransparency(image("bit-alpha.png")));
     }
 
     @Test
-    public void testHasAlphaTransparencyNoTransparency() throws IOException
+    void testHasAlphaTransparencyNoTransparency() throws IOException
     {
         assertFalse(
             BufferedImageUtils.hasTransparency(image("no-alpha.png")));
     }
 
     @Test
-    public void testHasPartialAlphaTransparencyPartial() throws IOException
+    void testHasPartialAlphaTransparencyPartial() throws IOException
     {
         assertTrue(
             BufferedImageUtils
@@ -44,7 +44,7 @@ public class BufferedImageUtilsTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testHasPartialAlphaTransparencyBitmask() throws IOException
+    void testHasPartialAlphaTransparencyBitmask() throws IOException
     {
         assertFalse(
             BufferedImageUtils
@@ -52,7 +52,7 @@ public class BufferedImageUtilsTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testHasPartialAlphaTransparencyNoTransparency() throws IOException
+    void testHasPartialAlphaTransparencyNoTransparency() throws IOException
     {
         assertFalse(
             BufferedImageUtils
@@ -60,7 +60,7 @@ public class BufferedImageUtilsTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testCountDistinctColorsTransparency() throws IOException
+    void testCountDistinctColorsTransparency() throws IOException
     {
         assertEquals(1, 
             BufferedImageUtils
@@ -68,7 +68,7 @@ public class BufferedImageUtilsTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testCountDistinctColorsTransparencyMatted() throws IOException
+    void testCountDistinctColorsTransparencyMatted() throws IOException
     {
         assertEquals(4,
             BufferedImageUtils.countDistictColors(BufferedImageUtils.matte(
@@ -76,14 +76,14 @@ public class BufferedImageUtilsTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testCountDistinctColorsNoTransparency() throws IOException
+    void testCountDistinctColorsNoTransparency() throws IOException
     {
         assertEquals(4,
             BufferedImageUtils.countDistictColors(image("no-alpha.png")));
     }
 
     @Test
-    public void testCountDistinctColorsGradient() throws IOException
+    void testCountDistinctColorsGradient() throws IOException
     {
         // black is the same in all bands
         assertEquals(1021,

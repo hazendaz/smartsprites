@@ -5,7 +5,7 @@ import java.util.List;
 import org.carrot2.labs.smartsprites.css.CssProperty;
 import org.carrot2.labs.smartsprites.message.Message;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.collect.Lists;
 

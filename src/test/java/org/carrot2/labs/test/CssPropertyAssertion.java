@@ -1,7 +1,7 @@
 package org.carrot2.labs.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.carrot2.labs.smartsprites.css.CssProperty;
 

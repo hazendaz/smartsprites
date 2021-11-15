@@ -15,7 +15,10 @@ import org.carrot2.labs.smartsprites.SmartSpritesParameters.PngDepth;
 import org.carrot2.labs.smartsprites.message.Message;
 import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
-import org.junit.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 
@@ -23,19 +26,19 @@ import com.google.common.collect.Lists;
  * Test cases for {@link SpriteBuilder}. The test cases read/ write files to the
  * directories contained in the test/ directory.
  */
-public class SpriteBuilderTest extends TestWithMemoryMessageSink
+class SpriteBuilderTest extends TestWithMemoryMessageSink
 {
     /** Builder under tests, initialized in {@link #buildSprites(SmartSpritesParameters)} */
     private SpriteBuilder spriteBuilder;
 
-    @Before
-    public void setUpHeadlessMode()
+    @BeforeEach
+    void setUpHeadlessMode()
     {
         System.setProperty("java.awt.headless", "true");
     }
 
     @Test
-    public void testNoSpriteDeclarations() throws FileNotFoundException, IOException
+    void testNoSpriteDeclarations() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("no-sprite-declarations");
 
@@ -46,23 +49,23 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testNoSpriteReferences() throws FileNotFoundException, IOException
+    void testNoSpriteReferences() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("no-sprite-references");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
     @Test
-    public void testTargetSpriteImageDirNotExists() throws FileNotFoundException,
+    void testTargetSpriteImageDirNotExists() throws FileNotFoundException,
         IOException
     {
         final File testDir = testDir("target-sprite-image-dir-not-exists");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img-sprite/sprite.png")).exists();
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
 
@@ -70,12 +73,12 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSimpleHorizontalSprite() throws FileNotFoundException, IOException
+    void testSimpleHorizontalSprite() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("simple-horizontal-sprite");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
             new Dimension(17 + 15 + 48, 47));
@@ -83,27 +86,27 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSimpleHorizontalSpriteImportant() throws FileNotFoundException,
+    void testSimpleHorizontalSpriteImportant() throws FileNotFoundException,
         IOException
     {
         final File testDir = testDir("simple-horizontal-sprite-important");
         buildSprites(testDir, true);
 
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
             new Dimension(17 + 15 + 48 + 20, 47));
     }
 
     @Test
-    public void testLayoutPropertiesFromSpriteImageDirective()
+    void testLayoutPropertiesFromSpriteImageDirective()
         throws FileNotFoundException, IOException
     {
         final File testDir = testDir("layout-properties-from-sprite-image-directive");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
             new Dimension(17 + 15 + 48 + 3 * (2 + 3), 47 + 5 + 7));
@@ -111,13 +114,13 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testMultipleCssFiles() throws FileNotFoundException, IOException
+    void testMultipleCssFiles() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("multiple-css-files");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
-        assertThat(css("css/style2-sprite.css")).hasSameContentAs(
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
+        assertThat(css("css/style2-sprite.css")).hasSameTextualContentAs(
             css("css/style2-expected.css"));
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
@@ -126,7 +129,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testLargeRepeat() throws FileNotFoundException, IOException
+    void testLargeRepeat() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("large-repeat");
         buildSprites(testDir);
@@ -134,7 +137,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
         final String spriteHorizontalPath = "img/sprite-horizontal.png";
         final String spriteVerticalPath = "img/sprite-vertical.png";
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, spriteHorizontalPath)).exists();
         assertThat(new File(testDir, spriteVerticalPath)).exists();
         assertThat(sprite(testDir, spriteHorizontalPath))
@@ -145,12 +148,12 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testMissingImages() throws FileNotFoundException, IOException
+    void testMissingImages() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("missing-images");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
             new Dimension(18, 17 + 6 + 5));
@@ -169,13 +172,13 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testUnsupportedIndividualImageFormat() throws FileNotFoundException,
+    void testUnsupportedIndividualImageFormat() throws FileNotFoundException,
         IOException
     {
         final File testDir = testDir("unsupported-image-format");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).doesNotExist();
 
         assertThat(messages).contains(
@@ -186,13 +189,13 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testUnsupportedSpriteProperties() throws FileNotFoundException,
+    void testUnsupportedSpriteProperties() throws FileNotFoundException,
         IOException
     {
         final File testDir = testDir("unsupported-sprite-properties");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
             new Dimension(48, 16 + 17 + 47));
@@ -212,12 +215,12 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testOverridingCssProperties() throws FileNotFoundException, IOException
+    void testOverridingCssProperties() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("overriding-css-properties");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
             new Dimension(17 + 15 + 48, 47));
@@ -234,7 +237,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testAbsoluteImageUrl() throws FileNotFoundException, IOException
+    void testAbsoluteImageUrl() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("absolute-image-url");
         final File documentRootDir = testDir("absolute-image-url/absolute-path");
@@ -244,7 +247,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6,
             SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         final File spriteFile = new File(documentRootDir, "img/sprite.png");
         assertThat(spriteFile).exists();
         assertThat(ImageIO.read(spriteFile)).hasSize(
@@ -255,7 +258,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testNonDefaultOutputDir() throws FileNotFoundException, IOException
+    void testNonDefaultOutputDir() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("non-default-output-dir");
         final File documentRootDir = testDir("non-default-output-dir");
@@ -268,7 +271,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6,
             SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
         final File absoluteSpriteFile = new File(documentRootDir, "img/absolute.png");
         assertThat(absoluteSpriteFile).exists();
@@ -286,7 +289,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testScaledSpriteImage() throws FileNotFoundException, IOException
+    void testScaledSpriteImage() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("scaled-sprite");
         final File documentRootDir = testDir("scaled-sprite");
@@ -297,7 +300,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6,
             SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
         final File absoluteSpriteFile = new File(documentRootDir, "img/absolute.png");
         assertThat(absoluteSpriteFile).exists();
@@ -310,7 +313,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testFractionalScaledSpriteImage() throws FileNotFoundException, IOException
+    void testFractionalScaledSpriteImage() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("scaled-sprite-fractional");
         final File documentRootDir = testDir("scaled-sprite-fractional");
@@ -321,7 +324,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6,
             SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
         final File absoluteSpriteFile = new File(documentRootDir, "img/absolute.png");
         assertThat(absoluteSpriteFile).exists();
@@ -343,7 +346,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testCssOutputDir() throws FileNotFoundException, IOException
+    void testCssOutputDir() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("css-output-dir");
         final File rootDir = new File(testDir, "css/sprite").getCanonicalFile();
@@ -355,7 +358,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6,
             SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
-        assertThat(processedCss(new File(rootDir, "style.css"))).hasSameContentAs(
+        assertThat(processedCss(new File(rootDir, "style.css"))).hasSameTextualContentAs(
             new File(rootDir, "style-expected.css"));
 
         final File relativeSpriteFile = new File(outputDir, "../img/relative.png");
@@ -368,12 +371,12 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testRepeatedImageReferences() throws FileNotFoundException, IOException
+    void testRepeatedImageReferences() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("repeated-image-references");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
             new Dimension(17 + 19, 19));
@@ -381,7 +384,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testIndexedColor() throws FileNotFoundException, IOException
+    void testIndexedColor() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("indexed-color");
         buildSprites(testDir);
@@ -403,7 +406,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testIndexedForcedDirectColor() throws FileNotFoundException, IOException
+    void testIndexedForcedDirectColor() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("indexed-color");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null,
@@ -428,7 +431,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testIndexedForcedIndexedColor() throws FileNotFoundException, IOException
+    void testIndexedForcedIndexedColor() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("indexed-color");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null,
@@ -463,7 +466,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testMatteColor() throws FileNotFoundException, IOException
+    void testMatteColor() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("matte-color");
         buildSprites(testDir);
@@ -504,7 +507,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testMatteColorForcedIndex() throws FileNotFoundException, IOException
+    void testMatteColorForcedIndex() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("matte-color");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null,
@@ -550,7 +553,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testIe6IndexedColor() throws FileNotFoundException, IOException
+    void testIe6IndexedColor() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("indexed-color-ie6");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null,
@@ -582,7 +585,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             .assertThat(sprite(testDir, "img/sprite-many-colors-bit-alpha.png"))
             .isDirectColor().hasBitAlpha();
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
         assertThat(messages).isEquivalentTo(
@@ -599,7 +602,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteImageUidMd5() throws FileNotFoundException, IOException
+    void testSpriteImageUidMd5() throws FileNotFoundException, IOException
     {
         assumeJdk18OrNewer();
 
@@ -616,18 +619,18 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
         // TODO: the generated digest depends on the content of the generated image, which
         // in turn depends on the Java version used.
         //
-        // assertThat(processedCss()).hasSameContentAs(expectedCss());
+        // assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
     }
 
     @Test
-    public void testSpriteImageUidMd5Ie6() throws FileNotFoundException, IOException
+    void testSpriteImageUidMd5Ie6() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("sprite-image-uid-md5-ie6");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null,
             MessageLevel.INFO, SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
             PngDepth.AUTO, true, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(new File(testDir, "img/sprite-ie6.png")).exists();
         assertThat(sprite(testDir)).hasSize(
@@ -636,7 +639,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void variableSubstitutionInSpriteImagePath() throws FileNotFoundException, IOException
+    void variableSubstitutionInSpriteImagePath() throws FileNotFoundException, IOException
     {
         assumeJdk18OrNewer();
 
@@ -648,7 +651,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
         {
             buildSprites(testDir);
 
-            assertThat(processedCss()).hasSameContentAs(expectedCss());
+            assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
             assertThat(new File(testDir, sprite1)).exists();
             assertThat(new File(testDir, sprite2)).exists();
             assertThat(sprite(testDir, sprite1)).hasSize(
@@ -665,7 +668,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testIndividualCssFileDoesNotExist() throws IOException
+    void testIndividualCssFileDoesNotExist() throws IOException
     {
         final String path = testDir("does-not-exist").getPath();
         buildSprites(Lists.newArrayList(path));
@@ -674,7 +677,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testDirectoryProvidedAsIndividualCssFile() throws IOException
+    void testDirectoryProvidedAsIndividualCssFile() throws IOException
     {
         final String path = testDir(".").getPath();
         buildSprites(Lists.newArrayList(path));
@@ -683,7 +686,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testIndividualCssFilesWithoutOutputDir() throws IOException
+    void testIndividualCssFilesWithoutOutputDir() throws IOException
     {
         final File testDir = testDir("individual-css-files-without-output-dir");
         final File css = new File(testDir, "css/style-sprite.css");
@@ -697,10 +700,10 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
                     "css/custom/style.css").getPath(), new File(testDir,
                     "css-other/style.css").getPath()));
             assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
-            assertThat(css).hasSameContentAs(new File(testDir, "css/style-expected.css"));
-            assertThat(customCss).hasSameContentAs(
+            assertThat(css).hasSameTextualContentAs(new File(testDir, "css/style-expected.css"));
+            assertThat(customCss).hasSameTextualContentAs(
                 new File(testDir, "css/custom/style-expected.css"));
-            assertThat(otherCss).hasSameContentAs(
+            assertThat(otherCss).hasSameTextualContentAs(
                 new File(testDir, "css-other/style-expected.css"));
             assertThat(sprite).exists();
             assertThat(sprite(testDir)).hasSize(
@@ -714,7 +717,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testIndividualCssFilesWithOutputDir() throws IOException
+    void testIndividualCssFilesWithOutputDir() throws IOException
     {
         final File testDir = testDir("individual-css-files-with-output-dir");
         final File outputDir = new File(testDir, "output");
@@ -729,8 +732,8 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             buildSprites(Lists.newArrayList(new File(testDir, "css/style.css").getPath(),
                 new File(testDir, "css/custom/style.css").getPath(), otherCssPath),
                 new File(testDir, "css").getPath(), outputDir.getPath());
-            assertThat(css).hasSameContentAs(new File(testDir, "css/style-expected.css"));
-            assertThat(customCss).hasSameContentAs(
+            assertThat(css).hasSameTextualContentAs(new File(testDir, "css/style-expected.css"));
+            assertThat(customCss).hasSameTextualContentAs(
                 new File(testDir, "css/custom/style-expected.css"));
             assertThat(otherCss).doesNotExist();
             assertThat(sprite).exists();
@@ -748,12 +751,12 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteMargins() throws FileNotFoundException, IOException
+    void testSpriteMargins() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("sprite-margins");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         final String horizontalSpritePath = "img/sprite-horizontal.png";
         assertThat(new File(testDir, horizontalSpritePath)).exists();
         assertThat(sprite(testDir, horizontalSpritePath))
@@ -767,11 +770,11 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteCentering() throws FileNotFoundException, IOException {
+    void testSpriteCentering() throws FileNotFoundException, IOException {
         final File testDir = testDir("sprite-centering");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         final String horizontalSpritePath = "img/sprite-horizontal.png";
         assertThat(new File(testDir, horizontalSpritePath)).exists();
         assertThat(
@@ -790,13 +793,13 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
      * Test case for bug SMARTSPRITES-69.
      */
     @Test
-    public void testCssSubfolders() throws FileNotFoundException, IOException
+    void testCssSubfolders() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("css-in-subfolders");
         buildSprites(testDir);
 
-        assertThat(processedCss()).hasSameContentAs(expectedCss());
-        assertThat(css("css/library/common-sprite.css")).hasSameContentAs(
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
+        assertThat(css("css/library/common-sprite.css")).hasSameTextualContentAs(
             css("css/library/common-expected.css"));
         assertThat(new File(testDir, "img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(
@@ -812,7 +815,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
      * on the format of paths in {@link SpriteBuilder#buildSprites(java.util.Collection)}.
      */
     @Test
-    public void testCssFileApiInvocation() throws FileNotFoundException, IOException
+    void testCssFileApiInvocation() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("simple-horizontal-sprite");
         final File outputCss = new File(testDir, "css/style-sprite.css");
@@ -823,7 +826,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
             buildSprites(Lists.newArrayList(new File(testDir, "css/style.css").getPath()
                 .replace(File.separatorChar, '/')));
 
-            assertThat(outputCss).hasSameContentAs(
+            assertThat(outputCss).hasSameTextualContentAs(
                 new File(testDir, "css/style-expected.css"));
             assertThat(sprite).exists();
             assertThat(sprite(testDir)).hasSize(
@@ -836,7 +839,7 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
         }
     }
 
-    @After
+    @AfterEach
     public void cleanUp() throws IOException {
         if (spriteBuilder == null) {
             return;
@@ -954,6 +957,6 @@ public class SpriteBuilderTest extends TestWithMemoryMessageSink
     private void assumeJdk18OrNewer()
     {
         final String version = System.getProperty("java.version");
-        Assume.assumeTrue(!version.startsWith("1.5") && !version.startsWith("1.6") && !version.startsWith("1.7"));
+        Assumptions.assumeTrue(!version.startsWith("1.5") && !version.startsWith("1.6") && !version.startsWith("1.7"));
     }
 }

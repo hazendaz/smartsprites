@@ -1,21 +1,22 @@
 package org.carrot2.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import amd.Quantize;
 
 /**
  * Test cases for {@link Quantize}.
  */
-public class ColorQuantizerTest extends BufferedImageTestBase
+class ColorQuantizerTest extends BufferedImageTestBase
 {
     @Test
-    public void testOneColor() throws IOException
+    void testOneColor() throws IOException
     {
         final String fileName = "one-color.png";
         final BufferedImage quantized = ColorQuantizer.quantize(image(fileName));
@@ -24,7 +25,7 @@ public class ColorQuantizerTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testNoAlpha() throws IOException
+    void testNoAlpha() throws IOException
     {
         final String fileName = "no-alpha.png";
         final BufferedImage quantized = ColorQuantizer.quantize(image(fileName));
@@ -33,7 +34,7 @@ public class ColorQuantizerTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testBitAlpha() throws IOException
+    void testBitAlpha() throws IOException
     {
         final String fileName = "bit-alpha.png";
         final BufferedImage quantized = ColorQuantizer.quantize(image(fileName));
@@ -42,7 +43,7 @@ public class ColorQuantizerTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testFullAlpha() throws IOException
+    void testFullAlpha() throws IOException
     {
         final String fileName = "full-alpha.png";
         final BufferedImage quantized = ColorQuantizer.quantize(image(fileName));
@@ -51,7 +52,7 @@ public class ColorQuantizerTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testExactColorsQuantize() throws IOException
+    void testExactColorsQuantize() throws IOException
     {
         final String fileName = "exact-colors.png";
         final BufferedImage quantized = ColorQuantizer.quantize(image(fileName));
@@ -60,7 +61,7 @@ public class ColorQuantizerTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testExactColorsReduce() throws IOException
+    void testExactColorsReduce() throws IOException
     {
         final String fileName = "exact-colors.png";
         final BufferedImage quantized = ColorQuantizer.reduce(image(fileName));
@@ -69,7 +70,7 @@ public class ColorQuantizerTest extends BufferedImageTestBase
     }
 
     @Test
-    public void testManyColorsQuantize() throws IOException
+    void testManyColorsQuantize() throws IOException
     {
         final String fileName = "many-colors.png";
         final BufferedImage quantized = ColorQuantizer.quantize(image(fileName));
@@ -78,15 +79,17 @@ public class ColorQuantizerTest extends BufferedImageTestBase
         // Current quantizer is far from perfect
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testManyColorsReduce() throws IOException
+    @Test
+    void testManyColorsReduce() throws IOException
     {
         final String fileName = "many-colors.png";
-        ColorQuantizer.reduce(image(fileName));
+        assertThrows(IllegalArgumentException.class, () -> {
+            ColorQuantizer.reduce(image(fileName));
+        });
     }
 
     @Test
-    public void testCanReduceWithoutDataLoss() throws IOException
+    void testCanReduceWithoutDataLoss() throws IOException
     {
         checkDataLoss("bit-alpha.png", true);
         checkDataLoss("exact-colors.png", true);

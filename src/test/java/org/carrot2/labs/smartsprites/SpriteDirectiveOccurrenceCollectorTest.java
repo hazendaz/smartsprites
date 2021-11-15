@@ -1,23 +1,23 @@
 package org.carrot2.labs.smartsprites;
 
 import static org.carrot2.labs.test.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.carrot2.labs.smartsprites.css.CssSyntaxUtils;
 import org.carrot2.labs.smartsprites.message.Message;
 import org.carrot2.labs.smartsprites.resource.FileSystemResourceHandler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test cases for {@link SpriteDirectiveOccurrenceCollector}.
  */
-public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink
+class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink
 {
     SpriteDirectiveOccurrenceCollector spriteDirectiveOccurrenceCollector;
 
-    @Before
-    public void prepare()
+    @BeforeEach
+    void prepare()
     {
         spriteDirectiveOccurrenceCollector = new SpriteDirectiveOccurrenceCollector(
             messageLog, new FileSystemResourceHandler(null, 
@@ -25,7 +25,7 @@ public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessag
     }
 
     @Test
-    public void testSpriteImageDirectiveExtractionOneDirectiveComplex()
+    void testSpriteImageDirectiveExtractionOneDirectiveComplex()
     {
         final String spriteDirective = "sprite: sprite; sprite-image-url: url('../sprite.png'); sprite-image-layout: vertical";
         final String css = ".test { margin-top: 10px }\n/* some comment */\n" + "/* "
@@ -36,7 +36,7 @@ public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessag
     }
 
     @Test
-    public void testSpriteImageDirectiveExtractionOneDirectiveSimple()
+    void testSpriteImageDirectiveExtractionOneDirectiveSimple()
     {
         final String spriteDirective = "sprite: sprite";
         final String css = "/* " + spriteDirective + " */";
@@ -46,7 +46,7 @@ public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessag
     }
 
     @Test
-    public void testSpriteImageDirectiveExtractionMoreDirectives()
+    void testSpriteImageDirectiveExtractionMoreDirectives()
     {
         final String spriteDirective1 = "sprite: sprite; sprite-image-url: url('../sprite.png'); sprite-image-layout: vertical";
         final String spriteDirective2 = "sprite: sprite2; sprite-image-url: url('../sprite2.png'); sprite-image-layout: horizontal";
@@ -59,7 +59,7 @@ public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessag
     }
 
     @Test
-    public void testSpriteReferenceDirectiveExtraction()
+    void testSpriteReferenceDirectiveExtraction()
     {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
         final String css = "background-image: url('../img/img.png'); /** "
@@ -70,7 +70,7 @@ public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessag
     }
 
     @Test
-    public void testSpriteReferenceImageUrlExtraction()
+    void testSpriteReferenceImageUrlExtraction()
     {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
         final String css = "background-image: url('../img/img.png'); /** "
@@ -81,7 +81,7 @@ public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessag
     }
 
     @Test
-    public void testSpriteReferenceImageUrlExtractionNoBackgroundImage()
+    void testSpriteReferenceImageUrlExtractionNoBackgroundImage()
     {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
         final String css = "background-imagez: url('../img/img.png'); /** "
@@ -99,7 +99,7 @@ public class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessag
     }
 
     @Test
-    public void testSpriteReferenceImageUrlExtractionMoreRules()
+    void testSpriteReferenceImageUrlExtractionMoreRules()
     {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
         final String css = "color: red; background-image: url('../img/img.png'); /** "

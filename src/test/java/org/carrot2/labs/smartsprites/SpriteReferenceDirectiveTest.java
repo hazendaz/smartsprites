@@ -1,9 +1,9 @@
 package org.carrot2.labs.smartsprites;
 
 import static org.carrot2.labs.test.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.awt.Color;
 import java.util.Map;
@@ -16,14 +16,14 @@ import org.carrot2.labs.smartsprites.SpriteLayoutProperties.SpriteAlignment;
 import org.carrot2.labs.smartsprites.message.Message;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.carrot2.labs.smartsprites.message.MessageLog;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableMap;
 
 /**
  * Test cases for {@link SpriteReferenceDirective}
  */
-public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
+class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
 {
     private static final SpriteImageDirective VERTICAL_SPRITE_IMAGE_DIRECTIVE = new SpriteImageDirective(
         "vsprite", "sprite.png", SpriteImageLayout.VERTICAL, SpriteImageFormat.PNG,
@@ -44,7 +44,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
             VERTICAL_SPRITE_IMAGE_DIRECTIVE_WITH_LAYOUT);
 
     @Test
-    public void testEmpty()
+    void testEmpty()
     {
         final MessageLog messageLog = new MessageLog();
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse("",
@@ -53,7 +53,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteRefOnly()
+    void testSpriteRefOnly()
     {
         final MessageLog messageLog = new MessageLog();
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -71,7 +71,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteRefOnlyHorizontalImage()
+    void testSpriteRefOnlyHorizontalImage()
     {
         final MessageLog messageLog = new MessageLog();
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -89,7 +89,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteRefNotFound()
+    void testSpriteRefNotFound()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
             "sprite-ref: spritex", SPRITE_IMAGE_DIRECTIVES, messageLog);
@@ -102,7 +102,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteRefAlignment()
+    void testSpriteRefAlignment()
     {
         final MessageLog messageLog = new MessageLog();
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -121,7 +121,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testUnsupportedAlignment()
+    void testUnsupportedAlignment()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
             "sprite-ref: vsprite; sprite-alignment: repeat-x", SPRITE_IMAGE_DIRECTIVES,
@@ -141,28 +141,28 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testMismatchedTopAlignment()
+    void testMismatchedTopAlignment()
     {
         checkMismatchedAlignment("vsprite", "top", SpriteAlignment.LEFT,
             Message.MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED);
     }
 
     @Test
-    public void testMismatchedBottomAlignment()
+    void testMismatchedBottomAlignment()
     {
         checkMismatchedAlignment("vsprite", "bottom", SpriteAlignment.LEFT,
             Message.MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED);
     }
 
     @Test
-    public void testMismatchedLeftAlignment()
+    void testMismatchedLeftAlignment()
     {
         checkMismatchedAlignment("hsprite", "left", SpriteAlignment.TOP,
             Message.MessageType.ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED);
     }
 
     @Test
-    public void testMismatchedRightAlignment()
+    void testMismatchedRightAlignment()
     {
         checkMismatchedAlignment("hsprite", "right", SpriteAlignment.TOP,
             Message.MessageType.ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED);
@@ -188,7 +188,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteMargins()
+    void testSpriteMargins()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective
             .parse(
@@ -207,7 +207,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testCannotParseMargin()
+    void testCannotParseMargin()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective
             .parse(
@@ -228,7 +228,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testUnsupportedProperties()
+    void testUnsupportedProperties()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
             "sprite-ref: vsprite; sprites-alignment: repeat; sprites-margin-left: 10px",
@@ -244,7 +244,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testSpriteLayoutFromSpriteImageDirective()
+    void testSpriteLayoutFromSpriteImageDirective()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
             "sprite-ref: vlsprite", SPRITE_IMAGE_DIRECTIVES, messageLog);
@@ -271,7 +271,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testOverriddenSpriteLayoutFromSpriteImageDirective()
+    void testOverriddenSpriteLayoutFromSpriteImageDirective()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective
             .parse(
@@ -290,7 +290,7 @@ public class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testNegativeMarginValues()
+    void testNegativeMarginValues()
     {
         final SpriteReferenceDirective directive = SpriteReferenceDirective
         .parse(

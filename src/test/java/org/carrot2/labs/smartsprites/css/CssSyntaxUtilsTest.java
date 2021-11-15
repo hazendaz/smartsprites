@@ -2,7 +2,7 @@ package org.carrot2.labs.smartsprites.css;
 
 import static org.carrot2.labs.test.Assertions.assertThat;
 import static org.carrot2.labs.test.Assertions.assertThatCssPropertyList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Color;
 import java.util.List;
@@ -11,22 +11,22 @@ import org.carrot2.labs.smartsprites.TestWithMemoryMessageSink;
 import org.carrot2.labs.smartsprites.message.Message;
 import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test cases for {@link CssSyntaxUtils}.
  */
-public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
+class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
 {
     @Test
-    public void testEmpty()
+    void testEmpty()
     {
         final List<CssProperty> actualRules = CssSyntaxUtils.extractProperties("   ");
         assertThatCssPropertyList(actualRules).isEmpty();
     }
 
     @Test
-    public void testSingleRule()
+    void testSingleRule()
     {
         final List<CssProperty> actualRules = CssSyntaxUtils
             .extractProperties("test-rule: test-value");
@@ -36,7 +36,7 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testImportantRules()
+    void testImportantRules()
     {
         final List<CssProperty> actualRules = CssSyntaxUtils
             .extractProperties("background-image: url(test.png) !important; color: red!   important");
@@ -47,7 +47,7 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testUpperCaseRule()
+    void testUpperCaseRule()
     {
         final List<CssProperty> actualRules = CssSyntaxUtils
             .extractProperties("TEST-rule: test-value");
@@ -57,7 +57,7 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testMoreRules()
+    void testMoreRules()
     {
         final List<CssProperty> actualRules = CssSyntaxUtils
             .extractProperties("rule-1: value1; rule-2: value2;");
@@ -67,7 +67,7 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testWhiteSpace()
+    void testWhiteSpace()
     {
         final List<CssProperty> actualRules = CssSyntaxUtils
             .extractProperties("\trule-1  : value1  ; \trule-2  : value2\t;");
@@ -77,7 +77,7 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testColonsInPropertyValue()
+    void testColonsInPropertyValue()
     {
         final List<CssProperty> actualRules = CssSyntaxUtils.extractRules(
             "rule-1: value1 : v2; rule-2: url(jar:/test.png);", messageLog);
@@ -91,26 +91,26 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testUnpackUrlNoQuotes()
+    void testUnpackUrlNoQuotes()
     {
         assertEquals("test/img/t.png", CssSyntaxUtils.unpackUrl("url(test/img/t.png)"));
     }
 
     @Test
-    public void testUnpackUrlSingleQuotes()
+    void testUnpackUrlSingleQuotes()
     {
         assertEquals("test/img/t.png", CssSyntaxUtils.unpackUrl("url('test/img/t.png')"));
     }
 
     @Test
-    public void testUnpackUrlDoubleQuotes()
+    void testUnpackUrlDoubleQuotes()
     {
         assertEquals("test/img/t.png", CssSyntaxUtils
             .unpackUrl("url(\"test/img/t.png\")"));
     }
 
     @Test
-    public void testUnbalancedQuotes()
+    void testUnbalancedQuotes()
     {
         assertEquals(null, CssSyntaxUtils.unpackUrl("url('test/img/t.png\")", messageLog));
 
@@ -120,7 +120,7 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testMalformedPrefix()
+    void testMalformedPrefix()
     {
         assertEquals(null, CssSyntaxUtils.unpackUrl("urlx('test/img/t.png')", messageLog));
 
@@ -130,14 +130,14 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testLongCssColor()
+    void testLongCssColor()
     {
         assertEquals("cafe01", parseCssColor("#cafe01"));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
     @Test
-    public void testInvalidCssColor()
+    void testInvalidCssColor()
     {
         assertEquals(null, parseCssColor("cafe01"));
         assertThat(messages)
@@ -147,7 +147,7 @@ public class CssSyntaxUtilsTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testShortCssColor()
+    void testShortCssColor()
     {
         // Currently unsupported
         assertEquals(null, parseCssColor("#fff"));

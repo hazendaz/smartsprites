@@ -1,8 +1,8 @@
 package org.carrot2.labs.smartsprites;
 
 import static org.carrot2.labs.test.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,16 +11,16 @@ import java.util.List;
 import org.carrot2.labs.smartsprites.message.Message;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.carrot2.util.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 
 /**
  * Test cases for {@link SmartSpritesParameters}.
  */
-public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
+class SmartSpritesParametersTest extends TestWithMemoryMessageSink
 {
     private File existingRootDir;
     private String existingRootDirPath;
@@ -29,8 +29,8 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     private File existingFile;
     private String existingFilePath;
 
-    @Before
-    public void prepareFiles() throws IOException
+    @BeforeEach
+    void prepareFiles() throws IOException
     {
         existingFile = File.createTempFile("smartsprites", null);
         existingFilePath = existingFile.getPath();
@@ -40,22 +40,22 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
         existingOutputDirPath = existingOutputDir.getPath();
     }
 
-    @After
-    public void cleanUpFiles() throws IOException
+    @AfterEach
+    void cleanUpFiles() throws IOException
     {
         FileUtils.deleteThrowingExceptions(existingFile, existingOutputDir,
             existingRootDir);
     }
 
     @Test
-    public void testValidateNoRootDirNoCssFiles()
+    void testValidateNoRootDirNoCssFiles()
     {
         checkInvalid(parameters(null, null),
             Message.error(MessageType.EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQIRED));
     }
 
     @Test
-    public void testValidateRootDirDoesNotExist()
+    void testValidateRootDirDoesNotExist()
     {
         final String dir = "nonexisting-dir";
         checkInvalid(parameters(dir, null), Message.error(
@@ -63,7 +63,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateOutputDirNoRootDir()
+    void testValidateOutputDirNoRootDir()
     {
         checkInvalid(
             parameters(null, Lists.newArrayList("css/file.css"), existingOutputDirPath),
@@ -72,7 +72,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateOutputDirIsNotADirectory()
+    void testValidateOutputDirIsNotADirectory()
     {
         checkInvalid(
             parameters(existingRootDirPath, Lists.newArrayList("css/file.css"),
@@ -81,7 +81,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateDocumentRootDirDoesNotExist()
+    void testValidateDocumentRootDirDoesNotExist()
     {
         final String nonexistingDir = "nonexisting-dir";
         checkInvalid(parameters(existingRootDirPath, (String) null, nonexistingDir),
@@ -91,7 +91,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateDocumentRootDirIsNotADirectory()
+    void testValidateDocumentRootDirIsNotADirectory()
     {
         checkInvalid(parameters(existingRootDirPath, (String) null, existingFilePath),
             Message.error(
@@ -100,7 +100,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateNoOutputDirAndEmptyCssFileSuffix()
+    void testValidateNoOutputDirAndEmptyCssFileSuffix()
     {
         checkInvalid(new SmartSpritesParameters(null, Lists.newArrayList("css/file.css"),
             null, null, null, "", null, false, null), Message.error(
@@ -108,7 +108,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateRootDirAndCssFilesWithoutOutputDir()
+    void testValidateRootDirAndCssFilesWithoutOutputDir()
     {
         checkInvalid(
             parameters(existingRootDirPath, Lists.newArrayList("css/file.css"), null),
@@ -117,7 +117,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateValidAllDirs()
+    void testValidateValidAllDirs()
     {
         checkValid(parameters(existingRootDirPath, existingOutputDirPath,
             existingOutputDirPath));
@@ -125,7 +125,7 @@ public class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    public void testValidateValidOnlyRootDir()
+    void testValidateValidOnlyRootDir()
     {
         checkValid(parameters(".", null));
     }
