@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -14,7 +13,7 @@
   <!-- Project info. -->
   <groupId>com.github.hazendaz</groupId>
   <artifactId>smartsprites</artifactId>
-  <version>0.2.14-SNAPSHOT</version>
+  <version>0.2.14</version>
 
   <name>SmartSprites</name>
   <description>
@@ -56,7 +55,7 @@
     <url>https://github.com/hazendaz/smartsprites</url>
     <connection>scm:git:ssh://github.com/hazendaz/smartsprites.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>smartsprites-0.2.14</tag>
   </scm>
   <distributionManagement>
     <site>
