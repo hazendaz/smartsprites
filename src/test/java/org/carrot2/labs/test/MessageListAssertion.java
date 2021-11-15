@@ -82,7 +82,7 @@ public class MessageListAssertion
     public MessageListAssertion isEquivalentTo(MessageLevel onlyLevel,
         List<Message> expected)
     {
-        final List<Message> filtered = Lists.newArrayList();
+        final List<Message> filtered = new ArrayList<>();
         for (Message message : actual)
         {
             if (message.level == onlyLevel)

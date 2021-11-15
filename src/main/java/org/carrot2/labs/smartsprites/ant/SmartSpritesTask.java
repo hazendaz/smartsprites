@@ -1,6 +1,7 @@
 package org.carrot2.labs.smartsprites.ant;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,8 +15,6 @@ import org.carrot2.labs.smartsprites.SmartSpritesParameters.PngDepth;
 import org.carrot2.labs.smartsprites.message.*;
 import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
 import org.carrot2.util.EnumUtils;
-
-import com.google.common.collect.Lists;
 
 /**
  * Ant task for calling SmartSprites processing.
@@ -33,7 +32,7 @@ public class SmartSpritesTask extends Task
     private boolean spritePngIe6 = SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6;
     private boolean markSpriteImages = SmartSpritesParameters.DEFAULT_MARK_SPRITE_IMAGES;
 
-    private List<String> cssFiles = Lists.newArrayList();
+    private List<String> cssFiles = new ArrayList<>();
 
     public void setRootDir(File dir)
     {

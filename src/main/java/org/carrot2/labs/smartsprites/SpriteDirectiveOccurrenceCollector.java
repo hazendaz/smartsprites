@@ -2,6 +2,7 @@ package org.carrot2.labs.smartsprites;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -14,7 +15,6 @@ import org.carrot2.labs.smartsprites.message.MessageLog;
 import org.carrot2.labs.smartsprites.resource.ResourceHandler;
 
 import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Closeables;
@@ -55,7 +55,7 @@ public class SpriteDirectiveOccurrenceCollector
     Collection<SpriteImageOccurrence> collectSpriteImageOccurrences(String cssFile)
         throws IOException
     {
-        final Collection<SpriteImageOccurrence> occurrences = Lists.newArrayList();
+        final Collection<SpriteImageOccurrence> occurrences = new ArrayList<>();
         final BufferedReader reader = new BufferedReader(resourceHandler
             .getResourceAsReader(cssFile));
         messageLog.setCssFile(null);
@@ -103,7 +103,7 @@ public class SpriteDirectiveOccurrenceCollector
         String cssFile, Map<String, SpriteImageDirective> spriteImageDirectives)
         throws IOException
     {
-        final Collection<SpriteReferenceOccurrence> directives = Lists.newArrayList();
+        final Collection<SpriteReferenceOccurrence> directives = new ArrayList<>();
 
         final BufferedReader reader = new BufferedReader(resourceHandler
             .getResourceAsReader(cssFile));

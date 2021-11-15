@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -136,7 +137,7 @@ public class SpriteBuilder
                 }
             });
 
-            filePaths = Lists.newArrayList();
+            filePaths = new ArrayList<>();
             for (File file : files)
             {
                 filePaths.add(file.getPath());

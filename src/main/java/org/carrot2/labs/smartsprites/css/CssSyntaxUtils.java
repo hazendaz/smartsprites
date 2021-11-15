@@ -10,7 +10,6 @@ import org.carrot2.labs.smartsprites.message.MessageLog;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.carrot2.util.StringUtils;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -44,7 +43,7 @@ public class CssSyntaxUtils
      */
     public static List<CssProperty> extractRules(String text, MessageLog messageLog)
     {
-        final List<CssProperty> rules = Lists.newArrayList();
+        final List<CssProperty> rules = new ArrayList<>();
 
         final String [] chunks = text.split(";");
         for (final String chunk : chunks)

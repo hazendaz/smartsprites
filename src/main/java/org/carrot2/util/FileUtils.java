@@ -7,8 +7,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.google.common.collect.Lists;
-
 /**
  * Various utility methods for working with {@link File}s.
  */
@@ -80,7 +78,7 @@ public class FileUtils
             return;
         }
 
-        final ArrayList<String> undeletedFiles = Lists.newArrayList();
+        final ArrayList<String> undeletedFiles = new ArrayList<>();
         for (File file : files)
         {
             if (file == null)
