@@ -16,9 +16,10 @@ import org.carrot2.labs.smartsprites.message.Message;
 import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.JRE;
 
 import com.google.common.collect.Lists;
 
@@ -604,8 +605,6 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
     @Test
     void testSpriteImageUidMd5() throws FileNotFoundException, IOException
     {
-        assumeJdk18OrNewer();
-
         final File testDir = testDir("sprite-image-uid-md5");
         buildSprites(testDir);
 
@@ -623,6 +622,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
+    @EnabledOnJre(JRE.JAVA_8)
     void testSpriteImageUidMd5Ie6() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("sprite-image-uid-md5-ie6");
@@ -639,10 +639,9 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
+    @EnabledOnJre(JRE.JAVA_8)
     void variableSubstitutionInSpriteImagePath() throws FileNotFoundException, IOException
     {
-        assumeJdk18OrNewer();
-
         final File testDir = testDir("variable-substitution-in-sprite-image-path");
         final String sprite1 = "img/sprite-10eb4d8ef5d4b17c7e1173b2213ec6d1.png";
         final String sprite2 = "img/1cbb5bd4c5577f487e1ca434009967c/sprite2.png";
@@ -954,9 +953,4 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
             cssFileSuffix, spritePngDepth, spritePngIe6, cssEncoding);
     }
 
-    private void assumeJdk18OrNewer()
-    {
-        final String version = System.getProperty("java.version");
-        Assumptions.assumeTrue(!version.startsWith("1.5") && !version.startsWith("1.6") && !version.startsWith("1.7"));
-    }
 }
