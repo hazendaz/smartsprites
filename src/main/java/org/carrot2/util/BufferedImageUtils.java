@@ -3,9 +3,8 @@ package org.carrot2.util;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import java.util.HashSet;
 import java.util.Set;
-
-import com.google.common.collect.Sets;
 
 /**
  * Various utility methods for working with {@link BufferedImage}s.
@@ -89,7 +88,7 @@ public class BufferedImageUtils
         final int width = image.getWidth();
         final int height = image.getHeight();
 
-        final Set<Integer> colors = Sets.newHashSet();
+        final Set<Integer> colors = new HashSet<>();
 
         for (int x = 0; x < width; x++)
         {
