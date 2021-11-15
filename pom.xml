@@ -13,7 +13,7 @@
   <!-- Project info. -->
   <groupId>com.github.hazendaz</groupId>
   <artifactId>smartsprites</artifactId>
-  <version>0.2.14</version>
+  <version>0.2.15-SNAPSHOT</version>
 
   <name>SmartSprites</name>
   <description>
@@ -55,7 +55,7 @@
     <url>https://github.com/hazendaz/smartsprites</url>
     <connection>scm:git:ssh://github.com/hazendaz/smartsprites.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</developerConnection>
-    <tag>smartsprites-0.2.14</tag>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <site>
