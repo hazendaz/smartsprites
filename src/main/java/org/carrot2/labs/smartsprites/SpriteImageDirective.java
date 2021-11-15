@@ -87,9 +87,9 @@ public class SpriteImageDirective
         DATE,
 
         /**
-         * Append MD5 of the sprites file.
+         * Append sha512 of the sprites file.
          */
-        MD5;
+        SHA512;
 
         private String value;
 
@@ -240,7 +240,7 @@ public class SpriteImageDirective
      * Variable names allowed in image path.
      */
     private static final Set<String> ALLOWED_VARIABLES = ImmutableSet.of(PROPERTY_SPRITE_ID,
-        SpriteUidType.DATE.toString(), SpriteUidType.MD5.toString());
+        SpriteUidType.DATE.toString(), SpriteUidType.SHA512.toString());
 
     public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout,
         SpriteImageFormat format, Ie6Mode ie6Mode, Color matteColor, SpriteUidType uidType, float scale)

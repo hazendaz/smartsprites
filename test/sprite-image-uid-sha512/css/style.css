@@ -2,8 +2,8 @@
  * A simple horizontal sprites test.
  */
 
-/** sprite: test; sprite-image: url('../img/sprite.png'); sprite-layout: horizontal; sprite-image-uid: md5 */
-/** sprite: test2; sprite-image: url('../img/sprite2.png'); sprite-layout: horizontal; sprite-image-uid: md5 */
+/** sprite: test; sprite-image: url('../img/sprite.png'); sprite-layout: horizontal; sprite-image-uid: sha512 */
+/** sprite: test2; sprite-image: url('../img/sprite2.png'); sprite-layout: horizontal; sprite-image-uid: sha512 */
 div.web {
   width: 17px;
   height: 17px;

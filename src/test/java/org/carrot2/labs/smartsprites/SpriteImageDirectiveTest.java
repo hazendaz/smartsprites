@@ -61,25 +61,25 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     @Test
     void variablesCorrectSyntax()
     {
-        checkImagePathVariableCorrect("../${date}/${sprite}-${md5}.png");
+        checkImagePathVariableCorrect("../${date}/${sprite}-${sha512}.png");
     }
 
     @Test
     void variablesAndQueryStringCorrectSyntax()
     {
-        checkImagePathVariableCorrect("../${sprite}-${md5}.png?${date}");
+        checkImagePathVariableCorrect("../${sprite}-${sha512}.png?${date}");
     }
 
     @Test
     void variablesUnbalancedBrackets()
     {
-        checkImagePathVariableIncorrect("../$sprite}-${md5}.png?${date}");
+        checkImagePathVariableIncorrect("../$sprite}-${sha512}.png?${date}");
     }
 
     @Test
     void variablesMissingDollar()
     {
-        checkImagePathVariableIncorrect("../{sprite}-${md5}.png?${date}");
+        checkImagePathVariableIncorrect("../{sprite}-${sha512}.png?${date}");
     }
 
     @Test
@@ -155,12 +155,12 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void testUidMd5()
+    void testUidSha512()
     {
-        checkUidType("sprite-image-uid: md5", SpriteUidType.MD5);
+        checkUidType("sprite-image-uid: sha512", SpriteUidType.SHA512);
         assertThat(messages).contains(
             new Message(MessageLevel.DEPRECATION,
-                MessageType.DEPRECATED_SPRITE_IMAGE_UID, null, 0, "md5"));
+                MessageType.DEPRECATED_SPRITE_IMAGE_UID, null, 0, "sha512"));
     }
 
     @Test

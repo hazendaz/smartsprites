@@ -1,0 +1,22 @@
+/**
+ * A simple horizontal sprites test.
+ */
+
+div.web {
+  width: 17px;
+  height: 17px;
+  background-image: url('../img/sprite.png?a1bc9b4fea190b40426b1a294fd1b1271822d59085a1143b2f313f70772d10c32c5c9bca305ebaceeaf135124eec70a5df2d745604916654d90a0a7939334978');
+  background-position: -0px top;
+}
+
+div.pubmed {
+  width: 15px;
+  height: 32px;
+  background-image: url('../img/sprite.png?a1bc9b4fea190b40426b1a294fd1b1271822d59085a1143b2f313f70772d10c32c5c9bca305ebaceeaf135124eec70a5df2d745604916654d90a0a7939334978');
+  background-position: -17px bottom;
+}
+
+div.logo {
+  background-image: url('../img/sprite2.png?7afeb4044f634a1859b08d79aff8802291d911f72dc32e89361d218766072a178084d363549ff83c546f0fb03436aca05f7719812a6c6f8117f253b948399e0f');
+  background-position: -0px top;
+}

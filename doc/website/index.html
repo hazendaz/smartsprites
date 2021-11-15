@@ -330,7 +330,7 @@
                     </li>
                     
                     <li>
-                      <tt>md5</tt>: MD5 hash of the sprite image file created
+                      <tt>sha512</tt>: SHA512 hash of the sprite image file created
                       by SmartSprites. The hash will change only if the sprite 
                        image content or file format changes.
                     </li>
@@ -356,9 +356,9 @@
                     sprite image path, e.g.
                   </p>
                   
-                  <code>sprite-image: url('../img/logo-<strong>${md5}</strong>.png')
+                  <code>sprite-image: url('../img/logo-<strong>${sha512}</strong>.png')
 sprite-image: url('../<strong>${date}</strong>/<strong>${sprite}</strong>.png')
-sprite-image: url('../sprite.png?<strong>${md5}</strong>')</code>
+sprite-image: url('../sprite.png?<strong>${sha512}</strong>')</code>
                 </li>
 
                 <li><strong>Sprite image layout</strong>, syntax:
@@ -994,7 +994,7 @@ sprite-image: url('../sprite.png?<strong>${md5}</strong>')</code>
         <strong>v0.2.8</strong>, released: February 2011, <a href="http://issues.carrot2.org/secure/ConfigureReport.jspa?atl_token=ca0ce89d766cc00206bcd02ecc2e61da6c0b320f&amp;versionId=10300&amp;sortingOrder=least&amp;completedFilter=all&amp;subtaskInclusion=onlySelected&amp;selectedProjectId=10040&amp;reportKey=com.atlassian.jira.plugin.system.reports%3Atime-tracking&amp;Next=Next">took about 10 hours of work</a>
       </p>
       <ul class="versions">
-        <li>Possibility to use MD5 hash or time stamp anywhere in sprite image name and path
+        <li>Possibility to use SHA512 hash or time stamp anywhere in sprite image name and path
         (<a href="http://issues.carrot2.org/browse/SMARTSPRITES-41">SMARTSPRITES-41</a>, 3 votes)</li>
         <li>Releasing SmartSprites binaries into Maven central repository, switching to Maven-based build process 
         (<a href="http://issues.carrot2.org/browse/SMARTSPRITES-79">SMARTSPRITES-79</a>)</li>
@@ -1054,7 +1054,7 @@ sprite-image: url('../sprite.png?<strong>${md5}</strong>')</code>
         <strong>v0.2.2</strong>, released: April 2009
       </p>
       <ul class="versions">
-        <li>Support for <a href="#sprite-image-uid">appending MD5 hashes</a> or timestamps to sprite image URLs 
+        <li>Support for <a href="#sprite-image-uid">appending SHA512 hashes</a> or timestamps to sprite image URLs 
             (<a href="http://issues.carrot2.org/browse/SMARTSPRITES-25">SMARTSPRITES-25</a>)</li>
         <li>Bugfix: <a href="http://issues.carrot2.org/browse/SMARTSPRITES-26">SMARTSPRITES-26</a></li>
       </ul>

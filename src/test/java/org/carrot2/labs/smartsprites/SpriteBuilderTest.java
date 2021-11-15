@@ -603,9 +603,9 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void testSpriteImageUidMd5() throws FileNotFoundException, IOException
+    void testSpriteImageUidSha512() throws FileNotFoundException, IOException
     {
-        final File testDir = testDir("sprite-image-uid-md5");
+        final File testDir = testDir("sprite-image-uid-sha512");
         buildSprites(testDir);
 
         assertThat(new File(testDir, "img/sprite.png")).exists();
@@ -623,9 +623,9 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
 
     @Test
     @EnabledOnJre(JRE.JAVA_8)
-    void testSpriteImageUidMd5Ie6() throws FileNotFoundException, IOException
+    void testSpriteImageUidSha512Ie6() throws FileNotFoundException, IOException
     {
-        final File testDir = testDir("sprite-image-uid-md5-ie6");
+        final File testDir = testDir("sprite-image-uid-sha512-ie6");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null,
             MessageLevel.INFO, SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
             PngDepth.AUTO, true, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
@@ -643,8 +643,8 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
     void variableSubstitutionInSpriteImagePath() throws FileNotFoundException, IOException
     {
         final File testDir = testDir("variable-substitution-in-sprite-image-path");
-        final String sprite1 = "img/sprite-10eb4d8ef5d4b17c7e1173b2213ec6d1.png";
-        final String sprite2 = "img/01cbb5bd4c5577f487e1ca434009967c/sprite2.png";
+        final String sprite1 = "img/sprite-a1bc9b4fea190b40426b1a294fd1b1271822d59085a1143b2f313f70772d10c32c5c9bca305ebaceeaf135124eec70a5df2d745604916654d90a0a7939334978.png";
+        final String sprite2 = "img/7afeb4044f634a1859b08d79aff8802291d911f72dc32e89361d218766072a178084d363549ff83c546f0fb03436aca05f7719812a6c6f8117f253b948399e0f/sprite2.png";
 
         try
         {
@@ -662,7 +662,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         finally
         {
             FileUtils
-                .deleteDirectory(new File(testDir, "img/01cbb5bd4c5577f487e1ca434009967c"));
+                .deleteDirectory(new File(testDir, "img/7afeb4044f634a1859b08d79aff8802291d911f72dc32e89361d218766072a178084d363549ff83c546f0fb03436aca05f7719812a6c6f8117f253b948399e0f"));
         }
     }
 

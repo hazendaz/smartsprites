@@ -186,7 +186,7 @@ public class SpriteImageBuilder
         final SpriteImageOccurrence spriteImageOccurrence = spriteImage.spriteImageOccurrence;
         final SpriteImageDirective spriteImageDirective = spriteImageOccurrence.spriteImageDirective;
 
-        // Write the image to a byte array first. We need the data to compute an md5 hash.
+        // Write the image to a byte array first. We need the data to compute an sha512 hash.
         final ByteArrayOutputStream spriteImageByteArrayOuputStream = new ByteArrayOutputStream();
 
         // If writing to a JPEG, we need to make a 3-byte-encoded image

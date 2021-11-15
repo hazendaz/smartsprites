@@ -89,19 +89,19 @@ public class SpriteImage
         // and the UID type is defined, append the UID as a query string just like
         // the previous versions did. To be removed in 0.4.0.
         if (spriteImageOccurrence.spriteImageDirective.uidType != SpriteUidType.NONE
-            && !SpriteUidType.MD5.pattern.matcher(imagePath).find()
+            && !SpriteUidType.SHA512.pattern.matcher(imagePath).find()
             && !SpriteUidType.DATE.pattern.matcher(imagePath).find())
         {
             imagePath += "?${"
                 + spriteImageOccurrence.spriteImageDirective.uidType.toString() + "}";
         }
 
-        // Resolve MD5 hash
-        Matcher md5Matcher = SpriteUidType.MD5.pattern.matcher(imagePath);
-        if (md5Matcher.find())
+        // Resolve SHA512 hash
+        Matcher sha512Matcher = SpriteUidType.SHA512.pattern.matcher(imagePath);
+        if (sha512Matcher.find())
         {
-            // Compute MD5 only when necessary
-            imagePath = md5Matcher.replaceAll(computeMd5(image));
+            // Compute SHA512 only when necessary
+            imagePath = sha512Matcher.replaceAll(computeSha512(image));
         }
 
         // Resolve timestamp
@@ -174,10 +174,10 @@ public class SpriteImage
     }
 
     /**
-     * Computes Md5 using guava.
+     * Computes Sha512 using guava.
      */
-    private static String computeMd5(byte[] image)
+    private static String computeSha512(byte[] image)
     {
-        return Hashing.md5().hashBytes(image).toString();
+        return Hashing.sha512().hashBytes(image).toString();
     }
 }
