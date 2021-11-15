@@ -51,7 +51,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink
     void testValidateNoRootDirNoCssFiles()
     {
         checkInvalid(parameters(null, null),
-            Message.error(MessageType.EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQIRED));
+            Message.error(MessageType.EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQUIRED));
     }
 
     @Test
@@ -68,7 +68,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink
         checkInvalid(
             parameters(null, Lists.newArrayList("css/file.css"), existingOutputDirPath),
             Message.error(
-                MessageType.ROOT_DIR_IS_REQIRED_FOR_OUTPUT_DIR));
+                MessageType.ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR));
     }
 
     @Test

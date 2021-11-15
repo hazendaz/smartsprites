@@ -184,7 +184,7 @@ public final class SmartSpritesParameters
     }
 
     /**
-     * Validates the provided parameters. All resource paths are resolved agains the local
+     * Validates the provided parameters. All resource paths are resolved against the local
      * file system.
      * 
      * @return <code>true</code> if the parameters are valid
@@ -196,7 +196,7 @@ public final class SmartSpritesParameters
         // Either root dir or css files are required
         if (!hasRootDir() && !hasCssFiles())
         {
-            log.error(MessageType.EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQIRED);
+            log.error(MessageType.EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQUIRED);
             return false;
         }
 
@@ -225,7 +225,7 @@ public final class SmartSpritesParameters
             // For output dir, we need root dir
             if (!hasRootDir())
             {
-                log.error(MessageType.ROOT_DIR_IS_REQIRED_FOR_OUTPUT_DIR);
+                log.error(MessageType.ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR);
                 return false;
             }
 
