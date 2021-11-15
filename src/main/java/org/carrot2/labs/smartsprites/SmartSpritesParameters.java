@@ -2,6 +2,8 @@ package org.carrot2.labs.smartsprites;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.carrot2.labs.smartsprites.message.MessageLog;
@@ -80,7 +82,7 @@ public final class SmartSpritesParameters
      * The encoding to assume for input and output CSS files.
      */
     @Option(name = "--css-file-encoding")
-    private String cssFileEncoding;
+    private Charset cssFileEncoding;
 
     /**
      * Suffix to be appended to the processed CSS file name.
@@ -118,7 +120,7 @@ public final class SmartSpritesParameters
     public static final boolean DEFAULT_SPRITE_PNG_IE6 = false;
 
     /** By default, we'll assume CSS files are UTF-8 encoded */
-    public static final String DEFAULT_CSS_FILE_ENCODING = "UTF-8";
+    public static final Charset DEFAULT_CSS_FILE_ENCODING = StandardCharsets.UTF_8;
 
     /** The default logging level. */
     public static final MessageLevel DEFAULT_LOGGING_LEVEL = MessageLevel.INFO;
@@ -156,7 +158,7 @@ public final class SmartSpritesParameters
     public SmartSpritesParameters(String rootDir, List<String> cssFiles,
         String outputDir, String documentRootDir, MessageLevel logLevel,
         String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
-        String cssEncoding)
+        Charset cssEncoding)
     {
         this(rootDir, cssFiles, outputDir, documentRootDir, logLevel, cssFileSuffix,
             spritePngDepth, spritePngIe6, cssEncoding, DEFAULT_MARK_SPRITE_IMAGES);
@@ -168,7 +170,7 @@ public final class SmartSpritesParameters
     public SmartSpritesParameters(String rootDir, List<String> cssFiles,
         String outputDir, String documentRootDir, MessageLevel logLevel,
         String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
-        String cssEncoding, boolean markSpriteImages)
+        Charset cssEncoding, boolean markSpriteImages)
     {
         this.rootDir = rootDir;
         this.cssFiles = cssFiles;
@@ -350,7 +352,7 @@ public final class SmartSpritesParameters
         return markSpriteImages;
     }
 
-    public String getCssFileEncoding()
+    public Charset getCssFileEncoding()
     {
         return cssFileEncoding;
     }

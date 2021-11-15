@@ -36,7 +36,7 @@ public class FileSystemResourceHandler implements ResourceHandler
     private final String documentRootDir;
 
     /** The charset to assume in the {@link #getResourceAsReader(String)} method. */
-    private final String charset;
+    private final Charset charset;
 
     /**
      * Creates a new {@link FileSystemResourceHandler}.
@@ -46,17 +46,12 @@ public class FileSystemResourceHandler implements ResourceHandler
      *            method
      * @param messageLog the message log
      */
-    public FileSystemResourceHandler(String documentRootDirPath, String charset,
+    public FileSystemResourceHandler(String documentRootDirPath, Charset charset,
         MessageLog messageLog)
     {
         this.documentRootDir = documentRootDirPath;
         this.messageLog = messageLog;
         this.charset = charset;
-        if (!Charset.isSupported(charset))
-        {
-            messageLog.error(Message.MessageType.GENERIC, "Charset '" + charset
-                + "' is not supported.");
-        }
     }
 
     public InputStream getResourceAsInputStream(String path) throws IOException

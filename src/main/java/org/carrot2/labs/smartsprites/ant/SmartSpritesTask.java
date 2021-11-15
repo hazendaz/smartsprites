@@ -1,6 +1,7 @@
 package org.carrot2.labs.smartsprites.ant;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +28,7 @@ public class SmartSpritesTask extends Task
     private MessageLevel logLevel;
     private MessageLevel failOnLevel = MessageLevel.ERROR;
     private String cssFileSuffix = SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX;
-    private String cssFileEncoding = SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING;
+    private Charset cssFileEncoding = SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING;
     private PngDepth spritePngDepth = SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH;
     private boolean spritePngIe6 = SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6;
     private boolean markSpriteImages = SmartSpritesParameters.DEFAULT_MARK_SPRITE_IMAGES;
@@ -71,7 +72,7 @@ public class SmartSpritesTask extends Task
         }
     }
 
-    public void setCssFileEncoding(String cssFileEncoding)
+    public void setCssFileEncoding(Charset cssFileEncoding)
     {
         this.cssFileEncoding = cssFileEncoding;
     }
