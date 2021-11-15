@@ -77,6 +77,11 @@ public class SmartSpritesTask extends Task
         this.cssFileEncoding = cssFileEncoding;
     }
 
+    public void setCssFileEncoding(String cssFileEncoding)
+    {
+        this.cssFileEncoding = Charset.forName(cssFileEncoding);
+    }
+
     public void setCssFileSuffix(String cssFileSuffix)
     {
         this.cssFileSuffix = cssFileSuffix;
