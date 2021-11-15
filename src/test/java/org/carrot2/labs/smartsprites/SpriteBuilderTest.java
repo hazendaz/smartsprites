@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -946,7 +945,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
     private static SmartSpritesParameters filesystemSmartSpritesParameters(File rootDir,
         File outputDir, File documentRootDir, MessageLevel logLevel,
         String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
-        Charset cssEncoding)
+        String cssEncoding)
     {
         return new SmartSpritesParameters(rootDir.getPath(), null,
             outputDir != null ? outputDir.getPath() : null,

@@ -46,12 +46,12 @@ public class FileSystemResourceHandler implements ResourceHandler
      *            method
      * @param messageLog the message log
      */
-    public FileSystemResourceHandler(String documentRootDirPath, Charset charset,
+    public FileSystemResourceHandler(String documentRootDirPath, String charset,
         MessageLog messageLog)
     {
         this.documentRootDir = documentRootDirPath;
         this.messageLog = messageLog;
-        this.charset = charset;
+        this.charset = Charset.forName(charset);
     }
 
     public InputStream getResourceAsInputStream(String path) throws IOException
