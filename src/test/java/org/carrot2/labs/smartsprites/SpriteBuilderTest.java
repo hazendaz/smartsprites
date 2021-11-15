@@ -644,7 +644,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
     {
         final File testDir = testDir("variable-substitution-in-sprite-image-path");
         final String sprite1 = "img/sprite-10eb4d8ef5d4b17c7e1173b2213ec6d1.png";
-        final String sprite2 = "img/1cbb5bd4c5577f487e1ca434009967c/sprite2.png";
+        final String sprite2 = "img/01cbb5bd4c5577f487e1ca434009967c/sprite2.png";
 
         try
         {
@@ -662,7 +662,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         finally
         {
             FileUtils
-                .deleteDirectory(new File(testDir, "img/1cbb5bd4c5577f487e1ca434009967c"));
+                .deleteDirectory(new File(testDir, "img/01cbb5bd4c5577f487e1ca434009967c"));
         }
     }
 
