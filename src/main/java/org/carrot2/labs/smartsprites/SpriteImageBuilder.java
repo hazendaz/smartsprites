@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -103,8 +104,7 @@ public class SpriteImageBuilder
         Collection<SpriteReferenceOccurrence> spriteReferenceOccurrences) throws IOException
     {
         // Load images into memory. TODO: impose some limit here?
-        final Map<SpriteReferenceOccurrence, BufferedImage> images = Maps
-            .newLinkedHashMap();
+        final Map<SpriteReferenceOccurrence, BufferedImage> images = new LinkedHashMap<>();
         for (final SpriteReferenceOccurrence spriteReferenceOccurrence : spriteReferenceOccurrences)
         {
             messageLog.setCssFile(spriteReferenceOccurrence.cssFile);
@@ -306,10 +306,8 @@ public class SpriteImageBuilder
 
         // Compute the other sprite dimension.
         int currentOffset = 0;
-        final Map<SpriteReferenceOccurrence, SpriteReferenceReplacement> spriteReplacements = Maps
-            .newLinkedHashMap();
-        final Map<BufferedImageEqualsWrapper, Integer> renderedImageToOffset = Maps
-            .newLinkedHashMap();
+        final Map<SpriteReferenceOccurrence, SpriteReferenceReplacement> spriteReplacements = new LinkedHashMap<>();
+        final Map<BufferedImageEqualsWrapper, Integer> renderedImageToOffset = new LinkedHashMap<>();
         for (final Map.Entry<SpriteReferenceOccurrence, BufferedImage> entry : images
             .entrySet())
         {

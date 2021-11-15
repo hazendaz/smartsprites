@@ -10,7 +10,6 @@ import org.carrot2.labs.smartsprites.message.MessageLog;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.carrot2.util.StringUtils;
 
-import com.google.common.collect.Maps;
 
 /**
  * A few utility methods for processing CSS syntax.
@@ -83,7 +82,7 @@ public class CssSyntaxUtils
      */
     public static Map<String, CssProperty> propertiesAsMap(Collection<CssProperty> rules)
     {
-        final Map<String, CssProperty> result = Maps.newLinkedHashMap();
+        final Map<String, CssProperty> result = new LinkedHashMap<>();
         for (final CssProperty cssProperty : rules)
         {
             result.put(cssProperty.rule, cssProperty);

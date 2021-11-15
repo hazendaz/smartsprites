@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,6 @@ import org.carrot2.util.StringUtils;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.io.Closeables;
@@ -184,8 +184,7 @@ public class SpriteBuilder
         // Merge them, checking for duplicates
         final Map<String, SpriteImageOccurrence> spriteImageOccurrencesBySpriteId = spriteDirectiveOccurrenceCollector
             .mergeSpriteImageOccurrences(spriteImageOccurrencesByFile);
-        final Map<String, SpriteImageDirective> spriteImageDirectivesBySpriteId = Maps
-            .newLinkedHashMap();
+        final Map<String, SpriteImageDirective> spriteImageDirectivesBySpriteId = new LinkedHashMap<>();
         for (Map.Entry<String, SpriteImageOccurrence> entry : spriteImageOccurrencesBySpriteId
             .entrySet())
         {

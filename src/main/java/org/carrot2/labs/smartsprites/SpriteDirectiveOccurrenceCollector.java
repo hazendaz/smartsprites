@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +16,6 @@ import org.carrot2.labs.smartsprites.message.MessageLog;
 import org.carrot2.labs.smartsprites.resource.ResourceHandler;
 
 import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Closeables;
 
@@ -200,8 +200,7 @@ public class SpriteDirectiveOccurrenceCollector
     Map<String, SpriteImageOccurrence> mergeSpriteImageOccurrences(
         final Multimap<String, SpriteImageOccurrence> spriteImageOccurrencesByFile)
     {
-        final Map<String, SpriteImageOccurrence> spriteImageDirectivesBySpriteId = Maps
-            .newLinkedHashMap();
+        final Map<String, SpriteImageOccurrence> spriteImageDirectivesBySpriteId = new LinkedHashMap<>();
         for (final Map.Entry<String, SpriteImageOccurrence> entry : spriteImageOccurrencesByFile
             .entries())
         {
