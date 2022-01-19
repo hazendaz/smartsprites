@@ -53,7 +53,7 @@
 
   <scm>
     <url>https://github.com/hazendaz/smartsprites</url>
-    <connection>scm:git:ssh://github.com/hazendaz/smartsprites.git</connection>
+    <connection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
@@ -61,7 +61,7 @@
     <site>
        <id>gh-pages-scm</id>
        <name>GitHub Pages</name>
-       <url>scm:git:ssh://github.com/hazendaz/smartsprites.git</url>
+       <url>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</url>
     </site>
   </distributionManagement>
 
