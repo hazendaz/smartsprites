@@ -51,7 +51,7 @@
     <!-- Project info. -->
     <groupId>com.github.hazendaz</groupId>
     <artifactId>smartsprites</artifactId>
-    <version>0.2.16-SNAPSHOT</version>
+    <version>0.2.16</version>
 
     <name>SmartSprites</name>
     <description>CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your designs,
@@ -99,7 +99,7 @@
     <scm>
         <connection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>smartsprites-0.2.16</tag>
         <url>https://github.com/hazendaz/smartsprites</url>
     </scm>
 
