@@ -200,11 +200,11 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).contains(
           new Message(Message.MessageLevel.WARN,
             Message.MessageType.CANNOT_NOT_LOAD_IMAGE, new File(testDir,
-            "css/style.css").getPath(), 15,
+            "css/style.css").getPath(), 51,
             new File(testDir, "img/logo.png").getPath(), "Can't read input file!"),
           new Message(Message.MessageLevel.WARN,
             Message.MessageType.CANNOT_NOT_LOAD_IMAGE, new File(testDir,
-            "css/style-expected.css").getPath(), 15, new File(testDir,
+            "css/style-expected.css").getPath(), 51, new File(testDir,
             "img/logo.png").getPath(), "Can't read input file!"));
     }
 
@@ -221,7 +221,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).contains(
             new Message(Message.MessageLevel.WARN,
                 Message.MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT, new File(
-                    testDir, "css/style.css").getPath(), 8, new File(testDir,
+                    testDir, "css/style.css").getPath(), 44, new File(testDir,
                     "img/web.iff").getPath()));
     }
 
@@ -241,13 +241,13 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).isEquivalentTo(
           Message.MessageLevel.WARN,
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath, 4,
+            Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath, 40,
             "sprites-layout"),
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath, 14,
+            Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath, 50,
             "sprites-margin-top"),
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath, 18,
+            Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath, 54,
             "sprites-alignment"));
     }
 
@@ -266,11 +266,11 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).isEquivalentTo(
             Message.MessageLevel.WARN,
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 10,
-                "background-image", 9),
+                Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 46,
+                "background-image", 45),
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 21,
-                "background-position", 20));
+                Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 57,
+                "background-position", 56));
     }
 
     @Test
@@ -373,10 +373,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).isEquivalentTo(
           Message.MessageLevel.WARN,
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.IMAGE_FRACTIONAL_SCALE_VALUE, null, 8, "../img/web.gif",
+            Message.MessageType.IMAGE_FRACTIONAL_SCALE_VALUE, null, 44, "../img/web.gif",
             8.5f, 8.5f),
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.FRACTIONAL_SCALE_VALUE, null, 8, "absolute",
+            Message.MessageType.FRACTIONAL_SCALE_VALUE, null, 44, "absolute",
             8.5f, 8.5f));
 
         org.carrot2.util.FileUtils.deleteThrowingExceptions(absoluteSpriteFile);
@@ -492,13 +492,13 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).isEquivalentTo(
           Message.MessageLevel.WARN,
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 25,
+            Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 61,
             "full-alpha"),
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT, null, 25,
+            Message.MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT, null, 61,
             "full-alpha"),
           new Message(Message.MessageLevel.WARN,
-            Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 32,
+            Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 68,
             "many-colors", 293, 255));
     }
 
@@ -527,19 +527,19 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).isEquivalentTo(
             Message.MessageLevel.WARN,
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 12,
+                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 48,
                 "full-alpha-m1"),
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 19,
+                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 55,
                 "full-alpha-m2"),
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 26,
+                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 62,
                 "full-alpha-m3"),
             new Message(Message.MessageLevel.WARN,
                 Message.MessageType.IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY, null,
-                33, "bit-alpha"),
+                69, "bit-alpha"),
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 40,
+                Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 76,
                 "many-colors"));
     }
 
@@ -573,19 +573,19 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).isEquivalentTo(
             Message.MessageLevel.WARN,
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 12,
+                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 48,
                 "full-alpha-m1"),
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 19,
+                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 55,
                 "full-alpha-m2"),
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 26,
+                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 62,
                 "full-alpha-m3"),
             new Message(Message.MessageLevel.WARN,
                 Message.MessageType.IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY, null,
-                33, "bit-alpha"),
+                69, "bit-alpha"),
             new Message(Message.MessageLevel.WARN,
-                Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 40,
+                Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 76,
                 "many-colors", 293, 255));
     }
 
@@ -628,13 +628,13 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         assertThat(messages).isEquivalentTo(
             Message.MessageLevel.IE6NOTICE,
             new Message(Message.MessageLevel.IE6NOTICE,
-                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 27,
+                Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null, 63,
                 "full-alpha"),
             new Message(Message.MessageLevel.IE6NOTICE,
-                Message.MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT, null, 27,
+                Message.MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT, null, 63,
                 "full-alpha"),
             new Message(Message.MessageLevel.IE6NOTICE,
-                Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 41,
+                Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 77,
                 "many-colors-bit-alpha", 293, 255));
     }
 
