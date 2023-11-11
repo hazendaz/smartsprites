@@ -39,205 +39,202 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
+    <parent>
+        <groupId>com.github.hazendaz</groupId>
+        <artifactId>base-parent</artifactId>
+        <version>42</version>
+        <relativePath />
+    </parent>
+
+    <!-- Project info. -->
     <groupId>com.github.hazendaz</groupId>
-    <artifactId>base-parent</artifactId>
-    <version>42</version>
-    <relativePath />
-  </parent>
+    <artifactId>smartsprites</artifactId>
+    <version>0.2.16-SNAPSHOT</version>
 
-  <!-- Project info. -->
-  <groupId>com.github.hazendaz</groupId>
-  <artifactId>smartsprites</artifactId>
-  <version>0.2.16-SNAPSHOT</version>
-
-  <name>SmartSprites</name>
-  <description>
-    CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your designs,
+    <name>SmartSprites</name>
+    <description>CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your designs,
     fully automatically. No tedious copying and pasting to your CSS when adding or changing
-    sprited images.
-  </description>
-  <url>https://github.com/carrotsearch/smartsprites/wiki/Documentation</url>
+    sprited images.</description>
+    <url>https://github.com/carrotsearch/smartsprites/wiki/Documentation</url>
 
-  <!-- Extended project info. -->
-  <licenses>
-    <license>
-      <name>BSD license</name>
-      <url>https://github.com/hazendaz/smartsprites/blob/master/LICENSE</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+    <organization>
+        <name>Carrot Search s.c.</name>
+        <url>https://www.carrotsearch.com/</url>
+    </organization>
 
-  <organization>
-    <name>Carrot Search s.c.</name>
-    <url>https://www.carrotsearch.com/</url>
-  </organization>
+    <!-- Extended project info. -->
+    <licenses>
+        <license>
+            <name>BSD license</name>
+            <url>https://github.com/hazendaz/smartsprites/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-  <issueManagement>
-    <system>Github</system>
-    <url>https://github.com/hazendaz/smartsprites/issues</url>
-  </issueManagement>
+    <developers>
+        <developer>
+            <id>stanislaw.osinski</id>
+            <name>Stanisław Osiński</name>
+            <email>stanislaw.osinski@carrotsearch.com</email>
+        </developer>
 
-  <mailingLists>
-    <mailingList>
-      <name>Announcements and bug reports mailing list</name>
-      <subscribe>smartsprites-css-sprite-generator+subscribe@googlegroups.com</subscribe>
-      <unsubscribe>smartsprites-css-sprite-generator+unsubscribe@googlegroups.com</unsubscribe>
-      <post>smartsprites-css-sprite-generator@googlegroups.com</post>
-    </mailingList>
-  </mailingLists>
+        <developer>
+            <id>dawid.weiss</id>
+            <name>Dawid Weiss</name>
+            <email>dawid.weiss@carrotsearch.com</email>
+        </developer>
+    </developers>
 
-  <scm>
-    <url>https://github.com/hazendaz/smartsprites</url>
-    <connection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-  <distributionManagement>
-    <site>
-       <id>gh-pages-scm</id>
-       <name>GitHub Pages</name>
-       <url>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</url>
-    </site>
-  </distributionManagement>
+    <mailingLists>
+        <mailingList>
+            <name>Announcements and bug reports mailing list</name>
+            <subscribe>smartsprites-css-sprite-generator+subscribe@googlegroups.com</subscribe>
+            <unsubscribe>smartsprites-css-sprite-generator+unsubscribe@googlegroups.com</unsubscribe>
+            <post>smartsprites-css-sprite-generator@googlegroups.com</post>
+        </mailingList>
+    </mailingLists>
 
+    <scm>
+        <connection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/hazendaz/smartsprites</url>
+    </scm>
 
-  <developers>
-    <developer>
-      <id>stanislaw.osinski</id>
-      <name>Stanisław Osiński</name>
-      <email>stanislaw.osinski@carrotsearch.com</email>
-    </developer>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/hazendaz/smartsprites/issues</url>
+    </issueManagement>
+    <distributionManagement>
+        <site>
+            <id>gh-pages-scm</id>
+            <name>GitHub Pages</name>
+            <url>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</url>
+        </site>
+    </distributionManagement>
 
-    <developer>
-      <id>dawid.weiss</id>
-      <name>Dawid Weiss</name>
-      <email>dawid.weiss@carrotsearch.com</email>
-    </developer>
-  </developers>
+    <!-- Global properties. -->
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
-  <!-- Global properties. -->
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
+    <!-- Dependencies. -->
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.1.3-jre</version>
+        </dependency>
 
-  <!-- Dependencies. -->
-  <dependencies>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>32.1.3-jre</version>
-    </dependency>
+        <dependency>
+            <groupId>args4j</groupId>
+            <artifactId>args4j</artifactId>
+            <version>2.33</version>
+        </dependency>
 
-    <dependency>
-      <groupId>args4j</groupId>
-      <artifactId>args4j</artifactId>
-      <version>2.33</version>
-    </dependency>
+        <!-- Only used in SpriteImageBuilder -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
 
-    <!-- Only used in SpriteImageBuilder -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-math3</artifactId>
-      <version>3.6.1</version>
-    </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.15.0</version>
+        </dependency>
 
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.15.0</version>
-    </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.13.0</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.13.0</version>
-    </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.10.14</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
 
-    <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant</artifactId>
-      <version>1.10.14</version>
-      <optional>true</optional>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.10.1</version>
+            <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.10.1</version>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.24.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.24.2</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <!-- Build tuning. -->
+    <build>
+        <defaultGoal>install</defaultGoal>
+    </build>
 
-  <!-- Build tuning. -->
-  <build>
-    <defaultGoal>install</defaultGoal>
-  </build>
+    <profiles>
+        <!-- Release mode. -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Attach and modify JavaDocs. -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
+                            <docfilessubdirs>true</docfilessubdirs>
+                            <windowtitle>SmartSprites v${project.version} API Documentation (JavaDoc)</windowtitle>
+                            <doctitle>SmartSprites v${project.version} API Documentation</doctitle>
+                            <header><![CDATA[<div id='header'><a class='logo' target='_top' href='http://labs.carrotsearch.com'><img src='resources/logo.png'></a>SmartSprites v${project.version} <br>API Documentation</div>]]></header>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
 
-  <profiles>
-    <!-- Release mode. -->
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <!-- Attach and modify JavaDocs. -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <encoding>${project.build.sourceEncoding}</encoding>
-              <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
-              <docfilessubdirs>true</docfilessubdirs>
-              <windowtitle>SmartSprites v${project.version} API Documentation (JavaDoc)</windowtitle>
-              <doctitle>SmartSprites v${project.version} API Documentation</doctitle>
-              <header><![CDATA[<div id='header'><a class='logo' target='_top' href='http://labs.carrotsearch.com'><img src='resources/logo.png'></a>SmartSprites v${project.version} <br>API Documentation</div>]]></header>
-            </configuration>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-             </execution>
-            </executions>
-          </plugin>
-
-          <!-- Configure assembly of ZIP and TAR.GZ bundles (stand-alone distributions). -->
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-              <descriptors>
-                <descriptor>${project.basedir}/src/main/assembly/bin.xml</descriptor>
-              </descriptors>
-              <attach>false</attach>
-              <appendAssemblyId>false</appendAssemblyId>
-            </configuration>
-            <executions>
-              <execution>
-                <id>make-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+                    <!-- Configure assembly of ZIP and TAR.GZ bundles (stand-alone distributions). -->
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${project.basedir}/src/main/assembly/bin.xml</descriptor>
+                            </descriptors>
+                            <attach>false</attach>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
