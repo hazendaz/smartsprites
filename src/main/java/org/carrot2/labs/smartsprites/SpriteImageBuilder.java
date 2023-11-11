@@ -264,15 +264,15 @@ public class SpriteImageBuilder
         final String mergedImageFile = getImageFile(spriteImageOccurrence.cssFile,
             resolvedImagePath);
 
-        OutputStream spriteImageOuputStream = null;
+        OutputStream spriteImageOutputStream = null;
         try
         {
             messageLog.info(MessageType.WRITING_SPRITE_IMAGE, mergedImage.getWidth(),
                 mergedImage.getHeight(), spriteImageDirective.spriteId, mergedImageFile);
-            spriteImageOuputStream = resourceHandler
+            spriteImageOutputStream = resourceHandler
                 .getResourceAsOutputStream(mergedImageFile);
 
-            spriteImageOuputStream.write(spriteImageBytes);
+            spriteImageOutputStream.write(spriteImageBytes);
         }
         catch (final IOException e)
         {
@@ -281,7 +281,7 @@ public class SpriteImageBuilder
         }
         finally
         {
-            Closeables.close(spriteImageOuputStream, true);
+            Closeables.close(spriteImageOutputStream, true);
         }
     }
 
