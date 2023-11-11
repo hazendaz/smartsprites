@@ -38,8 +38,8 @@
   </organization>
 
   <issueManagement>
-    <system>Jira</system>
-    <url>http://issues.carrot2.org/browse/SMARTSPRITES</url>
+    <system>Github</system>
+    <url>https://github.com/hazendaz/smartsprites/issues</url>
   </issueManagement>
 
   <mailingLists>
