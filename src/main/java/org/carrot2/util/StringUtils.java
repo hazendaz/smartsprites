@@ -60,7 +60,7 @@ public class StringUtils {
      * @return true, if is blank
      */
     public static boolean isBlank(final String string) {
-        return Strings.isNullOrEmpty(string) ? true : CharMatcher.whitespace().matchesAllOf(string);
+        return Strings.isNullOrEmpty(string) || CharMatcher.whitespace().matchesAllOf(string);
     }
 
     /**
