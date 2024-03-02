@@ -105,6 +105,10 @@
         <system>Github</system>
         <url>https://github.com/hazendaz/smartsprites/issues</url>
     </issueManagement>
+    <ciManagement>
+        <system>Github</system>
+        <url>https://github.com/hazendaz/smartsprites/actions</url>
+    </ciManagement>
     <distributionManagement>
         <site>
             <id>gh-pages-scm</id>
