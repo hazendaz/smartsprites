@@ -41,6 +41,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.awt.Color;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -105,7 +106,7 @@ public class SpriteImageDirective {
          * Instantiates a new sprite image layout.
          */
         SpriteImageLayout() {
-            this.value = name().toLowerCase();
+            this.value = name().toLowerCase(Locale.ENGLISH);
         }
 
         @Override
@@ -153,7 +154,7 @@ public class SpriteImageDirective {
          * Instantiates a new sprite uid type.
          */
         SpriteUidType() {
-            this.value = name().toLowerCase();
+            this.value = name().toLowerCase(Locale.ENGLISH);
             this.pattern = Pattern.compile("${" + value + "}", Pattern.LITERAL);
         }
 
@@ -192,7 +193,7 @@ public class SpriteImageDirective {
          * Instantiates a new sprite image format.
          */
         SpriteImageFormat() {
-            this.value = name().toLowerCase();
+            this.value = name().toLowerCase(Locale.ENGLISH);
         }
 
         @Override
@@ -241,7 +242,7 @@ public class SpriteImageDirective {
          * Instantiates a new ie 6 mode.
          */
         Ie6Mode() {
-            this.value = name().toLowerCase();
+            this.value = name().toLowerCase(Locale.ENGLISH);
         }
 
         @Override

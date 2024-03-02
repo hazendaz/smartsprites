@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -109,7 +110,7 @@ public class CssSyntaxUtils {
                     value = matcher.replaceAll("");
                 }
 
-                rules.add(new CssProperty(parts[0].trim().toLowerCase(), value.trim(), important));
+                rules.add(new CssProperty(parts[0].trim().toLowerCase(Locale.ENGLISH), value.trim(), important));
             } else if (messageLog != null) {
                 messageLog.warning(Message.MessageType.MALFORMED_CSS_RULE, chunk.trim());
             }

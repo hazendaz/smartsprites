@@ -39,6 +39,7 @@ package org.carrot2.labs.smartsprites;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -113,7 +114,7 @@ public class SpriteLayoutProperties {
          * Instantiates a new sprite alignment.
          */
         SpriteAlignment() {
-            this.value = name().toLowerCase();
+            this.value = name().toLowerCase(Locale.ENGLISH);
         }
 
         @Override
@@ -323,7 +324,7 @@ public class SpriteLayoutProperties {
         }
         final String rawMarginValue = rules.get(marginRule).value;
         String marginValue = rawMarginValue;
-        if (marginValue.toLowerCase().endsWith("px")) {
+        if (marginValue.toLowerCase(Locale.ENGLISH).endsWith("px")) {
             marginValue = marginValue.substring(0, marginValue.length() - 2);
         }
         try {
