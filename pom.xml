@@ -48,7 +48,6 @@
         <relativePath />
     </parent>
 
-    <!-- Project info. -->
     <groupId>com.github.hazendaz</groupId>
     <artifactId>smartsprites</artifactId>
     <version>0.2.17-SNAPSHOT</version>
@@ -64,11 +63,10 @@
         <url>https://www.carrotsearch.com/</url>
     </organization>
 
-    <!-- Extended project info. -->
     <licenses>
         <license>
             <name>BSD license</name>
-            <url>https://github.com/hazendaz/smartsprites/blob/master/LICENSE</url>
+            <url>https://opensource.org/license/bsd-2-clause</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
