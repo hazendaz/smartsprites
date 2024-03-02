@@ -40,7 +40,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.google.common.io.Closeables;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -296,13 +295,9 @@ public class SpriteBuilder {
             Map<Integer, SpriteImageOccurrence> spriteImageOccurrencesByLineNumber,
             Map<Integer, SpriteReferenceReplacement> spriteReplacementsByLineNumber) throws IOException {
         final String processedCssFile = getProcessedCssFile(originalCssFile);
-        final BufferedReader originalCssReader = new BufferedReader(
-                resourceHandler.getResourceAsReader(originalCssFile));
         messageLog.setCssFile(null);
         messageLog.info(MessageType.CREATING_CSS_STYLE_SHEET, processedCssFile);
         messageLog.info(MessageType.READING_CSS, originalCssFile);
-        final BufferedWriter processedCssWriter = new BufferedWriter(
-                resourceHandler.getResourceAsWriter(processedCssFile));
         messageLog.info(MessageType.WRITING_CSS, processedCssFile);
 
         String originalCssLine;
@@ -312,7 +307,10 @@ public class SpriteBuilder {
         boolean markSpriteImages = parameters.isMarkSpriteImages();
 
         // Generate UID for sprite file
-        try {
+        try (BufferedReader originalCssReader = new BufferedReader(
+                resourceHandler.getResourceAsReader(originalCssFile));
+                BufferedWriter processedCssWriter = new BufferedWriter(
+                        resourceHandler.getResourceAsWriter(processedCssFile))) {
             messageLog.setCssFile(originalCssFile);
 
             originalCssFile = originalCssFile.replace(File.separatorChar, '/');
@@ -384,9 +382,6 @@ public class SpriteBuilder {
             }
 
             messageLog.setCssFile(null);
-        } finally {
-            Closeables.close(originalCssReader, true);
-            processedCssWriter.close();
         }
     }
 

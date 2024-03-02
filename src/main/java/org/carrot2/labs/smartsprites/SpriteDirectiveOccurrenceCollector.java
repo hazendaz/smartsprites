@@ -38,7 +38,6 @@ package org.carrot2.labs.smartsprites;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.io.Closeables;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -98,7 +97,6 @@ public class SpriteDirectiveOccurrenceCollector {
      */
     Collection<SpriteImageOccurrence> collectSpriteImageOccurrences(String cssFile) throws IOException {
         final Collection<SpriteImageOccurrence> occurrences = new ArrayList<>();
-        final BufferedReader reader = new BufferedReader(resourceHandler.getResourceAsReader(cssFile));
         messageLog.setCssFile(null);
         messageLog.info(MessageType.READING_SPRITE_IMAGE_DIRECTIVES, cssFile);
         messageLog.setCssFile(cssFile);
@@ -106,7 +104,7 @@ public class SpriteDirectiveOccurrenceCollector {
         int lineNumber = -1;
         String line;
 
-        try {
+        try (BufferedReader reader = new BufferedReader(resourceHandler.getResourceAsReader(cssFile))) {
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
                 messageLog.setLine(lineNumber);
@@ -124,8 +122,6 @@ public class SpriteDirectiveOccurrenceCollector {
 
                 occurrences.add(new SpriteImageOccurrence(directive, cssFile, lineNumber));
             }
-        } finally {
-            Closeables.close(reader, true);
         }
 
         return occurrences;
@@ -148,7 +144,6 @@ public class SpriteDirectiveOccurrenceCollector {
             Map<String, SpriteImageDirective> spriteImageDirectives) throws IOException {
         final Collection<SpriteReferenceOccurrence> directives = new ArrayList<>();
 
-        final BufferedReader reader = new BufferedReader(resourceHandler.getResourceAsReader(cssFile));
         messageLog.setCssFile(null);
         messageLog.info(MessageType.READING_SPRITE_REFERENCE_DIRECTIVES, cssFile);
         messageLog.setCssFile(cssFile);
@@ -156,7 +151,7 @@ public class SpriteDirectiveOccurrenceCollector {
         int lineNumber = -1;
         String line;
 
-        try {
+        try (BufferedReader reader = new BufferedReader(resourceHandler.getResourceAsReader(cssFile))) {
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
                 messageLog.setLine(lineNumber);
@@ -181,8 +176,6 @@ public class SpriteDirectiveOccurrenceCollector {
                 directives.add(new SpriteReferenceOccurrence(directive, imageUrl, cssFile, lineNumber,
                         backgroundProperty.important));
             }
-        } finally {
-            Closeables.close(reader, false);
         }
 
         return directives;

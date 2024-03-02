@@ -38,7 +38,6 @@ package org.carrot2.labs.smartsprites;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.io.Closeables;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -162,9 +161,8 @@ public class SpriteImageBuilder {
 
             final String realImagePath = resourceHandler.getResourcePath(spriteReferenceOccurrence.cssFile,
                     spriteReferenceOccurrence.imagePath);
-            InputStream is = null;
-            try {
-                is = resourceHandler.getResourceAsInputStream(realImagePath);
+
+            try (InputStream is = resourceHandler.getResourceAsInputStream(realImagePath)) {
 
                 // Load image
                 if (is == null) {
@@ -181,8 +179,6 @@ public class SpriteImageBuilder {
             } catch (final IOException e) {
                 messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, "Can't read input file!");
                 continue;
-            } finally {
-                Closeables.close(is, true);
             }
 
             messageLog.setCssFile(null);
@@ -254,17 +250,13 @@ public class SpriteImageBuilder {
         // Save the image to the disk
         final String mergedImageFile = getImageFile(spriteImageOccurrence.cssFile, resolvedImagePath);
 
-        OutputStream spriteImageOutputStream = null;
-        try {
+        try (OutputStream spriteImageOutputStream = resourceHandler.getResourceAsOutputStream(mergedImageFile)) {
             messageLog.info(MessageType.WRITING_SPRITE_IMAGE, mergedImage.getWidth(), mergedImage.getHeight(),
                     spriteImageDirective.spriteId, mergedImageFile);
-            spriteImageOutputStream = resourceHandler.getResourceAsOutputStream(mergedImageFile);
 
             spriteImageOutputStream.write(spriteImageBytes);
         } catch (final IOException e) {
             messageLog.warning(MessageType.CANNOT_WRITE_SPRITE_IMAGE, mergedImageFile, e.getMessage());
-        } finally {
-            Closeables.close(spriteImageOutputStream, true);
         }
     }
 
