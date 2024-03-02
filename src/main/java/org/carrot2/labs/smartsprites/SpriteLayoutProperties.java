@@ -108,7 +108,7 @@ public class SpriteLayoutProperties {
         CENTER;
 
         /** The value. */
-        private String value;
+        private final String value;
 
         /**
          * Instantiates a new sprite alignment.

@@ -100,7 +100,7 @@ public class SpriteImageDirective {
         HORIZONTAL;
 
         /** The value. */
-        private String value;
+        private final String value;
 
         /**
          * Instantiates a new sprite image layout.
@@ -145,7 +145,7 @@ public class SpriteImageDirective {
         SHA512;
 
         /** The value. */
-        private String value;
+        private final String value;
 
         /** The pattern. */
         public final Pattern pattern;
@@ -187,7 +187,7 @@ public class SpriteImageDirective {
         JPG;
 
         /** The value. */
-        private String value;
+        private final String value;
 
         /**
          * Instantiates a new sprite image format.
@@ -236,7 +236,7 @@ public class SpriteImageDirective {
         AUTO;
 
         /** The value. */
-        private String value;
+        private final String value;
 
         /**
          * Instantiates a new ie 6 mode.

@@ -327,7 +327,7 @@ public class Message implements Serializable {
         /**
          * Human readable text of the message.
          */
-        private String text;
+        private final String text;
 
         /**
          * Instantiates a new message type.
