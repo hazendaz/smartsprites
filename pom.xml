@@ -181,6 +181,21 @@
 
     <!-- Build tuning. -->
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <doctitle>SmartSprites v${project.version} API Documentation</doctitle>
+                        <header><![CDATA[<div id='header'><a class='logo' target='_top' href='http://labs.carrotsearch.com'><img src='resources/logo.png'></a>SmartSprites v${project.version} <br>API Documentation</div>]]></header>
+                        <overview>${project.basedir}/src/main/javadoc/overview.html</overview>
+                        <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
+                        <windowtitle>SmartSprites v${project.version} API Documentation (JavaDoc)</windowtitle>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
