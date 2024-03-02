@@ -149,7 +149,7 @@ public class PathUtils {
      *
      * @return the string
      */
-    private static final String buildRelativePath(String toPath, String fromPath, final char separatorChar) {
+    private static String buildRelativePath(String toPath, String fromPath, final char separatorChar) {
         // use tokenizer to traverse paths and for lazy checking
         StringTokenizer toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));
         StringTokenizer fromTokenizer = new StringTokenizer(fromPath, String.valueOf(separatorChar));
@@ -169,7 +169,7 @@ public class PathUtils {
             count++;
         }
 
-        // reinitialise the tokenizers to count positions to retrieve the
+        // Reinitialize the tokenizers to count positions to retrieve the
         // gobbled token
 
         toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));
