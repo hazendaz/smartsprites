@@ -64,13 +64,12 @@ public class EnumUtils {
      * @return the t
      */
     public static <T extends Enum<T>> T valueOf(String name, Class<T> enumClass, T defaultValue) {
-        if (StringUtils.isNotBlank(name)) {
-            try {
-                return Enum.valueOf(enumClass, name);
-            } catch (IllegalArgumentException e) {
-                return defaultValue;
-            }
-        } else {
+        if (!StringUtils.isNotBlank(name)) {
+            return defaultValue;
+        }
+        try {
+            return Enum.valueOf(enumClass, name);
+        } catch (IllegalArgumentException e) {
             return defaultValue;
         }
     }

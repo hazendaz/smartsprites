@@ -94,10 +94,9 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence {
             // Ignoring left/right margins on repeated
             // images in vertically stacked sprites
             return image.getWidth();
-        } else {
-            return image.getWidth() + spriteReferenceDirective.spriteLayoutProperties.marginLeft
-                    + spriteReferenceDirective.spriteLayoutProperties.marginRight;
         }
+        return image.getWidth() + spriteReferenceDirective.spriteLayoutProperties.marginLeft
+                + spriteReferenceDirective.spriteLayoutProperties.marginRight;
     }
 
     /**
@@ -116,10 +115,9 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence {
             // Ignoring top/bottom margins on repeated
             // images in horizontally lined sprites
             return image.getHeight();
-        } else {
-            return image.getHeight() + spriteReferenceDirective.spriteLayoutProperties.marginTop
-                    + spriteReferenceDirective.spriteLayoutProperties.marginBottom;
         }
+        return image.getHeight() + spriteReferenceDirective.spriteLayoutProperties.marginTop
+                + spriteReferenceDirective.spriteLayoutProperties.marginBottom;
     }
 
     /**
@@ -206,16 +204,15 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence {
             }
 
             return new SpriteReferenceReplacement(this, offset, horizontalPosition);
-        } else {
-            String verticalPosition;
-            if (SpriteAlignment.BOTTOM.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
-                verticalPosition = "bottom";
-            } else if (SpriteAlignment.CENTER.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
-                verticalPosition = "center";
-            } else {
-                verticalPosition = "top";
-            }
-            return new SpriteReferenceReplacement(this, verticalPosition, offset);
         }
+        String verticalPosition;
+        if (SpriteAlignment.BOTTOM.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
+            verticalPosition = "bottom";
+        } else if (SpriteAlignment.CENTER.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
+            verticalPosition = "center";
+        } else {
+            verticalPosition = "top";
+        }
+        return new SpriteReferenceReplacement(this, verticalPosition, offset);
     }
 }

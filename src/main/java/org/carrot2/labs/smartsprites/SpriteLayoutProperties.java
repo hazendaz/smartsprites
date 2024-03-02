@@ -112,7 +112,7 @@ public class SpriteLayoutProperties {
         /**
          * Instantiates a new sprite alignment.
          */
-        private SpriteAlignment() {
+        SpriteAlignment() {
             this.value = name().toLowerCase();
         }
 
@@ -279,11 +279,9 @@ public class SpriteLayoutProperties {
                 messageCollector.warning(MessageType.ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED, alignment.value);
                 return SpriteAlignment.TOP;
             }
-        } else {
-            if (alignment.equals(SpriteAlignment.TOP) || alignment.equals(SpriteAlignment.BOTTOM)) {
-                messageCollector.warning(MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED, alignment.value);
-                return SpriteAlignment.LEFT;
-            }
+        } else if (alignment.equals(SpriteAlignment.TOP) || alignment.equals(SpriteAlignment.BOTTOM)) {
+            messageCollector.warning(MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED, alignment.value);
+            return SpriteAlignment.LEFT;
         }
 
         return alignment;
@@ -300,9 +298,8 @@ public class SpriteLayoutProperties {
     private static SpriteAlignment getDefaultAlignment(SpriteImageLayout spriteImageLayout) {
         if (spriteImageLayout.equals(SpriteImageLayout.HORIZONTAL)) {
             return SpriteAlignment.TOP;
-        } else {
-            return SpriteAlignment.LEFT;
         }
+        return SpriteAlignment.LEFT;
     }
 
     /**
@@ -321,26 +318,25 @@ public class SpriteLayoutProperties {
      */
     private static int getMargin(String marginRule, Map<String, CssProperty> rules, int defaultMargin,
             MessageLog messageLog) {
-        if (CssSyntaxUtils.hasNonBlankValue(rules, marginRule)) {
-            final String rawMarginValue = rules.get(marginRule).value;
-            String marginValue = rawMarginValue;
-            if (marginValue.toLowerCase().endsWith("px")) {
-                marginValue = marginValue.substring(0, marginValue.length() - 2);
-            }
-            try {
-                int marginIntValue = Integer.parseInt(marginValue);
-                if (marginIntValue < 0) {
-                    messageLog.warning(MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, marginRule);
-                    marginIntValue = 0;
-                }
-
-                return marginIntValue;
-            } catch (final NumberFormatException e) {
-                messageLog.warning(MessageType.CANNOT_PARSE_MARGIN_VALUE, rawMarginValue);
-                return 0;
-            }
-        } else {
+        if (!CssSyntaxUtils.hasNonBlankValue(rules, marginRule)) {
             return defaultMargin;
+        }
+        final String rawMarginValue = rules.get(marginRule).value;
+        String marginValue = rawMarginValue;
+        if (marginValue.toLowerCase().endsWith("px")) {
+            marginValue = marginValue.substring(0, marginValue.length() - 2);
+        }
+        try {
+            int marginIntValue = Integer.parseInt(marginValue);
+            if (marginIntValue < 0) {
+                messageLog.warning(MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, marginRule);
+                marginIntValue = 0;
+            }
+
+            return marginIntValue;
+        } catch (final NumberFormatException e) {
+            messageLog.warning(MessageType.CANNOT_PARSE_MARGIN_VALUE, rawMarginValue);
+            return 0;
         }
     }
 }

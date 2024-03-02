@@ -238,6 +238,7 @@ public class SmartSpritesTask extends Task {
      * The Class AntLogMessageSink.
      */
     private class AntLogMessageSink implements MessageSink {
+        @Override
         public void add(Message message) {
             if (MessageLevel.COMPARATOR.compare(message.level, logLevel) >= 0) {
                 log(message.toString());
@@ -256,6 +257,7 @@ public class SmartSpritesTask extends Task {
         /** The failure level. */
         MessageLevel failureLevel = null;
 
+        @Override
         public void add(Message message) {
             if (failOnLevel != null && MessageLevel.COMPARATOR.compare(message.level, failOnLevel) >= 0
                     && message.level != MessageLevel.STATUS) {

@@ -48,6 +48,7 @@ public class MemoryMessageSink implements MessageSink {
      */
     public final List<Message> messages = new ArrayList<>();
 
+    @Override
     public void add(Message message) {
         messages.add(message);
     }

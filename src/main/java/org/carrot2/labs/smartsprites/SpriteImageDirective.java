@@ -104,7 +104,7 @@ public class SpriteImageDirective {
         /**
          * Instantiates a new sprite image layout.
          */
-        private SpriteImageLayout() {
+        SpriteImageLayout() {
             this.value = name().toLowerCase();
         }
 
@@ -152,7 +152,7 @@ public class SpriteImageDirective {
         /**
          * Instantiates a new sprite uid type.
          */
-        private SpriteUidType() {
+        SpriteUidType() {
             this.value = name().toLowerCase();
             this.pattern = Pattern.compile("${" + value + "}", Pattern.LITERAL);
         }
@@ -191,7 +191,7 @@ public class SpriteImageDirective {
         /**
          * Instantiates a new sprite image format.
          */
-        private SpriteImageFormat() {
+        SpriteImageFormat() {
             this.value = name().toLowerCase();
         }
 
@@ -240,7 +240,7 @@ public class SpriteImageDirective {
         /**
          * Instantiates a new ie 6 mode.
          */
-        private Ie6Mode() {
+        Ie6Mode() {
             this.value = name().toLowerCase();
         }
 
@@ -445,7 +445,7 @@ public class SpriteImageDirective {
         // Infer format from image path
         SpriteImageFormat format;
         final int lastDotIndex = imagePath.lastIndexOf('.');
-        if ((lastDotIndex < 0) || (lastDotIndex == imagePath.length() - 1)) {
+        if (lastDotIndex < 0 || lastDotIndex == imagePath.length() - 1) {
             messageCollector.warning(MessageType.CANNOT_DETERMINE_IMAGE_FORMAT, imagePath);
             format = SpriteImageFormat.PNG;
         } else {
@@ -508,14 +508,13 @@ public class SpriteImageDirective {
      */
     private static <T extends Enum<T>> T valueOf(String stringValue, Class<T> enumClass, T defaultValue,
             MessageLog messageCollector, MessageType messageType) {
-        if (StringUtils.isNotBlank(stringValue)) {
-            try {
-                return Enum.valueOf(enumClass, stringValue.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                messageCollector.warning(messageType, stringValue);
-                return defaultValue;
-            }
-        } else {
+        if (!StringUtils.isNotBlank(stringValue)) {
+            return defaultValue;
+        }
+        try {
+            return Enum.valueOf(enumClass, stringValue.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            messageCollector.warning(messageType, stringValue);
             return defaultValue;
         }
     }

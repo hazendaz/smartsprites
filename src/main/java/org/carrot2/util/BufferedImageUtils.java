@@ -153,7 +153,8 @@ public class BufferedImageUtils {
         final int[] colorMap = new int[colors.size() + padding];
         int index = padding;
         for (Integer color : colors) {
-            colorMap[index++] = color;
+            colorMap[index] = color;
+            index++;
         }
 
         return colorMap;

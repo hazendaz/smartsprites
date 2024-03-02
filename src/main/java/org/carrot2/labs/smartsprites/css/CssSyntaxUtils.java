@@ -37,7 +37,11 @@
 package org.carrot2.labs.smartsprites.css;
 
 import java.awt.Color;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,10 +110,8 @@ public class CssSyntaxUtils {
                 }
 
                 rules.add(new CssProperty(parts[0].trim().toLowerCase(), value.trim(), important));
-            } else {
-                if (messageLog != null) {
-                    messageLog.warning(Message.MessageType.MALFORMED_CSS_RULE, chunk.trim());
-                }
+            } else if (messageLog != null) {
+                messageLog.warning(Message.MessageType.MALFORMED_CSS_RULE, chunk.trim());
             }
         }
 
@@ -147,9 +149,8 @@ public class CssSyntaxUtils {
         final CssProperty cssProperty = rules.get(property);
         if (cssProperty != null) {
             return cssProperty.value;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**

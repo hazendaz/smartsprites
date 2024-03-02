@@ -112,14 +112,14 @@ public class PathUtils {
 
         // check for the presence of windows drives. No relative way of
         // traversing from one to the other.
-        if ((toPath.startsWith(":", 1) && fromPath.startsWith(":", 1))
-                && (!toPath.substring(0, 1).equals(fromPath.substring(0, 1)))) {
+        if (toPath.startsWith(":", 1) && fromPath.startsWith(":", 1)
+                && !toPath.substring(0, 1).equals(fromPath.substring(0, 1))) {
             // they both have drive path element but they dont match, no relative path
             return null;
         }
 
-        if ((toPath.startsWith(":", 1) && !fromPath.startsWith(":", 1))
-                || (!toPath.startsWith(":", 1) && fromPath.startsWith(":", 1))) {
+        if (toPath.startsWith(":", 1) && !fromPath.startsWith(":", 1)
+                || !toPath.startsWith(":", 1) && fromPath.startsWith(":", 1)) {
             // one has a drive path element and the other doesnt, no relative path.
             return null;
         }
@@ -162,10 +162,8 @@ public class PathUtils {
                 if (!fromTokenizer.nextToken().equalsIgnoreCase(toTokenizer.nextToken())) {
                     break;
                 }
-            } else {
-                if (!fromTokenizer.nextToken().equals(toTokenizer.nextToken())) {
-                    break;
-                }
+            } else if (!fromTokenizer.nextToken().equals(toTokenizer.nextToken())) {
+                break;
             }
 
             count++;

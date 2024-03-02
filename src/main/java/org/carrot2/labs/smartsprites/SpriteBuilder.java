@@ -159,11 +159,7 @@ public class SpriteBuilder {
             // Take all css files from the root dir
             final List<File> files = Lists.newArrayList(org.apache.commons.io.FileUtils
                     .listFiles(parameters.getRootDirFile(), new String[] { "css" }, true));
-            Collections.sort(files, new Comparator<File>() {
-                public int compare(File f1, File f2) {
-                    return f1.getAbsolutePath().compareTo(f2.getAbsolutePath());
-                }
-            });
+            Collections.sort(files, Comparator.comparing(File::getAbsolutePath));
 
             filePaths = new ArrayList<>();
             for (File file : files) {
@@ -240,10 +236,10 @@ public class SpriteBuilder {
         final long stop = System.currentTimeMillis();
 
         if (levelCounter.getWarnCount() > 0) {
-            messageLog.status(MessageType.PROCESSING_COMPLETED_WITH_WARNINGS, (stop - start),
+            messageLog.status(MessageType.PROCESSING_COMPLETED_WITH_WARNINGS, stop - start,
                     levelCounter.getWarnCount());
         } else {
-            messageLog.status(MessageType.PROCESSING_COMPLETED, (stop - start));
+            messageLog.status(MessageType.PROCESSING_COMPLETED, stop - start);
         }
     }
 
@@ -267,10 +263,8 @@ public class SpriteBuilder {
                     .entrySet()) {
                 final String cssFile = entry.getKey();
 
-                createProcessedCss(cssFile,
-                        SpriteImageBuilder
-                                .getSpriteImageOccurrencesByLineNumber(spriteImageOccurrencesByFile.get(cssFile)),
-                        new HashMap<Integer, SpriteReferenceReplacement>());
+                createProcessedCss(cssFile, SpriteImageBuilder.getSpriteImageOccurrencesByLineNumber(
+                        spriteImageOccurrencesByFile.get(cssFile)), new HashMap<>());
             }
         } else {
             for (final Map.Entry<String, Collection<SpriteReferenceReplacement>> entry : spriteReplacementsByFile
@@ -444,8 +438,7 @@ public class SpriteBuilder {
 
         if (parameters.hasOutputDir()) {
             return FileUtils.changeRoot(processedCssFile, parameters.getRootDir(), parameters.getOutputDir());
-        } else {
-            return processedCssFile;
         }
+        return processedCssFile;
     }
 }

@@ -90,10 +90,12 @@ public class FileSystemResourceHandler implements ResourceHandler {
         this.charset = Charset.forName(charset);
     }
 
+    @Override
     public InputStream getResourceAsInputStream(String path) throws IOException {
         return new FileInputStream(FileUtils.getCanonicalOrAbsoluteFile(path));
     }
 
+    @Override
     public Reader getResourceAsReader(String path) throws IOException {
         try {
             return new InputStreamReader(getResourceAsInputStream(path), charset);
@@ -103,6 +105,7 @@ public class FileSystemResourceHandler implements ResourceHandler {
         }
     }
 
+    @Override
     public OutputStream getResourceAsOutputStream(String path) throws IOException {
         // Create directories if needed
         final File parentFile = new File(path).getParentFile();
@@ -112,6 +115,7 @@ public class FileSystemResourceHandler implements ResourceHandler {
         return new FileOutputStream(FileUtils.getCanonicalOrAbsoluteFile(path));
     }
 
+    @Override
     public Writer getResourceAsWriter(String path) throws IOException {
         try {
             return new OutputStreamWriter(getResourceAsOutputStream(path), charset);
@@ -125,16 +129,16 @@ public class FileSystemResourceHandler implements ResourceHandler {
      * This implementation detects if the resource path starts with a "/" and resolves such resources against the
      * provided {@link SmartSpritesParameters#getDocumentRootDir()} directory.
      */
+    @Override
     public String getResourcePath(String baseFile, String filePath) {
-        if (filePath.startsWith("/")) {
-            if (StringUtils.isNotBlank(documentRootDir)) {
-                return FilenameUtils.concat(documentRootDir, filePath.substring(1));
-            } else {
-                messageLog.warning(MessageType.ABSOLUTE_PATH_AND_NO_DOCUMENT_ROOT, filePath);
-                return "";
-            }
-        } else {
+        if (!filePath.startsWith("/")) {
             return FilenameUtils.concat(FilenameUtils.getFullPath(baseFile), filePath);
+        }
+        if (StringUtils.isNotBlank(documentRootDir)) {
+            return FilenameUtils.concat(documentRootDir, filePath.substring(1));
+        } else {
+            messageLog.warning(MessageType.ABSOLUTE_PATH_AND_NO_DOCUMENT_ROOT, filePath);
+            return "";
         }
     }
 }

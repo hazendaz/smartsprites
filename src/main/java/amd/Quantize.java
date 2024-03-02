@@ -298,7 +298,7 @@ public class Quantize {
 
         SHIFT = new int[MAX_TREE_DEPTH + 1];
         for (int i = 0; i < MAX_TREE_DEPTH + 1; ++i) {
-            SHIFT[i] = 1 << (15 - i);
+            SHIFT[i] = 1 << 15 - i;
         }
     }
 
@@ -422,9 +422,9 @@ public class Quantize {
             for (int x = width; x-- > 0;) {
                 for (int y = height; y-- > 0;) {
                     int pixel = pixels[x][y];
-                    int red = (pixel >> 16) & 0xFF;
-                    int green = (pixel >> 8) & 0xFF;
-                    int blue = (pixel >> 0) & 0xFF;
+                    int red = pixel >> 16 & 0xFF;
+                    int green = pixel >> 8 & 0xFF;
+                    int blue = pixel >> 0 & 0xFF;
 
                     // a hard limit on the number of nodes in the tree
                     if (nodes > MAX_NODES) {
@@ -437,8 +437,8 @@ public class Quantize {
                     // number_pixels count for each node
                     Node node = root;
                     for (int level = 1; level <= depth; ++level) {
-                        int id = (((red > node.midRed ? 1 : 0) << 0) | ((green > node.midGreen ? 1 : 0) << 1)
-                                | ((blue > node.midBlue ? 1 : 0) << 2));
+                        int id = (red > node.midRed ? 1 : 0) << 0 | (green > node.midGreen ? 1 : 0) << 1
+                                | (blue > node.midBlue ? 1 : 0) << 2;
                         if (node.child[id] == null) {
                             new Node(node, id, level);
                         }
@@ -517,15 +517,15 @@ public class Quantize {
             for (int x = width; x-- > 0;) {
                 for (int y = height; y-- > 0;) {
                     int pixel = pixels[x][y];
-                    int red = (pixel >> 16) & 0xFF;
-                    int green = (pixel >> 8) & 0xFF;
-                    int blue = (pixel >> 0) & 0xFF;
+                    int red = pixel >> 16 & 0xFF;
+                    int green = pixel >> 8 & 0xFF;
+                    int blue = pixel >> 0 & 0xFF;
 
                     // walk the tree to find the cube containing that color
                     Node node = root;
                     for (;;) {
-                        int id = (((red > node.midRed ? 1 : 0) << 0) | ((green > node.midGreen ? 1 : 0) << 1)
-                                | ((blue > node.midBlue ? 1 : 0) << 2));
+                        int id = (red > node.midRed ? 1 : 0) << 0 | (green > node.midGreen ? 1 : 0) << 1
+                                | (blue > node.midBlue ? 1 : 0) << 2;
                         if (node.child[id] == null) {
                             break;
                         }
@@ -621,9 +621,9 @@ public class Quantize {
 
                 this.numberPixels = Integer.MAX_VALUE;
 
-                this.midRed = (MAX_RGB + 1) >> 1;
-                this.midGreen = (MAX_RGB + 1) >> 1;
-                this.midBlue = (MAX_RGB + 1) >> 1;
+                this.midRed = MAX_RGB + 1 >> 1;
+                this.midGreen = MAX_RGB + 1 >> 1;
+                this.midBlue = MAX_RGB + 1 >> 1;
             }
 
             /**
@@ -654,7 +654,7 @@ public class Quantize {
                 parent.child[id] = this;
 
                 // figure out our midpoint
-                int bi = (1 << (MAX_TREE_DEPTH - level)) >> 1;
+                int bi = 1 << MAX_TREE_DEPTH - level >> 1;
                 midRed = parent.midRed + ((id & 1) > 0 ? bi : -bi);
                 midGreen = parent.midGreen + ((id & 2) > 0 ? bi : -bi);
                 midBlue = parent.midBlue + ((id & 4) > 0 ? bi : -bi);
@@ -742,11 +742,10 @@ public class Quantize {
                     }
                 }
                 if (unique != 0) {
-                    int r = ((totalRed + (unique >> 1)) / unique);
-                    int g = ((totalGreen + (unique >> 1)) / unique);
-                    int b = ((totalBlue + (unique >> 1)) / unique);
-                    cube.colormap[cube.colors] = (((0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8)
-                            | ((b & 0xFF) << 0));
+                    int r = (totalRed + (unique >> 1)) / unique;
+                    int g = (totalGreen + (unique >> 1)) / unique;
+                    int b = (totalBlue + (unique >> 1)) / unique;
+                    cube.colormap[cube.colors] = 0xFF << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF) << 0;
                     colorNumber = cube.colors++;
                 }
             }
@@ -800,10 +799,11 @@ public class Quantize {
              * @return the int
              */
             static final int distance(int color, int r, int g, int b) {
-                return (SQUARES[((color >> 16) & 0xFF) - r + MAX_RGB] + SQUARES[((color >> 8) & 0xFF) - g + MAX_RGB]
-                        + SQUARES[((color >> 0) & 0xFF) - b + MAX_RGB]);
+                return SQUARES[(color >> 16 & 0xFF) - r + MAX_RGB] + SQUARES[(color >> 8 & 0xFF) - g + MAX_RGB]
+                        + SQUARES[(color >> 0 & 0xFF) - b + MAX_RGB];
             }
 
+            @Override
             public String toString() {
                 StringBuilder buf = new StringBuilder();
                 if (parent == this) {

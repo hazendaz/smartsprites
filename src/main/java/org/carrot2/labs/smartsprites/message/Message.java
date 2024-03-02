@@ -98,12 +98,13 @@ public class Message implements Serializable {
          * @param level
          *            the level
          */
-        private MessageLevel(int level) {
+        MessageLevel(int level) {
             this.level = level;
         }
 
         /** The Constant COMPARATOR. */
         public static final Comparator<MessageLevel> COMPARATOR = new Comparator<MessageLevel>() {
+            @Override
             public int compare(MessageLevel levelA, MessageLevel levelB) {
                 return levelA.level - levelB.level;
             }
@@ -334,7 +335,7 @@ public class Message implements Serializable {
          * @param text
          *            the text
          */
-        private MessageType(String text) {
+        MessageType(String text) {
             this.text = text;
         }
 

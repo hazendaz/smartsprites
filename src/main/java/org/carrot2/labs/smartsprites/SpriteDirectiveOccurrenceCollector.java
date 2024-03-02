@@ -108,7 +108,8 @@ public class SpriteDirectiveOccurrenceCollector {
 
         try {
             while ((line = reader.readLine()) != null) {
-                messageLog.setLine(++lineNumber);
+                lineNumber++;
+                messageLog.setLine(lineNumber);
 
                 final String spriteImageDirectiveString = extractSpriteImageDirectiveString(line);
                 if (spriteImageDirectiveString == null) {
@@ -157,7 +158,8 @@ public class SpriteDirectiveOccurrenceCollector {
 
         try {
             while ((line = reader.readLine()) != null) {
-                messageLog.setLine(++lineNumber);
+                lineNumber++;
+                messageLog.setLine(lineNumber);
 
                 final String directiveString = extractSpriteReferenceDirectiveString(line);
                 if (directiveString == null) {
@@ -297,9 +299,8 @@ public class SpriteDirectiveOccurrenceCollector {
 
         if (matcher.find()) {
             return matcher.group(1).trim();
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -315,9 +316,8 @@ public class SpriteDirectiveOccurrenceCollector {
 
         if (matcher.find()) {
             return matcher.group(1).trim();
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**

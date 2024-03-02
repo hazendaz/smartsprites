@@ -170,10 +170,9 @@ public class SpriteImage {
         if (reducedForIe6) {
             this.resolvedPathIe6 = addIe6Suffix(imagePath, reducedForIe6);
             return this.resolvedPathIe6;
-        } else {
-            this.resolvedPath = addIe6Suffix(imagePath, reducedForIe6);
-            return this.resolvedPath;
         }
+        this.resolvedPath = addIe6Suffix(imagePath, reducedForIe6);
+        return this.resolvedPath;
     }
 
     /**

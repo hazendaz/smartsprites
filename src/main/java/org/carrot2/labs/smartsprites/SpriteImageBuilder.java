@@ -167,17 +167,16 @@ public class SpriteImageBuilder {
                 is = resourceHandler.getResourceAsInputStream(realImagePath);
 
                 // Load image
-                if (is != null) {
-                    messageLog.info(MessageType.READING_IMAGE, realImagePath);
-                    final BufferedImage image = ImageIO.read(is);
-                    if (image != null) {
-                        images.put(spriteReferenceOccurrence, image);
-                    } else {
-                        messageLog.warning(MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT, realImagePath);
-                    }
-                } else {
+                if (is == null) {
                     messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, "Can't read input file!");
                     continue;
+                }
+                messageLog.info(MessageType.READING_IMAGE, realImagePath);
+                final BufferedImage image = ImageIO.read(is);
+                if (image != null) {
+                    images.put(spriteReferenceOccurrence, image);
+                } else {
+                    messageLog.warning(MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT, realImagePath);
                 }
             } catch (final IOException e) {
                 messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, "Can't read input file!");
@@ -287,9 +286,8 @@ public class SpriteImageBuilder {
         // Just handle the root directory changing
         if (!imagePath.startsWith("/") && parameters.hasOutputDir()) {
             return FileUtils.changeRoot(path, parameters.getRootDir(), parameters.getOutputDir());
-        } else {
-            return path;
         }
+        return path;
     }
 
     /**
@@ -325,7 +323,7 @@ public class SpriteImageBuilder {
 
         // Correct for least common multiple
         if (dimension % leastCommonMultiple != 0) {
-            dimension += leastCommonMultiple - (dimension % leastCommonMultiple);
+            dimension += leastCommonMultiple - dimension % leastCommonMultiple;
         }
 
         // Compute the other sprite dimension.
@@ -506,7 +504,7 @@ public class SpriteImageBuilder {
                 return 0;
             }
 
-            int hash = image.getWidth() ^ (image.getHeight() << 16);
+            int hash = image.getWidth() ^ image.getHeight() << 16;
 
             // Computes the hashCode based on an 4 x 4 to 7 x 7 grid of image's pixels
             final int xIncrement = image.getWidth() > 7 ? image.getWidth() >> 2 : 1;
@@ -534,9 +532,8 @@ public class SpriteImageBuilder {
         private static int ignoreFullTransparency(int pixel) {
             if ((pixel & 0xff000000) == 0x00000000) {
                 return 0;
-            } else {
-                return pixel;
             }
+            return pixel;
         }
     }
 }

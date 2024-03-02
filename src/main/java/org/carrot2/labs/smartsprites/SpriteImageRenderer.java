@@ -95,7 +95,7 @@ public class SpriteImageRenderer {
 
         final BufferedImage[] result = new BufferedImage[2];
 
-        if (isPngDirect || (isPngAuto && !canReduceWithoutQualityLoss) || isJpg) {
+        if (isPngDirect || isPngAuto && !canReduceWithoutQualityLoss || isJpg) {
             result[0] = sprite;
 
             // If needed, generate a quantized version for IE6. If the image has >255
@@ -111,18 +111,18 @@ public class SpriteImageRenderer {
             }
 
             return result;
-        } else if (canReduceWithoutQualityLoss) {
+        }
+        if (canReduceWithoutQualityLoss) {
             // Can perform reduction to indexed color without data loss
             if (spriteImageDirective.matteColor != null) {
                 messageLog.warning(MessageType.IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY,
                         spriteImageDirective.spriteId);
             }
             result[0] = ColorQuantizer.reduce(sprite);
-            return result;
         } else {
             result[0] = quantize(sprite, spriteImage, colorReductionInfo, MessageLevel.WARN);
-            return result;
         }
+        return result;
     }
 
     /**
