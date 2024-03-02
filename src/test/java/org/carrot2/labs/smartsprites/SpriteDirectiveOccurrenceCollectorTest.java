@@ -48,107 +48,77 @@ import org.junit.jupiter.api.Test;
 /**
  * Test cases for {@link SpriteDirectiveOccurrenceCollector}.
  */
-class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink
-{
+class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
     SpriteDirectiveOccurrenceCollector spriteDirectiveOccurrenceCollector;
 
     @BeforeEach
-    void prepare()
-    {
-        spriteDirectiveOccurrenceCollector = new SpriteDirectiveOccurrenceCollector(
-            messageLog, new FileSystemResourceHandler(null, 
-                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING, messageLog));
+    void prepare() {
+        spriteDirectiveOccurrenceCollector = new SpriteDirectiveOccurrenceCollector(messageLog,
+                new FileSystemResourceHandler(null, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING, messageLog));
     }
 
     @Test
-    void testSpriteImageDirectiveExtractionOneDirectiveComplex()
-    {
+    void testSpriteImageDirectiveExtractionOneDirectiveComplex() {
         final String spriteDirective = "sprite: sprite; sprite-image-url: url('../sprite.png'); sprite-image-layout: vertical";
-        final String css = ".test { margin-top: 10px }\n/* some comment */\n" + "/* "
-            + spriteDirective + " */";
+        final String css = ".test { margin-top: 10px }\n/* some comment */\n" + "/* " + spriteDirective + " */";
 
-        assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector
-            .extractSpriteImageDirectiveString(css));
+        assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector.extractSpriteImageDirectiveString(css));
     }
 
     @Test
-    void testSpriteImageDirectiveExtractionOneDirectiveSimple()
-    {
+    void testSpriteImageDirectiveExtractionOneDirectiveSimple() {
         final String spriteDirective = "sprite: sprite";
         final String css = "/* " + spriteDirective + " */";
 
-        assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector
-            .extractSpriteImageDirectiveString(css));
+        assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector.extractSpriteImageDirectiveString(css));
     }
 
     @Test
-    void testSpriteImageDirectiveExtractionMoreDirectives()
-    {
+    void testSpriteImageDirectiveExtractionMoreDirectives() {
         final String spriteDirective1 = "sprite: sprite; sprite-image-url: url('../sprite.png'); sprite-image-layout: vertical";
         final String spriteDirective2 = "sprite: sprite2; sprite-image-url: url('../sprite2.png'); sprite-image-layout: horizontal";
-        final String css = ".test { margin-top: 10px }\n/* some comment */\n" + "/* "
-            + spriteDirective1 + " */\n" + ".rule { float: left }\n" + "/*** \t"
-            + spriteDirective2 + " \t **/";
+        final String css = ".test { margin-top: 10px }\n/* some comment */\n" + "/* " + spriteDirective1 + " */\n"
+                + ".rule { float: left }\n" + "/*** \t" + spriteDirective2 + " \t **/";
 
-        assertEquals(spriteDirective1, SpriteDirectiveOccurrenceCollector
-            .extractSpriteImageDirectiveString(css));
+        assertEquals(spriteDirective1, SpriteDirectiveOccurrenceCollector.extractSpriteImageDirectiveString(css));
     }
 
     @Test
-    void testSpriteReferenceDirectiveExtraction()
-    {
+    void testSpriteReferenceDirectiveExtraction() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
-        final String css = "background-image: url('../img/img.png'); /** "
-            + spriteDirective + " */";
+        final String css = "background-image: url('../img/img.png'); /** " + spriteDirective + " */";
 
-        assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector
-            .extractSpriteReferenceDirectiveString(css));
+        assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector.extractSpriteReferenceDirectiveString(css));
     }
 
     @Test
-    void testSpriteReferenceImageUrlExtraction()
-    {
+    void testSpriteReferenceImageUrlExtraction() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
-        final String css = "background-image: url('../img/img.png'); /** "
-            + spriteDirective + " */";
+        final String css = "background-image: url('../img/img.png'); /** " + spriteDirective + " */";
 
-        assertEquals("../img/img.png", CssSyntaxUtils.unpackUrl(spriteDirectiveOccurrenceCollector
-            .extractSpriteReferenceCssProperty(css).value, null));
+        assertEquals("../img/img.png", CssSyntaxUtils
+                .unpackUrl(spriteDirectiveOccurrenceCollector.extractSpriteReferenceCssProperty(css).value, null));
     }
 
     @Test
-    void testSpriteReferenceImageUrlExtractionNoBackgroundImage()
-    {
+    void testSpriteReferenceImageUrlExtractionNoBackgroundImage() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
-        final String css = "background-imagez: url('../img/img.png'); /** "
-            + spriteDirective + " */";
+        final String css = "background-imagez: url('../img/img.png'); /** " + spriteDirective + " */";
 
-        assertEquals(null, spriteDirectiveOccurrenceCollector
-            .extractSpriteReferenceCssProperty(css));
+        assertEquals(null, spriteDirectiveOccurrenceCollector.extractSpriteReferenceCssProperty(css));
 
-        assertThat(messages)
-            .isEquivalentTo(
-                new Message(
-                    Message.MessageLevel.WARN,
-                    Message.MessageType.NO_BACKGROUND_IMAGE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE,
-                    null, 0, css));
+        assertThat(messages).isEquivalentTo(new Message(Message.MessageLevel.WARN,
+                Message.MessageType.NO_BACKGROUND_IMAGE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE, null, 0, css));
     }
 
     @Test
-    void testSpriteReferenceImageUrlExtractionMoreRules()
-    {
+    void testSpriteReferenceImageUrlExtractionMoreRules() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
-        final String css = "color: red; background-image: url('../img/img.png'); /** "
-            + spriteDirective + " */";
+        final String css = "color: red; background-image: url('../img/img.png'); /** " + spriteDirective + " */";
 
-        assertEquals(null, spriteDirectiveOccurrenceCollector
-            .extractSpriteReferenceCssProperty(css));
+        assertEquals(null, spriteDirectiveOccurrenceCollector.extractSpriteReferenceCssProperty(css));
 
-        assertThat(messages)
-            .isEquivalentTo(
-                new Message(
-                    Message.MessageLevel.WARN,
-                    Message.MessageType.MORE_THAN_ONE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE,
-                    null, 0, css));
+        assertThat(messages).isEquivalentTo(new Message(Message.MessageLevel.WARN,
+                Message.MessageType.MORE_THAN_ONE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE, null, 0, css));
     }
 }

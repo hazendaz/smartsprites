@@ -44,8 +44,7 @@ import org.carrot2.labs.smartsprites.css.CssProperty;
 /**
  * Assertions on instances of {@link CssProperty}.
  */
-public class CssPropertyAssertion
-{
+public class CssPropertyAssertion {
     /** The actual property */
     private CssProperty actual;
 
@@ -55,16 +54,14 @@ public class CssPropertyAssertion
     /**
      * Creates a {@link CssProperty} assertion object.
      */
-    public CssPropertyAssertion(CssProperty actual)
-    {
+    public CssPropertyAssertion(CssProperty actual) {
         this.actual = actual;
     }
 
     /**
      * Asserts that the current property is equivalent to the provided expected property.
      */
-    public CssPropertyAssertion isEquivalentTo(CssProperty expected)
-    {
+    public CssPropertyAssertion isEquivalentTo(CssProperty expected) {
         assertNotNull(actual);
         assertThat(actual.rule).as(description + ".rule").isEqualTo(actual.rule);
         assertThat(actual.value).as(description + ".value").isEqualTo(actual.value);
@@ -72,8 +69,7 @@ public class CssPropertyAssertion
         return this;
     }
 
-    public CssPropertyAssertion as(String description)
-    {
+    public CssPropertyAssertion as(String description) {
         this.description = description;
         return this;
     }

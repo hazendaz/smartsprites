@@ -54,20 +54,16 @@ import org.junit.jupiter.api.Test;
 /**
  * Test cases for {@link SpriteImageDirective}.
  */
-class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
-{
+class SpriteImageDirectiveTest extends TestWithMemoryMessageSink {
     @Test
-    void testEmpty()
-    {
+    void testEmpty() {
         final SpriteImageDirective directive = SpriteImageDirective.parse("", messageLog);
         assertNull(directive);
     }
 
     @Test
-    void testIdUrlLayoutProvidedIe6Mode()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective
-            .parse(
+    void testIdUrlLayoutProvidedIe6Mode() {
+        final SpriteImageDirective directive = SpriteImageDirective.parse(
                 "sprite: sprite; sprite-image: url('../sprite.png'); sprite-layout: horizontal; sprite-ie6-mode: none",
                 messageLog);
 
@@ -81,10 +77,9 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void testIdUrlProvided()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../sprite.png')", messageLog);
+    void testIdUrlProvided() {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url('../sprite.png')", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
@@ -95,75 +90,57 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void variablesCorrectSyntax()
-    {
+    void variablesCorrectSyntax() {
         checkImagePathVariableCorrect("../${date}/${sprite}-${sha512}.png");
     }
 
     @Test
-    void variablesAndQueryStringCorrectSyntax()
-    {
+    void variablesAndQueryStringCorrectSyntax() {
         checkImagePathVariableCorrect("../${sprite}-${sha512}.png?${date}");
     }
 
     @Test
-    void variablesUnbalancedBrackets()
-    {
+    void variablesUnbalancedBrackets() {
         checkImagePathVariableIncorrect("../$sprite}-${sha512}.png?${date}");
     }
 
     @Test
-    void variablesMissingDollar()
-    {
+    void variablesMissingDollar() {
         checkImagePathVariableIncorrect("../{sprite}-${sha512}.png?${date}");
     }
 
     @Test
-    void variablesUnsupportedVariable()
-    {
+    void variablesUnsupportedVariable() {
         checkImagePathUnsupportedVariable("abc");
     }
 
     @Test
-    void variablesEmptyVariable()
-    {
+    void variablesEmptyVariable() {
         checkImagePathUnsupportedVariable("");
     }
 
-    private void checkImagePathVariableCorrect(String path)
-    {
-        assertNotNull(SpriteImageDirective.parse("sprite: sprite; sprite-image: url('"
-            + path + "')", messageLog));
+    private void checkImagePathVariableCorrect(String path) {
+        assertNotNull(SpriteImageDirective.parse("sprite: sprite; sprite-image: url('" + path + "')", messageLog));
         assertThat(messages).isEmpty();
     }
 
-    private void checkImagePathVariableIncorrect(String path)
-    {
-        assertNotNull(SpriteImageDirective.parse("sprite: sprite; sprite-image: url('"
-            + path + "')", messageLog));
+    private void checkImagePathVariableIncorrect(String path) {
+        assertNotNull(SpriteImageDirective.parse("sprite: sprite; sprite-image: url('" + path + "')", messageLog));
         assertThat(messages).contains(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.MALFORMED_SPRITE_IMAGE_PATH, null, 0, path));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.MALFORMED_SPRITE_IMAGE_PATH, null, 0, path));
     }
 
-    private void checkImagePathUnsupportedVariable(String variable)
-    {
-        assertNotNull(SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../img/${" + variable + "}.png')",
-            messageLog));
-        assertThat(messages).contains(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH, null, 0,
-                variable));
+    private void checkImagePathUnsupportedVariable(String variable) {
+        assertNotNull(SpriteImageDirective.parse("sprite: sprite; sprite-image: url('../img/${" + variable + "}.png')",
+                messageLog));
+        assertThat(messages).contains(new Message(Message.MessageLevel.WARN,
+                Message.MessageType.UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH, null, 0, variable));
     }
 
     @Test
-    void testMatteColor()
-    {
+    void testMatteColor() {
         final SpriteImageDirective directive = SpriteImageDirective
-            .parse(
-                "sprite: sprite; sprite-image: url('../sprite.png'); sprite-matte-color: #f08231",
-                messageLog);
+                .parse("sprite: sprite; sprite-image: url('../sprite.png'); sprite-matte-color: #f08231", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
@@ -175,70 +152,57 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void testUidNone()
-    {
+    void testUidNone() {
         checkUidType("sprite-image-uid: none", SpriteUidType.NONE);
         assertThat(messages).isEmpty();
     }
 
     @Test
-    void testUidDate()
-    {
+    void testUidDate() {
         checkUidType("sprite-image-uid: date", SpriteUidType.DATE);
         assertThat(messages).contains(
-            new Message(MessageLevel.DEPRECATION,
-                MessageType.DEPRECATED_SPRITE_IMAGE_UID, null, 0, "date"));
+                new Message(MessageLevel.DEPRECATION, MessageType.DEPRECATED_SPRITE_IMAGE_UID, null, 0, "date"));
     }
 
     @Test
-    void testUidSha512()
-    {
+    void testUidSha512() {
         checkUidType("sprite-image-uid: sha512", SpriteUidType.SHA512);
         assertThat(messages).contains(
-            new Message(MessageLevel.DEPRECATION,
-                MessageType.DEPRECATED_SPRITE_IMAGE_UID, null, 0, "sha512"));
+                new Message(MessageLevel.DEPRECATION, MessageType.DEPRECATED_SPRITE_IMAGE_UID, null, 0, "sha512"));
     }
 
     @Test
-    void testUidUnknown()
-    {
+    void testUidUnknown() {
         checkUidType("sprite-image-uid: unknown", SpriteUidType.NONE);
         assertThat(messages).contains(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.UNSUPPORTED_UID_TYPE, null, 0, "unknown"));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_UID_TYPE, null, 0, "unknown"));
     }
 
     @Test
-    void testNoId()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite-image: url('../sprite.png')", messageLog);
+    void testNoId() {
+        final SpriteImageDirective directive = SpriteImageDirective.parse("sprite-image: url('../sprite.png')",
+                messageLog);
 
         assertNull(directive);
 
         assertThat(messages).isEquivalentTo(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.SPRITE_ID_NOT_FOUND, null, 0));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.SPRITE_ID_NOT_FOUND, null, 0));
     }
 
     @Test
-    void testNoUrl()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite;", messageLog);
+    void testNoUrl() {
+        final SpriteImageDirective directive = SpriteImageDirective.parse("sprite: sprite;", messageLog);
 
         assertNull(directive);
 
         assertThat(messages).isEquivalentTo(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.SPRITE_IMAGE_URL_NOT_FOUND, null, 0));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.SPRITE_IMAGE_URL_NOT_FOUND, null, 0));
     }
 
     @Test
-    void testUnrecognizedFormat()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../sprite.')", messageLog);
+    void testUnrecognizedFormat() {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url('../sprite.')", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
@@ -246,18 +210,14 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
         assertEquals(SpriteImageDirective.SpriteImageFormat.PNG, directive.format);
         assertEquals(SpriteImageDirective.SpriteImageLayout.VERTICAL, directive.layout);
 
-        assertThat(messages)
-            .isEquivalentTo(
-                new Message(Message.MessageLevel.WARN,
-                    Message.MessageType.CANNOT_DETERMINE_IMAGE_FORMAT, null, 0,
-                    "../sprite."));
+        assertThat(messages).isEquivalentTo(new Message(Message.MessageLevel.WARN,
+                Message.MessageType.CANNOT_DETERMINE_IMAGE_FORMAT, null, 0, "../sprite."));
     }
 
     @Test
-    void testUnsupportedSpriteImageFormat()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../sprite.jpgx')", messageLog);
+    void testUnsupportedSpriteImageFormat() {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url('../sprite.jpgx')", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
@@ -265,16 +225,14 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
         assertEquals(SpriteImageDirective.SpriteImageFormat.PNG, directive.format);
         assertEquals(SpriteImageDirective.SpriteImageLayout.VERTICAL, directive.layout);
 
-        assertThat(messages).isEquivalentTo(
-            new Message(Message.MessageLevel.WARN,
+        assertThat(messages).isEquivalentTo(new Message(Message.MessageLevel.WARN,
                 Message.MessageType.UNSUPPORTED_SPRITE_IMAGE_FORMAT, null, 0, "jpgx"));
     }
 
     @Test
-    void testLeadingSpaceInUrl()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url(../sprite.png )", messageLog);
+    void testLeadingSpaceInUrl() {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url(../sprite.png )", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
@@ -286,11 +244,9 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void testUnsupportedLayout()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../sprite.jpg'); sprite-layout: other",
-            messageLog);
+    void testUnsupportedLayout() {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url('../sprite.jpg'); sprite-layout: other", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
@@ -299,66 +255,52 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
         assertEquals(SpriteImageDirective.SpriteImageLayout.VERTICAL, directive.layout);
 
         assertThat(messages).isEquivalentTo(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.UNSUPPORTED_LAYOUT, null, 0, "other"));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_LAYOUT, null, 0, "other"));
     }
 
     @Test
-    void testUnsupportedIe6Mode()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../sprite.png'); sprite-ie6-mode: other",
-            messageLog);
+    void testUnsupportedIe6Mode() {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url('../sprite.png'); sprite-ie6-mode: other", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
         assertEquals("../sprite.png", directive.imagePath);
 
         assertThat(messages).isEquivalentTo(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.UNSUPPORTED_IE6_MODE, null, 0, "other"));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_IE6_MODE, null, 0, "other"));
     }
 
     @Test
-    void testIgnoredIe6Mode()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../sprite.gif'); sprite-ie6-mode: auto",
-            messageLog);
+    void testIgnoredIe6Mode() {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url('../sprite.gif'); sprite-ie6-mode: auto", messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
         assertEquals("../sprite.gif", directive.imagePath);
 
         assertThat(messages).isEquivalentTo(
-            new Message(Message.MessageLevel.IE6NOTICE,
-                Message.MessageType.IGNORING_IE6_MODE, null, 0, "GIF"));
+                new Message(Message.MessageLevel.IE6NOTICE, Message.MessageType.IGNORING_IE6_MODE, null, 0, "GIF"));
     }
 
     @Test
-    void testUnsupportedProperties()
-    {
+    void testUnsupportedProperties() {
         final SpriteImageDirective directive = SpriteImageDirective
-            .parse(
-                "sprite: sprite; sprites-image: url('../sprite.png'); sprites-layout: horizontal",
-                messageLog);
+                .parse("sprite: sprite; sprites-image: url('../sprite.png'); sprites-layout: horizontal", messageLog);
 
         assertNull(directive);
         assertThat(messages).isEquivalentTo(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, null, 0,
-                "sprites-image, sprites-layout"),
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.SPRITE_IMAGE_URL_NOT_FOUND, null, 0));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, null, 0,
+                        "sprites-image, sprites-layout"),
+                new Message(Message.MessageLevel.WARN, Message.MessageType.SPRITE_IMAGE_URL_NOT_FOUND, null, 0));
     }
 
     @Test
-    void testSpriteLayoutProperties()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective
-            .parse(
+    void testSpriteLayoutProperties() {
+        final SpriteImageDirective directive = SpriteImageDirective.parse(
                 "sprite: sprite; sprite-image: url('../sprite.png'); sprite-layout: horizontal; "
-                    + "sprite-alignment: bottom; sprite-margin-left: 10px; sprite-margin-right: 20; sprite-margin-top: 30px; sprite-margin-bottom: 40;",
+                        + "sprite-alignment: bottom; sprite-margin-left: 10px; sprite-margin-right: 20; sprite-margin-top: 30px; sprite-margin-bottom: 40;",
                 messageLog);
 
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -376,21 +318,17 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void testNegativeMarginValues()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective
-            .parse(
+    void testNegativeMarginValues() {
+        final SpriteImageDirective directive = SpriteImageDirective.parse(
                 "sprite: sprite; sprite-image: url('../sprite.png'); sprite-layout: horizontal; "
-                    + "sprite-alignment: bottom; sprite-margin-left: -5px; sprite-margin-right: 20; sprite-margin-top: 30px; sprite-margin-bottom: -40;",
+                        + "sprite-alignment: bottom; sprite-margin-left: -5px; sprite-margin-right: 20; sprite-margin-top: 30px; sprite-margin-bottom: -40;",
                 messageLog);
 
         assertThat(messages).contains(
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, null, 0,
-                "sprite-margin-left"),
-            new Message(Message.MessageLevel.WARN,
-                Message.MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, null, 0,
-                "sprite-margin-bottom"));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, null, 0,
+                        "sprite-margin-left"),
+                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, null, 0,
+                        "sprite-margin-bottom"));
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
         assertEquals("../sprite.png", directive.imagePath);
@@ -405,12 +343,9 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
     }
 
     @Test
-    void testSpriteScalingProperty()
-    {
-        final SpriteImageDirective directive = SpriteImageDirective
-            .parse(
-                "sprite: sprite; sprite-image: url('../sprite.png'); sprite-layout: horizontal; "
-                    + "sprite-scale: 2;",
+    void testSpriteScalingProperty() {
+        final SpriteImageDirective directive = SpriteImageDirective.parse(
+                "sprite: sprite; sprite-image: url('../sprite.png'); sprite-layout: horizontal; " + "sprite-scale: 2;",
                 messageLog);
 
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -420,11 +355,9 @@ class SpriteImageDirectiveTest extends TestWithMemoryMessageSink
         assertEquals(2f, directive.scaleRatio, .5);
     }
 
-    private void checkUidType(String uidDeclaration, SpriteUidType expectedUidType)
-    {
-        final SpriteImageDirective directive = SpriteImageDirective.parse(
-            "sprite: sprite; sprite-image: url('../sprite.png'); " + uidDeclaration,
-            messageLog);
+    private void checkUidType(String uidDeclaration, SpriteUidType expectedUidType) {
+        final SpriteImageDirective directive = SpriteImageDirective
+                .parse("sprite: sprite; sprite-image: url('../sprite.png'); " + uidDeclaration, messageLog);
 
         assertNotNull(directive);
         assertEquals("sprite", directive.spriteId);
