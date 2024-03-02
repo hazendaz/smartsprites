@@ -7,16 +7,19 @@ SmartSprites: CSS Sprite Generator Done Right
 
 ![hazendaz](src/site/resources/images/hazendaz-banner.jpg)
 
-CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your
-designs, fully automatically. No tedious copying and pasting to your CSS when
-adding or changing sprited images.
+CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your designs, fully automatically. No tedious copying and pasting to your CSS when adding or changing sprite images.
 
-Heads up, discontinued software!
---------------------------------
+Supported Fork
+--------------
 
-Since the modern web does not rely on small bitmaps any more, SmartSprites becomes irrelevsmartsprites. We're not planning any new releases, but feel free to fork and use the code if you find it useful. [Said Original Authors]
+This fork has taken over work of supporting this software.
 
-This fork is in fact alive still in case of needing it since I support the maven plugin I fealt it relevsmartsprites to continue for now as there are users of this still.
+Heads up, discontinued software from original author!
+-----------------------------------------------------
+
+Since the modern web does not rely on small bitmaps any more, SmartSprites becomes irrelevant. We're not planning any new releases, but feel free to fork and use the code if you find it useful.
+
+This fork is in fact alive still in case of needing it since I support the maven plugin I felt it smartsprites to continue for now as there are users of this still.
 
 Quick start
 -----------
@@ -29,42 +32,19 @@ Quick start
 
 3. Look in +test/real-world-example+ for the results.
 
-
 Documentation
 -------------
 
 For more instructions on using SmartSprites and a detailed 
 syntax reference, please see:
 
-https://github.com/carrotsearch/smartsprites/wiki/Documentation
+https://hazendaz.github.io/smartsprites/
 
+Eclipse plugin (no longer available)
+-----------------------------------
 
-Bug tracker
------------
-
-https://github.com/hazendaz/smartsprites/issues
-
-
-Source code
------------
-
-https://github.com/hazendaz/smartsprites
-
-
-Eclipse plugin
---------------
-
-To run SmartSprites directly in your Eclipse IDE:
-
-1. Install the Eclipse SmartSprites plugin from [does not exist any more!]
-
-       http://update.bitexpert.de/eclipse/3.5
-
-2. Right-click your CSS file in Project Explorer and choose 
-   External Tools > Generate Spritemap to generate sprites.
-
-
-Plugin source code: https://github.com/bitExpert/eclipse-smartsprites [repo archived down in 2017]
+An eclipse plugin used to exist but is no longer available and not really needed.  
+The plugin source code is located at [eclipse-plugin](https://github.com/bitExpert/eclipse-smartsprites)
 
 Maven plugin
 ------------
