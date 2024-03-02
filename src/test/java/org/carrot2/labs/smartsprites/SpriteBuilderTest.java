@@ -888,6 +888,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
 
         org.carrot2.util.FileUtils.deleteThrowingExceptions(new File(rootDir, "css")
           .listFiles(new FilenameFilter() {
+              @Override
               public boolean accept(File dir, String name) {
                   return name.contains("-sprite");
               }
@@ -896,6 +897,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink
         // Delete sprites
         org.carrot2.util.FileUtils.deleteThrowingExceptions(new File(rootDir, "img")
           .listFiles(new FilenameFilter() {
+              @Override
               public boolean accept(File dir, String name) {
                   return name.startsWith("sprite");
               }
