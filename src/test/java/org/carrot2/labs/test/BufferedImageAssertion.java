@@ -247,7 +247,7 @@ public class BufferedImageAssertion {
      * @return true, if successful
      */
     private boolean compareImage(BufferedImage expected) {
-        if ((actual.getWidth() != expected.getWidth()) || (actual.getHeight() != expected.getHeight())) {
+        if (actual.getWidth() != expected.getWidth() || actual.getHeight() != expected.getHeight()) {
             return false;
         }
         for (int x = 0; x < actual.getWidth(); x++) {
