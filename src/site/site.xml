@@ -59,7 +59,13 @@
     <body>
         <links>
             <item name="Hazendaz" href="https://github.com/hazendaz" />
+            <item name="Documentation" href="https://github.com/carrotsearch/smartsprites/wiki/Documentation" />
         </links>
         <menu ref="reports" />
+        <menu name="Smartsprites">
+            <item name="Documentation" href="https://github.com/carrotsearch/smartsprites/wiki/Documentation" />
+            <item name="Download" href="website/download.html" />
+            <item name="Index" href="website/index.html" />
+        </menu>
     </body>
 </site>
