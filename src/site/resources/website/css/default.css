@@ -141,12 +141,12 @@ div.quote {
 
 /* Main structure */
 .main {
-	background: #000; 
-	border: 3px double #EEE; 
-	border-color: #141414 #202020 #222 #202020; 
-	margin: 20px auto 4px auto; 
+	background: #000;
+	border: 3px double #EEE;
+	border-color: #141414 #202020 #222 #202020;
+	margin: 20px auto 4px auto;
 	text-align: left;
-	width: 750px; 
+	width: 750px;
 }
 
 /* Header */
@@ -171,7 +171,7 @@ div.quote {
 	padding: 0px 0px 0px 20px;
   font-size: 25px;
 }
-#smart, 
+#smart,
 #done-right,
 code strong,
 .orange
@@ -265,7 +265,7 @@ ul.menu li a {
   padding-left: 18px;
 	background: #0A0A0A;
 	color: #666;
-} 
+}
 
 /* Bamboo build status */
 div.build-info {
