@@ -990,20 +990,12 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
             return;
         }
 
-        org.carrot2.util.FileUtils.deleteThrowingExceptions(new File(rootDir, "css").listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.contains("-sprite");
-            }
-        }));
+        org.carrot2.util.FileUtils.deleteThrowingExceptions(
+                new File(rootDir, "css").listFiles((FilenameFilter) (dir, name) -> name.contains("-sprite")));
 
         // Delete sprites
-        org.carrot2.util.FileUtils.deleteThrowingExceptions(new File(rootDir, "img").listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.startsWith("sprite");
-            }
-        }));
+        org.carrot2.util.FileUtils.deleteThrowingExceptions(
+                new File(rootDir, "img").listFiles((FilenameFilter) (dir, name) -> name.startsWith("sprite")));
     }
 
     /**
