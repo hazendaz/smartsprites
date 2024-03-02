@@ -196,60 +196,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-    </build>
-
-    <profiles>
-        <!-- Release mode. -->
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <!-- Attach and modify JavaDocs. -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <encoding>${project.build.sourceEncoding}</encoding>
-                            <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
-                            <docfilessubdirs>true</docfilessubdirs>
-                            <windowtitle>SmartSprites v${project.version} API Documentation (JavaDoc)</windowtitle>
-                            <doctitle>SmartSprites v${project.version} API Documentation</doctitle>
-                            <header><![CDATA[<div id='header'><a class='logo' target='_top' href='http://labs.carrotsearch.com'><img src='resources/logo.png'></a>SmartSprites v${project.version} <br>API Documentation</div>]]></header>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Configure assembly of ZIP and TAR.GZ bundles (stand-alone distributions). -->
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>${project.basedir}/src/main/assembly/bin.xml</descriptor>
-                            </descriptors>
-                            <attach>true</attach>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>make-assembly</id>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
         <plugins>
             <!-- Configure assembly of ZIP and TAR.GZ bundles (stand-alone distributions). -->
