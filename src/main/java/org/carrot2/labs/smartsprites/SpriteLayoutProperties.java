@@ -131,7 +131,7 @@ public class SpriteLayoutProperties {
          * @return the value
          */
         public static SpriteAlignment getValue(String value) {
-            return valueOf(value.toUpperCase());
+            return valueOf(value.toUpperCase(Locale.ENGLISH));
         }
 
         /**

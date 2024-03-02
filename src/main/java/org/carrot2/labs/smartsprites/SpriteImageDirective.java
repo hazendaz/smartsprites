@@ -210,7 +210,7 @@ public class SpriteImageDirective {
          * @return the value
          */
         public static SpriteImageFormat getValue(String value) {
-            return valueOf(value.toUpperCase());
+            return valueOf(value.toUpperCase(Locale.ENGLISH));
         }
 
         /**
@@ -513,7 +513,7 @@ public class SpriteImageDirective {
             return defaultValue;
         }
         try {
-            return Enum.valueOf(enumClass, stringValue.toUpperCase());
+            return Enum.valueOf(enumClass, stringValue.toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
             messageCollector.warning(messageType, stringValue);
             return defaultValue;
