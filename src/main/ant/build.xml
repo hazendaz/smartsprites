@@ -58,10 +58,10 @@ Please provide SmartSprite parameters in a 'smartsprites.properties' file.
       </classpath>
     </taskdef>
 
-    <!-- 
+    <!--
          The simplest way to invoke SmartSprites is to provide a directory
          in the rootdir parameter. SmartSprites will attempt to process all
-         files with 'css' extension from that directory. 
+         files with 'css' extension from that directory.
       -->
     <smartsprites rootdir="${root.dir.path}"
                   documentrootdir="${document.root.dir.path}"
@@ -71,16 +71,16 @@ Please provide SmartSprite parameters in a 'smartsprites.properties' file.
                   loglevel="${log.level}"
                   spritepngdepth="${sprite.png.depth}"
                   spritepngie6="${sprite.png.ie6}" />
-    
-    <!-- 
+
+    <!--
          Alternatively, instead of rootdir, you can provide individual CSS
          files for processing using one or more nested <fileset> elements.
          This type of invocation gives more fine-grained control over which
          CSS files are processed.
-         
+
          For a description of how processing of individual CSS files relates
          to rootdir and outputdir, please see the documentation on:
-         
+
          http://smartsprites.osinski.name/
       -->
     <!--
@@ -98,4 +98,3 @@ Please provide SmartSprite parameters in a 'smartsprites.properties' file.
     -->
   </target>
 </project>
-
