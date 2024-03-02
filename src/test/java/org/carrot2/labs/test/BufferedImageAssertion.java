@@ -247,15 +247,15 @@ public class BufferedImageAssertion {
      * @return true, if successful
      */
     private boolean compareImage(BufferedImage expected) {
-        if (actual.getWidth() == expected.getWidth() && actual.getHeight() == expected.getHeight()) {
-            for (int x = 0; x < actual.getWidth(); x++) {
-                for (int y = 0; y < actual.getHeight(); y++) {
-                    if (actual.getRGB(x, y) != expected.getRGB(x, y))
-                        return false;
+        if ((actual.getWidth() != expected.getWidth()) || (actual.getHeight() != expected.getHeight())) {
+            return false;
+        }
+        for (int x = 0; x < actual.getWidth(); x++) {
+            for (int y = 0; y < actual.getHeight(); y++) {
+                if (actual.getRGB(x, y) != expected.getRGB(x, y)) {
+                    return false;
                 }
             }
-        } else {
-            return false;
         }
         return true;
     }

@@ -329,10 +329,9 @@ public final class SmartSpritesParameters {
         if (!hasOutputDir()) {
             // If there is no output dir, we must have some suffix
             return DEFAULT_CSS_FILE_SUFFIX;
-        } else {
-            // If we have an output dir, we can have an empty suffix
-            return "";
         }
+        // If we have an output dir, we can have an empty suffix
+        return "";
     }
 
     /**

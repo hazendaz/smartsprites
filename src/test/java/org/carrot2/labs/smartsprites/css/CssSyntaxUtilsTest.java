@@ -222,8 +222,7 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
         final Color color = CssSyntaxUtils.parseColor(cssColor, messageLog, null);
         if (color != null) {
             return Integer.toString(color.getRGB() & 0x00ffffff, 16);
-        } else {
-            return null;
         }
+        return null;
     }
 }

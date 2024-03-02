@@ -136,9 +136,8 @@ public class FileSystemResourceHandler implements ResourceHandler {
         }
         if (StringUtils.isNotBlank(documentRootDir)) {
             return FilenameUtils.concat(documentRootDir, filePath.substring(1));
-        } else {
-            messageLog.warning(MessageType.ABSOLUTE_PATH_AND_NO_DOCUMENT_ROOT, filePath);
-            return "";
         }
+        messageLog.warning(MessageType.ABSOLUTE_PATH_AND_NO_DOCUMENT_ROOT, filePath);
+        return "";
     }
 }
