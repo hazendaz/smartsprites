@@ -50,11 +50,15 @@ import org.carrot2.labs.smartsprites.message.Message;
  * Assertions on lists of {@link CssProperty} instances.
  */
 public class CssPropertyListAssertion {
-    /** The actual message list */
+
+    /** The actual message list. */
     private List<CssProperty> actual;
 
     /**
      * Creates a {@link Message} list assertion object.
+     *
+     * @param actual
+     *            the actual
      */
     public CssPropertyListAssertion(List<CssProperty> actual) {
         this.actual = actual;
@@ -62,6 +66,11 @@ public class CssPropertyListAssertion {
 
     /**
      * Asserts that the current message list is equivalent to the provided expected message list.
+     *
+     * @param properties
+     *            the properties
+     *
+     * @return the css property list assertion
      */
     public CssPropertyListAssertion isEquivalentTo(List<CssProperty> properties) {
         assertThat(actual).hasSize(properties.size());
@@ -74,11 +83,21 @@ public class CssPropertyListAssertion {
 
     /**
      * Asserts that the current message list is equivalent to the provided expected message list.
+     *
+     * @param properties
+     *            the properties
+     *
+     * @return the css property list assertion
      */
     public CssPropertyListAssertion isEquivalentTo(CssProperty... properties) {
         return isEquivalentTo(Lists.newArrayList(properties));
     }
 
+    /**
+     * Checks if is empty.
+     *
+     * @return the css property list assertion
+     */
     public CssPropertyListAssertion isEmpty() {
         assertTrue(actual.isEmpty());
         return this;

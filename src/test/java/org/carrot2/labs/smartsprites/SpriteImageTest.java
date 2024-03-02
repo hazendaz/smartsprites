@@ -44,46 +44,74 @@ import org.junit.jupiter.api.Test;
  * Test cases for static methods in {@link SpriteImage}.
  */
 class SpriteImageTest {
+
+    /**
+     * Ie 6 suffix no suffix.
+     */
     @Test
     void ie6SuffixNoSuffix() {
         assertEquals("path", SpriteImage.addIe6Suffix("path", false));
     }
 
+    /**
+     * Ie 6 suffix plain file name with dot.
+     */
     @Test
     void ie6SuffixPlainFileNameWithDot() {
         assertEquals("image-ie6.png", SpriteImage.addIe6Suffix("image.png", true));
     }
 
+    /**
+     * Ie 6 suffix plain file name without doc.
+     */
     @Test
     void ie6SuffixPlainFileNameWithoutDoc() {
         assertEquals("image-ie6", SpriteImage.addIe6Suffix("image", true));
     }
 
+    /**
+     * Ie 6 suffix path without dot.
+     */
     @Test
     void ie6SuffixPathWithoutDot() {
         assertEquals("assets/img/image-ie6.png", SpriteImage.addIe6Suffix("assets/img/image.png", true));
     }
 
+    /**
+     * Ie 6 suffix path with dot.
+     */
     @Test
     void ie6SuffixPathWithDot() {
         assertEquals("../assets.img/image-ie6.png", SpriteImage.addIe6Suffix("../assets.img/image.png", true));
     }
 
+    /**
+     * Ie 6 suffix plain file name with dot and query.
+     */
     @Test
     void ie6SuffixPlainFileNameWithDotAndQuery() {
         assertEquals("image-ie6.png?query", SpriteImage.addIe6Suffix("image.png?query", true));
     }
 
+    /**
+     * Ie 6 suffix plain file name with query.
+     */
     @Test
     void ie6SuffixPlainFileNameWithQuery() {
         assertEquals("image-ie6?query", SpriteImage.addIe6Suffix("image?query", true));
     }
 
+    /**
+     * Ie 6 suffix path with dot and query.
+     */
     @Test
     void ie6SuffixPathWithDotAndQuery() {
         assertEquals("assets.img/image-ie6.png?query", SpriteImage.addIe6Suffix("assets.img/image.png?query", true));
     }
 
+    /**
+     * Ie 6 suffix path with query.
+     */
     @Test
     void ie6SuffixPathWithQuery() {
         assertEquals("assets.img/image-ie6?query", SpriteImage.addIe6Suffix("assets.img/image?query", true));

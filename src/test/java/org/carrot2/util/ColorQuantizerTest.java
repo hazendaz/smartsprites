@@ -50,6 +50,13 @@ import amd.Quantize;
  * Test cases for {@link Quantize}.
  */
 class ColorQuantizerTest extends BufferedImageTestBase {
+
+    /**
+     * Test one color.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testOneColor() throws IOException {
         final String fileName = "one-color.png";
@@ -58,6 +65,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
                 .isIndexedColor();
     }
 
+    /**
+     * Test no alpha.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testNoAlpha() throws IOException {
         final String fileName = "no-alpha.png";
@@ -66,6 +79,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
                 .isIndexedColor();
     }
 
+    /**
+     * Test bit alpha.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testBitAlpha() throws IOException {
         final String fileName = "bit-alpha.png";
@@ -74,6 +93,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
                 .isIndexedColor();
     }
 
+    /**
+     * Test full alpha.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testFullAlpha() throws IOException {
         final String fileName = "full-alpha.png";
@@ -82,6 +107,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
                 .isIndexedColor();
     }
 
+    /**
+     * Test exact colors quantize.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testExactColorsQuantize() throws IOException {
         final String fileName = "exact-colors.png";
@@ -90,6 +121,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
                 .isIndexedColor();
     }
 
+    /**
+     * Test exact colors reduce.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testExactColorsReduce() throws IOException {
         final String fileName = "exact-colors.png";
@@ -98,6 +135,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
                 .isIndexedColor();
     }
 
+    /**
+     * Test many colors quantize.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testManyColorsQuantize() throws IOException {
         final String fileName = "many-colors.png";
@@ -107,6 +150,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
         // Current quantizer is far from perfect
     }
 
+    /**
+     * Test many colors reduce.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testManyColorsReduce() throws IOException {
         final String fileName = "many-colors.png";
@@ -115,6 +164,12 @@ class ColorQuantizerTest extends BufferedImageTestBase {
         });
     }
 
+    /**
+     * Test can reduce without data loss.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testCanReduceWithoutDataLoss() throws IOException {
         checkDataLoss("bit-alpha.png", true);
@@ -125,6 +180,17 @@ class ColorQuantizerTest extends BufferedImageTestBase {
         checkDataLoss("one-color.png", true);
     }
 
+    /**
+     * Check data loss.
+     *
+     * @param path
+     *            the path
+     * @param expectedCanReduce
+     *            the expected can reduce
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void checkDataLoss(String path, boolean expectedCanReduce) throws IOException {
         assertEquals(expectedCanReduce,
                 ColorQuantizer.getColorReductionInfo(image(path)).canReduceWithoutQualityLoss());

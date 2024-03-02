@@ -50,11 +50,15 @@ import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
  * Assertions on lists of {@link Message}s.
  */
 public class MessageListAssertion {
-    /** The actual message list */
+
+    /** The actual message list. */
     private List<Message> actual;
 
     /**
      * Creates a {@link Message} list assertion object.
+     *
+     * @param actual
+     *            the actual
      */
     public MessageListAssertion(List<Message> actual) {
         this.actual = actual;
@@ -62,6 +66,11 @@ public class MessageListAssertion {
 
     /**
      * Asserts that the current message list contains (at least) the specified messages.
+     *
+     * @param messages
+     *            the messages
+     *
+     * @return the message list assertion
      */
     public MessageListAssertion contains(Message... messages) {
         final Set<Message> toCheck = Sets.newHashSet(messages);
@@ -88,6 +97,11 @@ public class MessageListAssertion {
 
     /**
      * Asserts that the current message list is equivalent to the provided expected message list.
+     *
+     * @param expected
+     *            the expected
+     *
+     * @return the message list assertion
      */
     public MessageListAssertion isEquivalentTo(List<Message> expected) {
         Assertions.assertThat(actual).hasSize(expected.size());
@@ -100,6 +114,13 @@ public class MessageListAssertion {
 
     /**
      * Asserts that the current message list is equivalent to the provided expected message list.
+     *
+     * @param onlyLevel
+     *            the only level
+     * @param expected
+     *            the expected
+     *
+     * @return the message list assertion
      */
     public MessageListAssertion isEquivalentTo(MessageLevel onlyLevel, List<Message> expected) {
         final List<Message> filtered = new ArrayList<>();
@@ -119,6 +140,11 @@ public class MessageListAssertion {
 
     /**
      * Asserts that the current message list is equivalent to the provided expected message list.
+     *
+     * @param messages
+     *            the messages
+     *
+     * @return the message list assertion
      */
     public MessageListAssertion isEquivalentTo(Message... messages) {
         return isEquivalentTo(Lists.newArrayList(messages));
@@ -126,11 +152,26 @@ public class MessageListAssertion {
 
     /**
      * Asserts that the current message list is equivalent to the provided expected message list.
+     *
+     * @param onlyLevel
+     *            the only level
+     * @param messages
+     *            the messages
+     *
+     * @return the message list assertion
      */
     public MessageListAssertion isEquivalentTo(MessageLevel onlyLevel, Message... messages) {
         return isEquivalentTo(onlyLevel, Lists.newArrayList(messages));
     }
 
+    /**
+     * Does not have messages of level.
+     *
+     * @param level
+     *            the level
+     *
+     * @return the message list assertion
+     */
     public MessageListAssertion doesNotHaveMessagesOfLevel(MessageLevel level) {
         int levelCount = 0;
         final StringBuilder messages = new StringBuilder();
@@ -155,6 +196,11 @@ public class MessageListAssertion {
         return this;
     }
 
+    /**
+     * Checks if is empty.
+     *
+     * @return the message list assertion
+     */
     public MessageListAssertion isEmpty() {
         Assertions.assertThat(actual).isEmpty();
         return this;

@@ -53,12 +53,19 @@ import org.junit.jupiter.api.Test;
  * Test cases for {@link CssSyntaxUtils}.
  */
 class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
+
+    /**
+     * Test empty.
+     */
     @Test
     void testEmpty() {
         final List<CssProperty> actualRules = CssSyntaxUtils.extractProperties("   ");
         assertThatCssPropertyList(actualRules).isEmpty();
     }
 
+    /**
+     * Test single rule.
+     */
     @Test
     void testSingleRule() {
         final List<CssProperty> actualRules = CssSyntaxUtils.extractProperties("test-rule: test-value");
@@ -66,6 +73,9 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
         assertThatCssPropertyList(actualRules).isEquivalentTo(new CssProperty("test-rule", "test-value"));
     }
 
+    /**
+     * Test important rules.
+     */
     @Test
     void testImportantRules() {
         final List<CssProperty> actualRules = CssSyntaxUtils
@@ -75,6 +85,9 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
                 new CssProperty("background-image", "url(test.png)", true), new CssProperty("color", "red", true));
     }
 
+    /**
+     * Test upper case rule.
+     */
     @Test
     void testUpperCaseRule() {
         final List<CssProperty> actualRules = CssSyntaxUtils.extractProperties("TEST-rule: test-value");
@@ -82,6 +95,9 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
         assertThatCssPropertyList(actualRules).isEquivalentTo(new CssProperty("test-rule", "test-value"));
     }
 
+    /**
+     * Test more rules.
+     */
     @Test
     void testMoreRules() {
         final List<CssProperty> actualRules = CssSyntaxUtils.extractProperties("rule-1: value1; rule-2: value2;");
@@ -90,6 +106,9 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
                 new CssProperty("rule-2", "value2"));
     }
 
+    /**
+     * Test white space.
+     */
     @Test
     void testWhiteSpace() {
         final List<CssProperty> actualRules = CssSyntaxUtils
@@ -99,6 +118,9 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
                 new CssProperty("rule-2", "value2"));
     }
 
+    /**
+     * Test colons in property value.
+     */
     @Test
     void testColonsInPropertyValue() {
         final List<CssProperty> actualRules = CssSyntaxUtils
@@ -112,21 +134,33 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test unpack url no quotes.
+     */
     @Test
     void testUnpackUrlNoQuotes() {
         assertEquals("test/img/t.png", CssSyntaxUtils.unpackUrl("url(test/img/t.png)"));
     }
 
+    /**
+     * Test unpack url single quotes.
+     */
     @Test
     void testUnpackUrlSingleQuotes() {
         assertEquals("test/img/t.png", CssSyntaxUtils.unpackUrl("url('test/img/t.png')"));
     }
 
+    /**
+     * Test unpack url double quotes.
+     */
     @Test
     void testUnpackUrlDoubleQuotes() {
         assertEquals("test/img/t.png", CssSyntaxUtils.unpackUrl("url(\"test/img/t.png\")"));
     }
 
+    /**
+     * Test unbalanced quotes.
+     */
     @Test
     void testUnbalancedQuotes() {
         assertEquals(null, CssSyntaxUtils.unpackUrl("url('test/img/t.png\")", messageLog));
@@ -135,6 +169,9 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
                 null, 0, "url('test/img/t.png\")"));
     }
 
+    /**
+     * Test malformed prefix.
+     */
     @Test
     void testMalformedPrefix() {
         assertEquals(null, CssSyntaxUtils.unpackUrl("urlx('test/img/t.png')", messageLog));
@@ -143,12 +180,18 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
                 null, 0, "urlx('test/img/t.png')"));
     }
 
+    /**
+     * Test long css color.
+     */
     @Test
     void testLongCssColor() {
         assertEquals("cafe01", parseCssColor("#cafe01"));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test invalid css color.
+     */
     @Test
     void testInvalidCssColor() {
         assertEquals(null, parseCssColor("cafe01"));
@@ -156,6 +199,9 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
                 .isEquivalentTo(new Message(MessageLevel.WARN, MessageType.MALFORMED_COLOR, null, 0, "cafe01"));
     }
 
+    /**
+     * Test short css color.
+     */
     @Test
     void testShortCssColor() {
         // Currently unsupported
@@ -164,6 +210,14 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
                 .isEquivalentTo(new Message(MessageLevel.WARN, MessageType.MALFORMED_COLOR, null, 0, "#fff"));
     }
 
+    /**
+     * Parses the css color.
+     *
+     * @param cssColor
+     *            the css color
+     *
+     * @return the string
+     */
     private String parseCssColor(String cssColor) {
         final Color color = CssSyntaxUtils.parseColor(cssColor, messageLog, null);
         if (color != null) {

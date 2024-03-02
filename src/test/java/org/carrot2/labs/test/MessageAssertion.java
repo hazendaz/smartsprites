@@ -45,14 +45,18 @@ import org.carrot2.labs.smartsprites.message.Message;
  * Assertions on {@link Message}s.
  */
 public class MessageAssertion {
-    /** The actual message */
+
+    /** The actual message. */
     private Message actual;
 
-    /** Assertion description */
+    /** Assertion description. */
     private String description = "message";
 
     /**
      * Creates a {@link Message} assertion object.
+     *
+     * @param actual
+     *            the actual
      */
     public MessageAssertion(Message actual) {
         this.actual = actual;
@@ -60,6 +64,11 @@ public class MessageAssertion {
 
     /**
      * Asserts that the current message is equivalent to the provided expected message.
+     *
+     * @param expected
+     *            the expected
+     *
+     * @return the message assertion
      */
     public MessageAssertion isEquivalentTo(Message expected) {
         assertNotNull(actual);
@@ -72,6 +81,14 @@ public class MessageAssertion {
         return this;
     }
 
+    /**
+     * As.
+     *
+     * @param description
+     *            the description
+     *
+     * @return the message assertion
+     */
     public MessageAssertion as(String description) {
         this.description = description;
         return this;

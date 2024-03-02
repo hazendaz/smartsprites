@@ -49,14 +49,22 @@ import org.junit.jupiter.api.Test;
  * Test cases for {@link SpriteDirectiveOccurrenceCollector}.
  */
 class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
+
+    /** The sprite directive occurrence collector. */
     SpriteDirectiveOccurrenceCollector spriteDirectiveOccurrenceCollector;
 
+    /**
+     * Prepare.
+     */
     @BeforeEach
     void prepare() {
         spriteDirectiveOccurrenceCollector = new SpriteDirectiveOccurrenceCollector(messageLog,
                 new FileSystemResourceHandler(null, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING, messageLog));
     }
 
+    /**
+     * Test sprite image directive extraction one directive complex.
+     */
     @Test
     void testSpriteImageDirectiveExtractionOneDirectiveComplex() {
         final String spriteDirective = "sprite: sprite; sprite-image-url: url('../sprite.png'); sprite-image-layout: vertical";
@@ -65,6 +73,9 @@ class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
         assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector.extractSpriteImageDirectiveString(css));
     }
 
+    /**
+     * Test sprite image directive extraction one directive simple.
+     */
     @Test
     void testSpriteImageDirectiveExtractionOneDirectiveSimple() {
         final String spriteDirective = "sprite: sprite";
@@ -73,6 +84,9 @@ class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
         assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector.extractSpriteImageDirectiveString(css));
     }
 
+    /**
+     * Test sprite image directive extraction more directives.
+     */
     @Test
     void testSpriteImageDirectiveExtractionMoreDirectives() {
         final String spriteDirective1 = "sprite: sprite; sprite-image-url: url('../sprite.png'); sprite-image-layout: vertical";
@@ -83,6 +97,9 @@ class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
         assertEquals(spriteDirective1, SpriteDirectiveOccurrenceCollector.extractSpriteImageDirectiveString(css));
     }
 
+    /**
+     * Test sprite reference directive extraction.
+     */
     @Test
     void testSpriteReferenceDirectiveExtraction() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
@@ -91,6 +108,9 @@ class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
         assertEquals(spriteDirective, SpriteDirectiveOccurrenceCollector.extractSpriteReferenceDirectiveString(css));
     }
 
+    /**
+     * Test sprite reference image url extraction.
+     */
     @Test
     void testSpriteReferenceImageUrlExtraction() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
@@ -100,6 +120,9 @@ class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
                 .unpackUrl(spriteDirectiveOccurrenceCollector.extractSpriteReferenceCssProperty(css).value, null));
     }
 
+    /**
+     * Test sprite reference image url extraction no background image.
+     */
     @Test
     void testSpriteReferenceImageUrlExtractionNoBackgroundImage() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";
@@ -111,6 +134,9 @@ class SpriteDirectiveOccurrenceCollectorTest extends TestWithMemoryMessageSink {
                 Message.MessageType.NO_BACKGROUND_IMAGE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE, null, 0, css));
     }
 
+    /**
+     * Test sprite reference image url extraction more rules.
+     */
     @Test
     void testSpriteReferenceImageUrlExtractionMoreRules() {
         final String spriteDirective = "sprite-ref: sprite; sprite-alignment: repeat";

@@ -67,14 +67,26 @@ import org.junit.jupiter.api.condition.JRE;
  * directory.
  */
 class SpriteBuilderTest extends TestWithMemoryMessageSink {
-    /** Builder under tests, initialized in {@link #buildSprites(SmartSpritesParameters)} */
+
+    /** Builder under tests, initialized in {@link #buildSprites(SmartSpritesParameters)}. */
     private SpriteBuilder spriteBuilder;
 
+    /**
+     * Sets the up headless mode.
+     */
     @BeforeEach
     void setUpHeadlessMode() {
         System.setProperty("java.awt.headless", "true");
     }
 
+    /**
+     * Test no sprite declarations.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testNoSpriteDeclarations() throws FileNotFoundException, IOException {
         final File testDir = testDir("no-sprite-declarations");
@@ -85,6 +97,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test no sprite references.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testNoSpriteReferences() throws FileNotFoundException, IOException {
         final File testDir = testDir("no-sprite-references");
@@ -94,6 +114,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test target sprite image dir not exists.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testTargetSpriteImageDirNotExists() throws FileNotFoundException, IOException {
         final File testDir = testDir("target-sprite-image-dir-not-exists");
@@ -106,6 +134,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         FileUtils.deleteDirectory(new File(testDir, "img-sprite"));
     }
 
+    /**
+     * Test simple horizontal sprite.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testSimpleHorizontalSprite() throws FileNotFoundException, IOException {
         final File testDir = testDir("simple-horizontal-sprite");
@@ -117,6 +153,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test simple horizontal sprite important.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testSimpleHorizontalSpriteImportant() throws FileNotFoundException, IOException {
         final File testDir = testDir("simple-horizontal-sprite-important");
@@ -128,6 +172,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15 + 48 + 20, 47));
     }
 
+    /**
+     * Test layout properties from sprite image directive.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testLayoutPropertiesFromSpriteImageDirective() throws FileNotFoundException, IOException {
         final File testDir = testDir("layout-properties-from-sprite-image-directive");
@@ -139,6 +191,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test multiple css files.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testMultipleCssFiles() throws FileNotFoundException, IOException {
         final File testDir = testDir("multiple-css-files");
@@ -151,6 +211,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test large repeat.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testLargeRepeat() throws FileNotFoundException, IOException {
         final File testDir = testDir("large-repeat");
@@ -167,6 +235,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test missing images.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testMissingImages() throws FileNotFoundException, IOException {
         final File testDir = testDir("missing-images");
@@ -187,6 +263,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         new File(testDir, "img/logo.png").getPath(), "Can't read input file!"));
     }
 
+    /**
+     * Test unsupported individual image format.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testUnsupportedIndividualImageFormat() throws FileNotFoundException, IOException {
         final File testDir = testDir("unsupported-image-format");
@@ -200,6 +284,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         new File(testDir, "css/style.css").getPath(), 44, new File(testDir, "img/web.iff").getPath()));
     }
 
+    /**
+     * Test unsupported sprite properties.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testUnsupportedSpriteProperties() throws FileNotFoundException, IOException {
         final File testDir = testDir("unsupported-sprite-properties");
@@ -219,6 +311,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         54, "sprites-alignment"));
     }
 
+    /**
+     * Test overriding css properties.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testOverridingCssProperties() throws FileNotFoundException, IOException {
         final File testDir = testDir("overriding-css-properties");
@@ -236,6 +336,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         "background-position", 56));
     }
 
+    /**
+     * Test absolute image url.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testAbsoluteImageUrl() throws FileNotFoundException, IOException {
         final File testDir = testDir("absolute-image-url");
@@ -253,6 +361,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         org.carrot2.util.FileUtils.deleteThrowingExceptions(spriteFile);
     }
 
+    /**
+     * Test non default output dir.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testNonDefaultOutputDir() throws FileNotFoundException, IOException {
         final File testDir = testDir("non-default-output-dir");
@@ -278,6 +394,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         org.carrot2.util.FileUtils.deleteThrowingExceptions(absoluteSpriteFile);
     }
 
+    /**
+     * Test scaled sprite image.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testScaledSpriteImage() throws FileNotFoundException, IOException {
         final File testDir = testDir("scaled-sprite");
@@ -297,6 +421,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         org.carrot2.util.FileUtils.deleteThrowingExceptions(absoluteSpriteFile);
     }
 
+    /**
+     * Test fractional scaled sprite image.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testFractionalScaledSpriteImage() throws FileNotFoundException, IOException {
         final File testDir = testDir("scaled-sprite-fractional");
@@ -322,6 +454,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         org.carrot2.util.FileUtils.deleteThrowingExceptions(absoluteSpriteFile);
     }
 
+    /**
+     * Test css output dir.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testCssOutputDir() throws FileNotFoundException, IOException {
         final File testDir = testDir("css-output-dir");
@@ -343,6 +483,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         FileUtils.deleteDirectory(outputDir.getParentFile());
     }
 
+    /**
+     * Test repeated image references.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testRepeatedImageReferences() throws FileNotFoundException, IOException {
         final File testDir = testDir("repeated-image-references");
@@ -354,6 +502,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test indexed color.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testIndexedColor() throws FileNotFoundException, IOException {
         final File testDir = testDir("indexed-color");
@@ -371,6 +527,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test indexed forced direct color.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testIndexedForcedDirectColor() throws FileNotFoundException, IOException {
         final File testDir = testDir("indexed-color");
@@ -390,6 +554,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test indexed forced indexed color.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testIndexedForcedIndexedColor() throws FileNotFoundException, IOException {
         final File testDir = testDir("indexed-color");
@@ -415,6 +587,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         "many-colors", 293, 255));
     }
 
+    /**
+     * Test matte color.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testMatteColor() throws FileNotFoundException, IOException {
         final File testDir = testDir("matte-color");
@@ -444,6 +624,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         "many-colors"));
     }
 
+    /**
+     * Test matte color forced index.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testMatteColorForcedIndex() throws FileNotFoundException, IOException {
         final File testDir = testDir("matte-color");
@@ -477,6 +665,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         "many-colors", 293, 255));
     }
 
+    /**
+     * Test ie 6 indexed color.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testIe6IndexedColor() throws FileNotFoundException, IOException {
         final File testDir = testDir("indexed-color-ie6");
@@ -513,6 +709,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                         77, "many-colors-bit-alpha", 293, 255));
     }
 
+    /**
+     * Test sprite image uid sha 512.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testSpriteImageUidSha512() throws FileNotFoundException, IOException {
         final File testDir = testDir("sprite-image-uid-sha512");
@@ -529,6 +733,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         // assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
     }
 
+    /**
+     * Test sprite image uid sha 512 ie 6.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     @EnabledOnJre(JRE.JAVA_8)
     void testSpriteImageUidSha512Ie6() throws FileNotFoundException, IOException {
@@ -544,6 +756,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Variable substitution in sprite image path.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     @EnabledOnJre(JRE.JAVA_8)
     void variableSubstitutionInSpriteImagePath() throws FileNotFoundException, IOException {
@@ -566,6 +786,12 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         }
     }
 
+    /**
+     * Test individual css file does not exist.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testIndividualCssFileDoesNotExist() throws IOException {
         final String path = testDir("does-not-exist").getPath();
@@ -573,6 +799,12 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).contains(Message.warn(MessageType.CSS_FILE_DOES_NOT_EXIST, path));
     }
 
+    /**
+     * Test directory provided as individual css file.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testDirectoryProvidedAsIndividualCssFile() throws IOException {
         final String path = testDir(".").getPath();
@@ -580,6 +812,12 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).contains(Message.warn(MessageType.CSS_PATH_IS_NOT_A_FILE, path));
     }
 
+    /**
+     * Test individual css files without output dir.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testIndividualCssFilesWithoutOutputDir() throws IOException {
         final File testDir = testDir("individual-css-files-without-output-dir");
@@ -602,6 +840,12 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         }
     }
 
+    /**
+     * Test individual css files with output dir.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testIndividualCssFilesWithOutputDir() throws IOException {
         final File testDir = testDir("individual-css-files-with-output-dir");
@@ -629,6 +873,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         }
     }
 
+    /**
+     * Test sprite margins.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testSpriteMargins() throws FileNotFoundException, IOException {
         final File testDir = testDir("sprite-margins");
@@ -645,6 +897,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
+    /**
+     * Test sprite centering.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     void testSpriteCentering() throws FileNotFoundException, IOException {
         final File testDir = testDir("sprite-centering");
@@ -663,6 +923,11 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
     /**
      * Test case for bug SMARTSPRITES-69.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     @Test
     void testCssSubfolders() throws FileNotFoundException, IOException {
@@ -682,6 +947,11 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     /**
      * Test case for bug SMARTSPRITES-78. The bug was caused by the lack of clear contract on the format of paths in
      * {@link SpriteBuilder#buildSprites(java.util.Collection)}.
+     *
+     * @throws FileNotFoundException
+     *             the file not found exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     @Test
     void testCssFileApiInvocation() throws FileNotFoundException, IOException {
@@ -702,6 +972,12 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         }
     }
 
+    /**
+     * Clean up.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @AfterEach
     public void cleanUp() throws IOException {
         if (spriteBuilder == null) {
@@ -730,42 +1006,125 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         }));
     }
 
+    /**
+     * Test dir.
+     *
+     * @param test
+     *            the test
+     *
+     * @return the file
+     */
     private File testDir(String test) {
         return new File("test/" + test);
     }
 
+    /**
+     * Sprite.
+     *
+     * @param testDir
+     *            the test dir
+     *
+     * @return the buffered image
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private BufferedImage sprite(final File testDir) throws IOException {
         return sprite(testDir, "img/sprite.png");
     }
 
+    /**
+     * Sprite.
+     *
+     * @param testDir
+     *            the test dir
+     * @param imagePath
+     *            the image path
+     *
+     * @return the buffered image
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private BufferedImage sprite(final File testDir, String imagePath) throws IOException {
         return ImageIO.read(new File(testDir, imagePath));
     }
 
+    /**
+     * Expected css.
+     *
+     * @return the file
+     */
     private File expectedCss() {
         return css("css/style-expected.css");
     }
 
+    /**
+     * Source css.
+     *
+     * @return the file
+     */
     private File sourceCss() {
         return css("css/style.css");
     }
 
+    /**
+     * Processed css.
+     *
+     * @return the file
+     */
     private File processedCss() {
         return processedCss(sourceCss());
     }
 
+    /**
+     * Css.
+     *
+     * @param cssPath
+     *            the css path
+     *
+     * @return the file
+     */
     private File css(String cssPath) {
         return new File(spriteBuilder.parameters.getRootDir(), cssPath);
     }
 
+    /**
+     * Processed css.
+     *
+     * @param sourceCss
+     *            the source css
+     *
+     * @return the file
+     */
     private File processedCss(File sourceCss) {
         return new File(spriteBuilder.getProcessedCssFile(sourceCss.getPath()));
     }
 
+    /**
+     * Builds the sprites.
+     *
+     * @param dir
+     *            the dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void buildSprites(File dir) throws IOException {
         buildSprites(dir, false);
     }
 
+    /**
+     * Builds the sprites.
+     *
+     * @param dir
+     *            the dir
+     * @param ie6
+     *            the ie 6
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void buildSprites(File dir, boolean ie6) throws IOException {
         buildSprites(new SmartSpritesParameters(dir.getPath(), null, null, null,
                 SmartSpritesParameters.DEFAULT_LOGGING_LEVEL, SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
@@ -773,10 +1132,32 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                 SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
     }
 
+    /**
+     * Builds the sprites.
+     *
+     * @param cssFiles
+     *            the css files
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void buildSprites(List<String> cssFiles) throws IOException {
         buildSprites(cssFiles, null, null);
     }
 
+    /**
+     * Builds the sprites.
+     *
+     * @param cssFiles
+     *            the css files
+     * @param rootDir
+     *            the root dir
+     * @param outputDir
+     *            the output dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void buildSprites(List<String> cssFiles, String rootDir, String outputDir) throws IOException {
         buildSprites(new SmartSpritesParameters(rootDir, cssFiles, outputDir, null,
                 SmartSpritesParameters.DEFAULT_LOGGING_LEVEL, SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
@@ -784,11 +1165,42 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                 SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
     }
 
+    /**
+     * Builds the sprites.
+     *
+     * @param parameters
+     *            the parameters
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void buildSprites(SmartSpritesParameters parameters) throws IOException {
         spriteBuilder = new SpriteBuilder(parameters, messageLog);
         spriteBuilder.buildSprites();
     }
 
+    /**
+     * Filesystem smart sprites parameters.
+     *
+     * @param rootDir
+     *            the root dir
+     * @param outputDir
+     *            the output dir
+     * @param documentRootDir
+     *            the document root dir
+     * @param logLevel
+     *            the log level
+     * @param cssFileSuffix
+     *            the css file suffix
+     * @param spritePngDepth
+     *            the sprite png depth
+     * @param spritePngIe6
+     *            the sprite png ie 6
+     * @param cssEncoding
+     *            the css encoding
+     *
+     * @return the smart sprites parameters
+     */
     private static SmartSpritesParameters filesystemSmartSpritesParameters(File rootDir, File outputDir,
             File documentRootDir, MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth,
             boolean spritePngIe6, String cssEncoding) {

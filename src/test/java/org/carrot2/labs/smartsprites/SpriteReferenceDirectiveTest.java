@@ -57,25 +57,33 @@ import org.carrot2.labs.smartsprites.message.MessageLog;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test cases for {@link SpriteReferenceDirective}
+ * Test cases for {@link SpriteReferenceDirective}.
  */
 class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
+
+    /** The Constant VERTICAL_SPRITE_IMAGE_DIRECTIVE. */
     private static final SpriteImageDirective VERTICAL_SPRITE_IMAGE_DIRECTIVE = new SpriteImageDirective("vsprite",
             "sprite.png", SpriteImageLayout.VERTICAL, SpriteImageFormat.PNG, Ie6Mode.AUTO, Color.WHITE,
             SpriteUidType.NONE, 1);
 
+    /** The Constant HORIZONTAL_SPRITE_IMAGE_DIRECTIVE. */
     private static final SpriteImageDirective HORIZONTAL_SPRITE_IMAGE_DIRECTIVE = new SpriteImageDirective("hsprite",
             "hsprite.png", SpriteImageLayout.HORIZONTAL, SpriteImageFormat.PNG, Ie6Mode.AUTO, Color.WHITE,
             SpriteUidType.NONE, 1);
 
+    /** The Constant VERTICAL_SPRITE_IMAGE_DIRECTIVE_WITH_LAYOUT. */
     private static final SpriteImageDirective VERTICAL_SPRITE_IMAGE_DIRECTIVE_WITH_LAYOUT = new SpriteImageDirective(
             "vsprite", "sprite.png", SpriteImageLayout.VERTICAL, SpriteImageFormat.PNG, Ie6Mode.AUTO, Color.WHITE,
             SpriteUidType.NONE, 1, new SpriteLayoutProperties(SpriteAlignment.REPEAT, 1, 2, 3, 4));
 
+    /** The Constant SPRITE_IMAGE_DIRECTIVES. */
     private static final Map<String, SpriteImageDirective> SPRITE_IMAGE_DIRECTIVES = ImmutableMap.of("vsprite",
             VERTICAL_SPRITE_IMAGE_DIRECTIVE, "hsprite", HORIZONTAL_SPRITE_IMAGE_DIRECTIVE, "vlsprite",
             VERTICAL_SPRITE_IMAGE_DIRECTIVE_WITH_LAYOUT);
 
+    /**
+     * Test empty.
+     */
     @Test
     void testEmpty() {
         final MessageLog messageLog = new MessageLog();
@@ -84,6 +92,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertNull(directive);
     }
 
+    /**
+     * Test sprite ref only.
+     */
     @Test
     void testSpriteRefOnly() {
         final MessageLog messageLog = new MessageLog();
@@ -101,6 +112,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertThat(messages).isEmpty();
     }
 
+    /**
+     * Test sprite ref only horizontal image.
+     */
     @Test
     void testSpriteRefOnlyHorizontalImage() {
         final MessageLog messageLog = new MessageLog();
@@ -118,6 +132,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertThat(messages).isEmpty();
     }
 
+    /**
+     * Test sprite ref not found.
+     */
     @Test
     void testSpriteRefNotFound() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse("sprite-ref: spritex",
@@ -129,6 +146,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
                 Message.MessageType.REFERENCED_SPRITE_NOT_FOUND, null, 0, "spritex"));
     }
 
+    /**
+     * Test sprite ref alignment.
+     */
     @Test
     void testSpriteRefAlignment() {
         final MessageLog messageLog = new MessageLog();
@@ -146,6 +166,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertThat(messages).isEmpty();
     }
 
+    /**
+     * Test unsupported alignment.
+     */
     @Test
     void testUnsupportedAlignment() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective
@@ -163,30 +186,54 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
                 new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_ALIGNMENT, null, 0, "repeat-x"));
     }
 
+    /**
+     * Test mismatched top alignment.
+     */
     @Test
     void testMismatchedTopAlignment() {
         checkMismatchedAlignment("vsprite", "top", SpriteAlignment.LEFT,
                 Message.MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED);
     }
 
+    /**
+     * Test mismatched bottom alignment.
+     */
     @Test
     void testMismatchedBottomAlignment() {
         checkMismatchedAlignment("vsprite", "bottom", SpriteAlignment.LEFT,
                 Message.MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED);
     }
 
+    /**
+     * Test mismatched left alignment.
+     */
     @Test
     void testMismatchedLeftAlignment() {
         checkMismatchedAlignment("hsprite", "left", SpriteAlignment.TOP,
                 Message.MessageType.ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED);
     }
 
+    /**
+     * Test mismatched right alignment.
+     */
     @Test
     void testMismatchedRightAlignment() {
         checkMismatchedAlignment("hsprite", "right", SpriteAlignment.TOP,
                 Message.MessageType.ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED);
     }
 
+    /**
+     * Check mismatched alignment.
+     *
+     * @param sprite
+     *            the sprite
+     * @param alignment
+     *            the alignment
+     * @param correctedAlignment
+     *            the corrected alignment
+     * @param message
+     *            the message
+     */
     private void checkMismatchedAlignment(String sprite, final String alignment, SpriteAlignment correctedAlignment,
             MessageType message) {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -203,6 +250,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertThat(messages).isEquivalentTo(new Message(Message.MessageLevel.WARN, message, null, 0, alignment));
     }
 
+    /**
+     * Test sprite margins.
+     */
     @Test
     void testSpriteMargins() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -220,6 +270,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertThat(messages).isEmpty();
     }
 
+    /**
+     * Test cannot parse margin.
+     */
     @Test
     void testCannotParseMargin() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -238,6 +291,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
                 Message.MessageType.CANNOT_PARSE_MARGIN_VALUE, null, 0, "10zpx"));
     }
 
+    /**
+     * Test unsupported properties.
+     */
     @Test
     void testUnsupportedProperties() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -251,6 +307,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
                 Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, null, 0, "sprites-alignment, sprites-margin-left"));
     }
 
+    /**
+     * Test sprite layout from sprite image directive.
+     */
     @Test
     void testSpriteLayoutFromSpriteImageDirective() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse("sprite-ref: vlsprite",
@@ -272,6 +331,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertThat(messages).isEmpty();
     }
 
+    /**
+     * Test overridden sprite layout from sprite image directive.
+     */
     @Test
     void testOverriddenSpriteLayoutFromSpriteImageDirective() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(
@@ -289,6 +351,9 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
         assertThat(messages).isEmpty();
     }
 
+    /**
+     * Test negative margin values.
+     */
     @Test
     void testNegativeMarginValues() {
         final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(

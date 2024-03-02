@@ -48,14 +48,18 @@ import org.carrot2.util.BufferedImageUtils;
  * Assertions on instances of {@link CssProperty}.
  */
 public class BufferedImageAssertion {
-    /** The actual property */
+
+    /** The actual property. */
     private final BufferedImage actual;
 
-    /** Assertion description */
+    /** Assertion description. */
     private String description = "image";
 
     /**
      * Creates a {@link BufferedImage} assertion.
+     *
+     * @param actual
+     *            the actual
      */
     public BufferedImageAssertion(BufferedImage actual) {
         this.actual = actual;
@@ -63,6 +67,8 @@ public class BufferedImageAssertion {
 
     /**
      * Asserts that the image is an indexed color image.
+     *
+     * @return the buffered image assertion
      */
     public BufferedImageAssertion isIndexedColor() {
         assertThat(isIndexed()).as(description + ".indexed").isTrue();
@@ -71,12 +77,19 @@ public class BufferedImageAssertion {
 
     /**
      * Asserts that the image is a direct color image.
+     *
+     * @return the buffered image assertion
      */
     public BufferedImageAssertion isDirectColor() {
         assertThat(!isIndexed()).as(description + ".direct").isTrue();
         return this;
     }
 
+    /**
+     * Checks if is indexed.
+     *
+     * @return true, if is indexed
+     */
     private boolean isIndexed() {
         return actual.getType() == BufferedImage.TYPE_BYTE_INDEXED
                 || actual.getType() == BufferedImage.TYPE_BYTE_BINARY;
@@ -84,6 +97,8 @@ public class BufferedImageAssertion {
 
     /**
      * Asserts that the image has bit (0/1) alpha areas.
+     *
+     * @return the buffered image assertion
      */
     public BufferedImageAssertion hasBitAlpha() {
         final int[][] rgb = BufferedImageUtils.getRgb(actual);
@@ -111,6 +126,8 @@ public class BufferedImageAssertion {
 
     /**
      * Asserts that the image has true (0..1) alpha areas.
+     *
+     * @return the buffered image assertion
      */
     public BufferedImageAssertion hasTrueAlpha() {
         final int[][] rgb = BufferedImageUtils.getRgb(actual);
@@ -134,6 +151,8 @@ public class BufferedImageAssertion {
 
     /**
      * Asserts that the image has or doesn't have any transparent areas.
+     *
+     * @return the buffered image assertion
      */
     public BufferedImageAssertion doesNotHaveAlpha() {
         final int[][] rgb = BufferedImageUtils.getRgb(actual);
@@ -156,32 +175,77 @@ public class BufferedImageAssertion {
 
     /**
      * Asserts that the image has the specified number of colors, fully transparent pixels are not counted.
+     *
+     * @param colors
+     *            the colors
+     *
+     * @return the buffered image assertion
      */
     public BufferedImageAssertion hasNumberOfColorsEqualTo(int colors) {
         assertThat(BufferedImageUtils.countDistinctColors(actual)).as(description + ".colors").isEqualTo(colors);
         return this;
     }
 
+    /**
+     * Checks if is equal to.
+     *
+     * @param expected
+     *            the expected
+     *
+     * @return the buffered image assertion
+     */
     public BufferedImageAssertion isEqualTo(BufferedImage expected) {
         assertThat(compareImage(expected)).isTrue();
         return this;
     }
 
+    /**
+     * Checks if is not equal to.
+     *
+     * @param expected
+     *            the expected
+     *
+     * @return the buffered image assertion
+     */
     public BufferedImageAssertion isNotEqualTo(BufferedImage expected) {
         assertThat(actual).isNotEqualTo(expected);
         return this;
     }
 
+    /**
+     * As.
+     *
+     * @param description
+     *            the description
+     *
+     * @return the buffered image assertion
+     */
     public BufferedImageAssertion as(String description) {
         this.description = description;
         return this;
     }
 
+    /**
+     * Checks for size.
+     *
+     * @param dimension
+     *            the dimension
+     *
+     * @return the buffered image assertion
+     */
     public BufferedImageAssertion hasSize(Dimension dimension) {
         assertThat(new Dimension(actual.getWidth(), actual.getHeight())).isEqualTo(dimension);
         return this;
     }
 
+    /**
+     * Compare image.
+     *
+     * @param expected
+     *            the expected
+     *
+     * @return true, if successful
+     */
     private boolean compareImage(BufferedImage expected) {
         if (actual.getWidth() == expected.getWidth() && actual.getHeight() == expected.getHeight()) {
             for (int x = 0; x < actual.getWidth(); x++) {

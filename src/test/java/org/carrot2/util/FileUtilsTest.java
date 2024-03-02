@@ -44,41 +44,66 @@ import org.junit.jupiter.api.Test;
  * Test cases for {@link FileUtils}.
  */
 class FileUtilsTest {
+
+    /**
+     * Canonicalize empty.
+     */
     @Test
     void canonicalizeEmpty() {
         assertEquals("", FileUtils.canonicalize("", "/"));
     }
 
+    /**
+     * Canonicalize one segment.
+     */
     @Test
     void canonicalizeOneSegment() {
         assertEquals("file", FileUtils.canonicalize("file", "/"));
     }
 
+    /**
+     * Canonicalize two segments canonical.
+     */
     @Test
     void canonicalizeTwoSegmentsCanonical() {
         assertEquals("path/file", FileUtils.canonicalize("path/file", "/"));
     }
 
+    /**
+     * Canonicalize two segments non canonical.
+     */
     @Test
     void canonicalizeTwoSegmentsNonCanonical() {
         assertEquals("", FileUtils.canonicalize("path/..", "/"));
     }
 
+    /**
+     * Canonicalize two segments non canonical trailing separator.
+     */
     @Test
     void canonicalizeTwoSegmentsNonCanonicalTrailingSeparator() {
         assertEquals("", FileUtils.canonicalize("path/../", "/"));
     }
 
+    /**
+     * Canonicalize more segments non canonical.
+     */
     @Test
     void canonicalizeMoreSegmentsNonCanonical() {
         assertEquals("/longer/file/actual/file", FileUtils.canonicalize("/longer/file/path/../actual/file", "/"));
     }
 
+    /**
+     * Canonicalize more parents.
+     */
     @Test
     void canonicalizeMoreParents() {
         assertEquals("/longer/actual/file", FileUtils.canonicalize("/longer/file/path/../../actual/file", "/"));
     }
 
+    /**
+     * Canonicalize canonical starting with parent.
+     */
     @Test
     void canonicalizeCanonicalStartingWithParent() {
         assertEquals("../../img/sprite.png", FileUtils.canonicalize("../../img/sprite.png", "/"));

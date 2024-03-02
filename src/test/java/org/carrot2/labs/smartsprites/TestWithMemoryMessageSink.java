@@ -47,9 +47,16 @@ import org.junit.jupiter.api.BeforeEach;
  * A base class for tests checking logged messages.
  */
 public abstract class TestWithMemoryMessageSink {
+
+    /** The message log. */
     protected MessageLog messageLog;
+
+    /** The messages. */
     protected List<Message> messages;
 
+    /**
+     * Sets the up message log with memory message sink.
+     */
     @BeforeEach
     public void setUpMessageLogWithMemoryMessageSink() {
         final MemoryMessageSink messageSink = new MemoryMessageSink();
