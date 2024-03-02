@@ -44,9 +44,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -84,7 +84,7 @@ public class SpriteImageBuilder {
      * A timestamp to use for timestamp-based sprite image UIDs. We need this time stamp as a field to make sure the
      * timestamp is the same for all sprite image replacements.
      */
-    private String timestamp;
+    private Instant timestamp;
 
     /**
      * Creates a {@link SpriteImageBuilder} with the provided parameters and log.
@@ -119,7 +119,7 @@ public class SpriteImageBuilder {
     Multimap<String, SpriteReferenceReplacement> buildSpriteImages(
             Map<String, SpriteImageOccurrence> spriteImageOccurrencesBySpriteId,
             Multimap<String, SpriteReferenceOccurrence> spriteReferenceOccurrencesBySpriteId) throws IOException {
-        timestamp = Long.toString(new Date().getTime());
+        timestamp = Instant.now();
 
         final Multimap<String, SpriteReferenceReplacement> spriteReplacementsByFile = LinkedListMultimap.create();
         for (final Map.Entry<String, Collection<SpriteReferenceOccurrence>> spriteReferenceOccurrences : spriteReferenceOccurrencesBySpriteId
@@ -242,7 +242,7 @@ public class SpriteImageBuilder {
 
         // Build file name
         byte[] spriteImageBytes = spriteImageByteArrayOutputStream.toByteArray();
-        String resolvedImagePath = spriteImage.resolveImagePath(spriteImageBytes, timestamp, ie6Reduced);
+        String resolvedImagePath = spriteImage.resolveImagePath(spriteImageBytes, timestamp.toString(), ie6Reduced);
         if (resolvedImagePath.indexOf('?') >= 0) {
             resolvedImagePath = resolvedImagePath.substring(0, resolvedImagePath.indexOf('?'));
         }
