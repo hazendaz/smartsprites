@@ -39,22 +39,22 @@ package org.carrot2.labs.smartsprites;
 /**
  * Describes an occurrence of a {@link SpriteImageDirective} in a specific CSS file.
  */
-public class SpriteImageOccurrence extends SpriteDirectiveOccurrence
-{
-    
+public class SpriteImageOccurrence extends SpriteDirectiveOccurrence {
+
     /** The sprite image directive. */
     public final SpriteImageDirective spriteImageDirective;
 
     /**
      * Instantiates a new sprite image occurrence.
      *
-     * @param spriteImageDirective the sprite image directive
-     * @param cssFile the css file
-     * @param line the line
+     * @param spriteImageDirective
+     *            the sprite image directive
+     * @param cssFile
+     *            the css file
+     * @param line
+     *            the line
      */
-    public SpriteImageOccurrence(SpriteImageDirective spriteImageDirective,
-        String cssFile, int line)
-    {
+    public SpriteImageOccurrence(SpriteImageDirective spriteImageDirective, String cssFile, int line) {
         super(cssFile, line);
         this.spriteImageDirective = spriteImageDirective;
     }

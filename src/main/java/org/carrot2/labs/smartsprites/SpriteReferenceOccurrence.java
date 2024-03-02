@@ -45,30 +45,33 @@ import org.carrot2.util.BufferedImageUtils;
 /**
  * Represents an occurrence of a {@link SpriteReferenceDirective} in a specific CSS file.
  */
-public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence
-{
-    
-    /**  The directive. */
+public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence {
+
+    /** The directive. */
     public final SpriteReferenceDirective spriteReferenceDirective;
 
     /** CSS file relative path to the individual image to be added to a sprite. */
     public final String imagePath;
 
-    /**  Indicates whether the original css property has been marked as important. */
+    /** Indicates whether the original css property has been marked as important. */
     public final boolean important;
 
     /**
      * Instantiates a new sprite reference occurrence.
      *
-     * @param spriteReferenceDirective the sprite reference directive
-     * @param imageFile the image file
-     * @param cssFile the css file
-     * @param line the line
-     * @param important the important
+     * @param spriteReferenceDirective
+     *            the sprite reference directive
+     * @param imageFile
+     *            the image file
+     * @param cssFile
+     *            the css file
+     * @param line
+     *            the line
+     * @param important
+     *            the important
      */
-    public SpriteReferenceOccurrence(SpriteReferenceDirective spriteReferenceDirective,
-        String imageFile, String cssFile, int line, boolean important)
-    {
+    public SpriteReferenceOccurrence(SpriteReferenceDirective spriteReferenceDirective, String imageFile,
+            String cssFile, int line, boolean important) {
         super(cssFile, line);
         this.spriteReferenceDirective = spriteReferenceDirective;
         this.imagePath = imageFile;
@@ -78,137 +81,102 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence
     /**
      * Computes the minimum width the individual image will need when rendering.
      *
-     * @param image the image
-     * @param layout the layout
+     * @param image
+     *            the image
+     * @param layout
+     *            the layout
+     *
      * @return the required width
      */
-    public int getRequiredWidth(BufferedImage image, SpriteImageLayout layout)
-    {
-        if (SpriteAlignment.REPEAT
-            .equals(spriteReferenceDirective.spriteLayoutProperties.alignment)
-            && SpriteImageLayout.VERTICAL.equals(layout))
-        {
+    public int getRequiredWidth(BufferedImage image, SpriteImageLayout layout) {
+        if (SpriteAlignment.REPEAT.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)
+                && SpriteImageLayout.VERTICAL.equals(layout)) {
             // Ignoring left/right margins on repeated
             // images in vertically stacked sprites
             return image.getWidth();
-        }
-        else
-        {
-            return image.getWidth()
-                + spriteReferenceDirective.spriteLayoutProperties.marginLeft
-                + spriteReferenceDirective.spriteLayoutProperties.marginRight;
+        } else {
+            return image.getWidth() + spriteReferenceDirective.spriteLayoutProperties.marginLeft
+                    + spriteReferenceDirective.spriteLayoutProperties.marginRight;
         }
     }
 
     /**
      * Computes the minimum height the individual image will need when rendering.
      *
-     * @param image the image
-     * @param layout the layout
+     * @param image
+     *            the image
+     * @param layout
+     *            the layout
+     *
      * @return the required height
      */
-    public int getRequiredHeight(BufferedImage image, SpriteImageLayout layout)
-    {
-        if (SpriteAlignment.REPEAT
-            .equals(spriteReferenceDirective.spriteLayoutProperties.alignment)
-            && SpriteImageLayout.HORIZONTAL.equals(layout))
-        {
+    public int getRequiredHeight(BufferedImage image, SpriteImageLayout layout) {
+        if (SpriteAlignment.REPEAT.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)
+                && SpriteImageLayout.HORIZONTAL.equals(layout)) {
             // Ignoring top/bottom margins on repeated
             // images in horizontally lined sprites
             return image.getHeight();
-        }
-        else
-        {
-            return image.getHeight()
-                + spriteReferenceDirective.spriteLayoutProperties.marginTop
-                + spriteReferenceDirective.spriteLayoutProperties.marginBottom;
+        } else {
+            return image.getHeight() + spriteReferenceDirective.spriteLayoutProperties.marginTop
+                    + spriteReferenceDirective.spriteLayoutProperties.marginBottom;
         }
     }
 
     /**
      * Renders the individual image, including margins and repeats if any.
-     * 
-     * @param image the individual image as read from the file
-     * @param layout the layout the enclosing sprite
-     * @param dimension height/width of a horizontal/vertical sprite
+     *
+     * @param image
+     *            the individual image as read from the file
+     * @param layout
+     *            the layout the enclosing sprite
+     * @param dimension
+     *            height/width of a horizontal/vertical sprite
+     *
      * @return the rendered individual image
      */
-    public BufferedImage render(BufferedImage image, SpriteImageLayout layout,
-        int dimension)
-    {
+    public BufferedImage render(BufferedImage image, SpriteImageLayout layout, int dimension) {
         final BufferedImage rendered;
-        if (SpriteImageLayout.VERTICAL.equals(layout))
-        {
-            rendered = new BufferedImage(dimension, getRequiredHeight(image, layout),
-                BufferedImage.TYPE_4BYTE_ABGR);
+        if (SpriteImageLayout.VERTICAL.equals(layout)) {
+            rendered = new BufferedImage(dimension, getRequiredHeight(image, layout), BufferedImage.TYPE_4BYTE_ABGR);
 
-            if (SpriteAlignment.LEFT
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment))
-            {
+            if (SpriteAlignment.LEFT.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 BufferedImageUtils.drawImage(image, rendered,
-                    spriteReferenceDirective.spriteLayoutProperties.marginLeft,
-                    spriteReferenceDirective.spriteLayoutProperties.marginTop);
-            }
-            else if (SpriteAlignment.RIGHT
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment))
-            {
-                BufferedImageUtils.drawImage(image, rendered,
-                    dimension
-                        - spriteReferenceDirective.spriteLayoutProperties.marginRight
-                        - image.getWidth(),
-                    spriteReferenceDirective.spriteLayoutProperties.marginTop);
-            }
-            else if (SpriteAlignment.CENTER
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment))
-            {
-                BufferedImageUtils.drawImage(image, rendered,
-                    (rendered.getWidth() - image.getWidth()) / 2,
-                    spriteReferenceDirective.spriteLayoutProperties.marginTop);
-            }
-            else
-            {
-                // Repeat, ignoring margin-left and margin-right
-                for (int x = 0; x < dimension; x += image.getWidth())
-                {
-                    BufferedImageUtils.drawImage(image, rendered, x,
+                        spriteReferenceDirective.spriteLayoutProperties.marginLeft,
                         spriteReferenceDirective.spriteLayoutProperties.marginTop);
+            } else if (SpriteAlignment.RIGHT.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
+                BufferedImageUtils.drawImage(image, rendered,
+                        dimension - spriteReferenceDirective.spriteLayoutProperties.marginRight - image.getWidth(),
+                        spriteReferenceDirective.spriteLayoutProperties.marginTop);
+            } else if (SpriteAlignment.CENTER.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
+                BufferedImageUtils.drawImage(image, rendered, (rendered.getWidth() - image.getWidth()) / 2,
+                        spriteReferenceDirective.spriteLayoutProperties.marginTop);
+            } else {
+                // Repeat, ignoring margin-left and margin-right
+                for (int x = 0; x < dimension; x += image.getWidth()) {
+                    BufferedImageUtils.drawImage(image, rendered, x,
+                            spriteReferenceDirective.spriteLayoutProperties.marginTop);
                 }
             }
-        }
-        else
-        {
-            rendered = new BufferedImage(getRequiredWidth(image, layout), dimension,
-                BufferedImage.TYPE_4BYTE_ABGR);
+        } else {
+            rendered = new BufferedImage(getRequiredWidth(image, layout), dimension, BufferedImage.TYPE_4BYTE_ABGR);
 
-            if (SpriteAlignment.TOP
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment))
-            {
+            if (SpriteAlignment.TOP.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 BufferedImageUtils.drawImage(image, rendered,
-                    spriteReferenceDirective.spriteLayoutProperties.marginLeft,
-                    spriteReferenceDirective.spriteLayoutProperties.marginTop);
-            }
-            else if (SpriteAlignment.BOTTOM
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment))
-            {
+                        spriteReferenceDirective.spriteLayoutProperties.marginLeft,
+                        spriteReferenceDirective.spriteLayoutProperties.marginTop);
+            } else if (SpriteAlignment.BOTTOM.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 BufferedImageUtils.drawImage(image, rendered,
-                    spriteReferenceDirective.spriteLayoutProperties.marginLeft, dimension
-                        - spriteReferenceDirective.spriteLayoutProperties.marginBottom
-                        - image.getHeight());
-            }
-            else if (SpriteAlignment.CENTER
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment))
-            {
+                        spriteReferenceDirective.spriteLayoutProperties.marginLeft,
+                        dimension - spriteReferenceDirective.spriteLayoutProperties.marginBottom - image.getHeight());
+            } else if (SpriteAlignment.CENTER.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 BufferedImageUtils.drawImage(image, rendered,
-                    spriteReferenceDirective.spriteLayoutProperties.marginLeft, 
-                    (rendered.getHeight() - image.getHeight()) / 2);
-            }
-            else
-            {
+                        spriteReferenceDirective.spriteLayoutProperties.marginLeft,
+                        (rendered.getHeight() - image.getHeight()) / 2);
+            } else {
                 // Repeat, ignoring margin-top and margin-bottom
-                for (int y = 0; y < dimension; y += image.getHeight())
-                {
+                for (int y = 0; y < dimension; y += image.getHeight()) {
                     BufferedImageUtils.drawImage(image, rendered,
-                        spriteReferenceDirective.spriteLayoutProperties.marginLeft, y);
+                            spriteReferenceDirective.spriteLayoutProperties.marginLeft, y);
                 }
             }
         }
@@ -216,60 +184,38 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence
     }
 
     /**
-     * Returns the {@link SpriteReferenceReplacement} corresponding to the occurrence,
-     * taking into account the layout the the enclosing sprite and the offset at which the
-     * individual image was rendered.
+     * Returns the {@link SpriteReferenceReplacement} corresponding to the occurrence, taking into account the layout
+     * the the enclosing sprite and the offset at which the individual image was rendered.
      *
-     * @param layout the layout
-     * @param offset the offset
+     * @param layout
+     *            the layout
+     * @param offset
+     *            the offset
+     *
      * @return the sprite reference replacement
      */
-    public SpriteReferenceReplacement buildReplacement(SpriteImageLayout layout,
-        int offset)
-    {
-        if (SpriteImageLayout.VERTICAL.equals(layout))
-        {
+    public SpriteReferenceReplacement buildReplacement(SpriteImageLayout layout, int offset) {
+        if (SpriteImageLayout.VERTICAL.equals(layout)) {
             String horizontalPosition;
-            if (SpriteAlignment.RIGHT.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) 
-            {
+            if (SpriteAlignment.RIGHT.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 horizontalPosition = "right";
-            }
-            else if (SpriteAlignment.CENTER
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) 
-            {
+            } else if (SpriteAlignment.CENTER.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 horizontalPosition = "center";
-            }
-            else
-            {
+            } else {
                 horizontalPosition = "left";
             }
-            
-            return new SpriteReferenceReplacement(
-                this,
-                offset,
-                horizontalPosition);
-        }
-        else
-        {
+
+            return new SpriteReferenceReplacement(this, offset, horizontalPosition);
+        } else {
             String verticalPosition;
-            if (SpriteAlignment.BOTTOM
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) 
-            {
+            if (SpriteAlignment.BOTTOM.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 verticalPosition = "bottom";
-            }
-            else if (SpriteAlignment.CENTER
-                .equals(spriteReferenceDirective.spriteLayoutProperties.alignment))
-            {
+            } else if (SpriteAlignment.CENTER.equals(spriteReferenceDirective.spriteLayoutProperties.alignment)) {
                 verticalPosition = "center";
-            }
-            else
-            {
+            } else {
                 verticalPosition = "top";
             }
-            return new SpriteReferenceReplacement(
-                this,
-                verticalPosition,
-                offset);
+            return new SpriteReferenceReplacement(this, verticalPosition, offset);
         }
     }
 }

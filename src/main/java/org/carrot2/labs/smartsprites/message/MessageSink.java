@@ -39,13 +39,13 @@ package org.carrot2.labs.smartsprites.message;
 /**
  * Collects {@link Message}s for further processing/ retrieval.
  */
-public interface MessageSink
-{
-    
+public interface MessageSink {
+
     /**
      * Adds a {@link Message} for further processing/ retrieval.
      *
-     * @param message the message
+     * @param message
+     *            the message
      */
     void add(Message message);
 }

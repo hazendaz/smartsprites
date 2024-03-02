@@ -36,6 +36,10 @@
  */
 package org.carrot2.labs.smartsprites;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.awt.Color;
 import java.util.Map;
 import java.util.Set;
@@ -49,48 +53,41 @@ import org.carrot2.labs.smartsprites.message.MessageLog;
 import org.carrot2.util.CollectionUtils;
 import org.carrot2.util.StringUtils;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 /**
  * Represents a directive that declares an individual sprite image.
  */
-public class SpriteImageDirective
-{
-    
+public class SpriteImageDirective {
+
     /** The Constant PROPERTY_SPRITE_ID. */
     public static final String PROPERTY_SPRITE_ID = "sprite";
-    
+
     /** The Constant PROPERTY_SPRITE_IMAGE_LAYOUT. */
     public static final String PROPERTY_SPRITE_IMAGE_LAYOUT = "sprite-layout";
-    
+
     /** The Constant PROPERTY_SPRITE_IMAGE_URL. */
     public static final String PROPERTY_SPRITE_IMAGE_URL = "sprite-image";
-    
+
     /** The Constant PROPERTY_SPRITE_IMAGE_UID_SUFFIX. */
     public static final String PROPERTY_SPRITE_IMAGE_UID_SUFFIX = "sprite-image-uid";
-    
+
     /** The Constant PROPERTY_SPRITE_MATTE_COLOR. */
     public static final String PROPERTY_SPRITE_MATTE_COLOR = "sprite-matte-color";
-    
+
     /** The Constant PROPERTY_SPRITE_IE6_MODE. */
     public static final String PROPERTY_SPRITE_IE6_MODE = "sprite-ie6-mode";
-    
+
     /** The Constant PROPERTY_SPRITE_SCALE. */
     public static final String PROPERTY_SPRITE_SCALE = "sprite-scale";
 
-    /**  A set of allowed properties. */
-    private static final Set<String> ALLOWED_PROPERTIES = ImmutableSet.of(
-        PROPERTY_SPRITE_ID, PROPERTY_SPRITE_IMAGE_LAYOUT, PROPERTY_SPRITE_IMAGE_URL,
-        PROPERTY_SPRITE_MATTE_COLOR, PROPERTY_SPRITE_IE6_MODE,
-        PROPERTY_SPRITE_SCALE, PROPERTY_SPRITE_IMAGE_UID_SUFFIX);
+    /** A set of allowed properties. */
+    private static final Set<String> ALLOWED_PROPERTIES = ImmutableSet.of(PROPERTY_SPRITE_ID,
+            PROPERTY_SPRITE_IMAGE_LAYOUT, PROPERTY_SPRITE_IMAGE_URL, PROPERTY_SPRITE_MATTE_COLOR,
+            PROPERTY_SPRITE_IE6_MODE, PROPERTY_SPRITE_SCALE, PROPERTY_SPRITE_IMAGE_UID_SUFFIX);
 
     /**
      * Defines the layout of this sprite.
      */
-    public enum SpriteImageLayout
-    {
+    public enum SpriteImageLayout {
         /**
          * Vertical layout, images stacked on each other.
          */
@@ -107,14 +104,12 @@ public class SpriteImageDirective
         /**
          * Instantiates a new sprite image layout.
          */
-        private SpriteImageLayout()
-        {
+        private SpriteImageLayout() {
             this.value = name().toLowerCase();
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return value;
         }
 
@@ -123,8 +118,7 @@ public class SpriteImageDirective
          *
          * @return the string
          */
-        public static String valuesAsString()
-        {
+        public static String valuesAsString() {
             final String list = Lists.newArrayList(values()).toString();
             return list.substring(1, list.length() - 1);
         }
@@ -133,8 +127,7 @@ public class SpriteImageDirective
     /**
      * Defines the UID Generation Mode of this sprite.
      */
-    public enum SpriteUidType
-    {
+    public enum SpriteUidType {
         /**
          * No UID extension.
          */
@@ -159,15 +152,13 @@ public class SpriteImageDirective
         /**
          * Instantiates a new sprite uid type.
          */
-        private SpriteUidType()
-        {
+        private SpriteUidType() {
             this.value = name().toLowerCase();
             this.pattern = Pattern.compile("${" + value + "}", Pattern.LITERAL);
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return value;
         }
 
@@ -176,8 +167,7 @@ public class SpriteImageDirective
          *
          * @return the string
          */
-        public static String valuesAsString()
-        {
+        public static String valuesAsString() {
             final String list = Lists.newArrayList(values()).toString();
             return list.substring(1, list.length() - 1);
         }
@@ -186,15 +176,14 @@ public class SpriteImageDirective
     /**
      * Defines supported image file formats.
      */
-    public enum SpriteImageFormat
-    {
-        
+    public enum SpriteImageFormat {
+
         /** The png. */
-        PNG, 
- /** The gif. */
- GIF, 
- /** The jpg. */
- JPG;
+        PNG,
+        /** The gif. */
+        GIF,
+        /** The jpg. */
+        JPG;
 
         /** The value. */
         private String value;
@@ -202,25 +191,24 @@ public class SpriteImageDirective
         /**
          * Instantiates a new sprite image format.
          */
-        private SpriteImageFormat()
-        {
+        private SpriteImageFormat() {
             this.value = name().toLowerCase();
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return value;
         }
 
         /**
          * Gets the value.
          *
-         * @param value the value
+         * @param value
+         *            the value
+         *
          * @return the value
          */
-        public static SpriteImageFormat getValue(String value)
-        {
+        public static SpriteImageFormat getValue(String value) {
             return valueOf(value.toUpperCase());
         }
 
@@ -229,8 +217,7 @@ public class SpriteImageDirective
          *
          * @return the string
          */
-        public static String valuesAsString()
-        {
+        public static String valuesAsString() {
             final String list = Lists.newArrayList(values()).toString();
             return list.substring(1, list.length() - 1);
         }
@@ -239,13 +226,12 @@ public class SpriteImageDirective
     /**
      * Defines supported IE6 support options.
      */
-    public enum Ie6Mode
-    {
-        
-        /**  No IE6-friendly image will be created for this sprite, even if needed. */
+    public enum Ie6Mode {
+
+        /** No IE6-friendly image will be created for this sprite, even if needed. */
         NONE,
 
-        /**  IE6-friendly image will be generated for this sprite if needed. */
+        /** IE6-friendly image will be generated for this sprite if needed. */
         AUTO;
 
         /** The value. */
@@ -254,14 +240,12 @@ public class SpriteImageDirective
         /**
          * Instantiates a new ie 6 mode.
          */
-        private Ie6Mode()
-        {
+        private Ie6Mode() {
             this.value = name().toLowerCase();
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return value;
         }
 
@@ -270,8 +254,7 @@ public class SpriteImageDirective
          *
          * @return the string
          */
-        public static String valuesAsString()
-        {
+        public static String valuesAsString() {
             final String list = Lists.newArrayList(values()).toString();
             return list.substring(1, list.length() - 1);
         }
@@ -288,8 +271,7 @@ public class SpriteImageDirective
     public final String imagePath;
 
     /**
-     * Non-file-name extension after the sprite image path to force a cache update on
-     * change, prefixed by '?'.
+     * Non-file-name extension after the sprite image path to force a cache update on change, prefixed by '?'.
      */
     public final SpriteUidType uidType;
 
@@ -319,65 +301,77 @@ public class SpriteImageDirective
     public final float scaleRatio;
 
     /**
-     * Sprite layout properties defined at the sprite image directive level. The defaults
-     * provided here can be overridden at the sprite reference directive level.
+     * Sprite layout properties defined at the sprite image directive level. The defaults provided here can be
+     * overridden at the sprite reference directive level.
      */
     public final SpriteLayoutProperties spriteLayoutProperties;
 
     /**
      * Pattern for a simple syntactic check of the image path.
      */
-    private static final Pattern IMAGE_PATH_PATTERN = Pattern
-        .compile("([^${}]*|\\$\\{[^}]*\\})*");
+    private static final Pattern IMAGE_PATH_PATTERN = Pattern.compile("([^${}]*|\\$\\{[^}]*\\})*");
 
     /**
      * Pattern for extracting variables from image path.
      */
-    private static final Pattern IMAGE_PATH_VARIABLE_PATTERN = Pattern
-        .compile("\\$\\{([a-z]*)\\}");
+    private static final Pattern IMAGE_PATH_VARIABLE_PATTERN = Pattern.compile("\\$\\{([a-z]*)\\}");
 
     /**
      * Variable names allowed in image path.
      */
     private static final Set<String> ALLOWED_VARIABLES = ImmutableSet.of(PROPERTY_SPRITE_ID,
-        SpriteUidType.DATE.toString(), SpriteUidType.SHA512.toString());
+            SpriteUidType.DATE.toString(), SpriteUidType.SHA512.toString());
 
     /**
      * Instantiates a new sprite image directive.
      *
-     * @param id the id
-     * @param imageUrl the image url
-     * @param layout the layout
-     * @param format the format
-     * @param ie6Mode the ie 6 mode
-     * @param matteColor the matte color
-     * @param uidType the uid type
-     * @param scale the scale
+     * @param id
+     *            the id
+     * @param imageUrl
+     *            the image url
+     * @param layout
+     *            the layout
+     * @param format
+     *            the format
+     * @param ie6Mode
+     *            the ie 6 mode
+     * @param matteColor
+     *            the matte color
+     * @param uidType
+     *            the uid type
+     * @param scale
+     *            the scale
      */
-    public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout,
-        SpriteImageFormat format, Ie6Mode ie6Mode, Color matteColor, SpriteUidType uidType, float scale)
-    {
-        this(id, imageUrl, layout, format, ie6Mode, matteColor, uidType, scale,
-            new SpriteLayoutProperties(layout));
+    public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout, SpriteImageFormat format,
+            Ie6Mode ie6Mode, Color matteColor, SpriteUidType uidType, float scale) {
+        this(id, imageUrl, layout, format, ie6Mode, matteColor, uidType, scale, new SpriteLayoutProperties(layout));
     }
 
     /**
      * Instantiates a new sprite image directive.
      *
-     * @param id the id
-     * @param imageUrl the image url
-     * @param layout the layout
-     * @param format the format
-     * @param ie6Mode the ie 6 mode
-     * @param matteColor the matte color
-     * @param uidType the uid type
-     * @param scale the scale
-     * @param spriteLayoutProperties the sprite layout properties
+     * @param id
+     *            the id
+     * @param imageUrl
+     *            the image url
+     * @param layout
+     *            the layout
+     * @param format
+     *            the format
+     * @param ie6Mode
+     *            the ie 6 mode
+     * @param matteColor
+     *            the matte color
+     * @param uidType
+     *            the uid type
+     * @param scale
+     *            the scale
+     * @param spriteLayoutProperties
+     *            the sprite layout properties
      */
-    public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout,
-        SpriteImageFormat format, Ie6Mode ie6Mode, Color matteColor,
-        SpriteUidType uidType, float scale, SpriteLayoutProperties spriteLayoutProperties)
-    {
+    public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout, SpriteImageFormat format,
+            Ie6Mode ie6Mode, Color matteColor, SpriteUidType uidType, float scale,
+            SpriteLayoutProperties spriteLayoutProperties) {
         this.spriteId = id;
         this.imagePath = imageUrl;
         this.layout = layout;
@@ -390,177 +384,138 @@ public class SpriteImageDirective
     }
 
     /**
-     * Parses a string into a {@link SpriteImageDirective}, logging messages to the
-     * provided {@link MessageLog}s.
+     * Parses a string into a {@link SpriteImageDirective}, logging messages to the provided {@link MessageLog}s.
      *
-     * @param directiveString the directive string
-     * @param messageCollector the message collector
+     * @param directiveString
+     *            the directive string
+     * @param messageCollector
+     *            the message collector
+     *
      * @return the sprite image directive
      */
-    public static SpriteImageDirective parse(String directiveString,
-        MessageLog messageCollector)
-    {
+    public static SpriteImageDirective parse(String directiveString, MessageLog messageCollector) {
         final Map<String, CssProperty> rules = CssSyntaxUtils
-            .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString,
-                messageCollector));
+                .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString, messageCollector));
 
         final Set<String> properties = Sets.newLinkedHashSet(rules.keySet());
         properties.removeAll(ALLOWED_PROPERTIES);
         properties.removeAll(SpriteLayoutProperties.ALLOWED_PROPERTIES);
-        if (!properties.isEmpty())
-        {
-            messageCollector.warning(MessageType.UNSUPPORTED_PROPERTIES_FOUND,
-                CollectionUtils.toString(properties));
+        if (!properties.isEmpty()) {
+            messageCollector.warning(MessageType.UNSUPPORTED_PROPERTIES_FOUND, CollectionUtils.toString(properties));
         }
 
-        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_ID))
-        {
+        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_ID)) {
             messageCollector.warning(MessageType.SPRITE_ID_NOT_FOUND);
             return null;
         }
 
-        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_IMAGE_URL))
-        {
+        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_IMAGE_URL)) {
             messageCollector.warning(MessageType.SPRITE_IMAGE_URL_NOT_FOUND);
             return null;
         }
 
         final String id = rules.get(PROPERTY_SPRITE_ID).value;
 
-        final SpriteUidType uidGenerator = valueOf(
-            CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_UID_SUFFIX),
-            SpriteUidType.class, SpriteUidType.NONE, messageCollector,
-            MessageType.UNSUPPORTED_UID_TYPE);
-        if (uidGenerator != SpriteUidType.NONE)
-        {
-            messageCollector.deprecation(
-                MessageType.DEPRECATED_SPRITE_IMAGE_UID,
-                uidGenerator.toString());
+        final SpriteUidType uidGenerator = valueOf(CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_UID_SUFFIX),
+                SpriteUidType.class, SpriteUidType.NONE, messageCollector, MessageType.UNSUPPORTED_UID_TYPE);
+        if (uidGenerator != SpriteUidType.NONE) {
+            messageCollector.deprecation(MessageType.DEPRECATED_SPRITE_IMAGE_UID, uidGenerator.toString());
         }
 
         // Image path. If the path does not match a regular expression, issue a warning.
-        final String imagePath = CssSyntaxUtils.unpackUrl(rules
-            .get(PROPERTY_SPRITE_IMAGE_URL).value);
-        if (IMAGE_PATH_PATTERN.matcher(imagePath).matches())
-        {
+        final String imagePath = CssSyntaxUtils.unpackUrl(rules.get(PROPERTY_SPRITE_IMAGE_URL).value);
+        if (IMAGE_PATH_PATTERN.matcher(imagePath).matches()) {
             // Check variable names
-            final Matcher variableMatcher = IMAGE_PATH_VARIABLE_PATTERN
-                .matcher(imagePath);
-            while (variableMatcher.find())
-            {
-                if (variableMatcher.groupCount() == 1
-                    && !ALLOWED_VARIABLES.contains(variableMatcher.group(1)))
-                {
-                    messageCollector.warning(
-                        MessageType.UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH,
-                        variableMatcher.group(1));
+            final Matcher variableMatcher = IMAGE_PATH_VARIABLE_PATTERN.matcher(imagePath);
+            while (variableMatcher.find()) {
+                if (variableMatcher.groupCount() == 1 && !ALLOWED_VARIABLES.contains(variableMatcher.group(1))) {
+                    messageCollector.warning(MessageType.UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH,
+                            variableMatcher.group(1));
                 }
             }
-        }
-        else
-        {
+        } else {
             // Just issue a warning
             messageCollector.warning(MessageType.MALFORMED_SPRITE_IMAGE_PATH, imagePath);
         }
 
         // Layout is optional
-        final SpriteImageLayout layout = valueOf(
-            CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_LAYOUT),
-            SpriteImageLayout.class, SpriteImageLayout.VERTICAL, messageCollector,
-            MessageType.UNSUPPORTED_LAYOUT);
+        final SpriteImageLayout layout = valueOf(CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_LAYOUT),
+                SpriteImageLayout.class, SpriteImageLayout.VERTICAL, messageCollector, MessageType.UNSUPPORTED_LAYOUT);
 
         // Infer format from image path
         SpriteImageFormat format;
         final int lastDotIndex = imagePath.lastIndexOf('.');
-        if ((lastDotIndex < 0) || (lastDotIndex == imagePath.length() - 1))
-        {
-            messageCollector
-                .warning(MessageType.CANNOT_DETERMINE_IMAGE_FORMAT, imagePath);
+        if ((lastDotIndex < 0) || (lastDotIndex == imagePath.length() - 1)) {
+            messageCollector.warning(MessageType.CANNOT_DETERMINE_IMAGE_FORMAT, imagePath);
             format = SpriteImageFormat.PNG;
-        }
-        else
-        {
+        } else {
             final int questionMarkIndex = imagePath.indexOf('?', lastDotIndex);
-            final String formatValue = questionMarkIndex >= 0 ? imagePath.substring(
-                lastDotIndex + 1, questionMarkIndex) : imagePath
-                .substring(lastDotIndex + 1);
-            try
-            {
+            final String formatValue = questionMarkIndex >= 0 ? imagePath.substring(lastDotIndex + 1, questionMarkIndex)
+                    : imagePath.substring(lastDotIndex + 1);
+            try {
                 format = SpriteImageFormat.getValue(formatValue);
-            }
-            catch (final IllegalArgumentException e)
-            {
-                messageCollector.warning(MessageType.UNSUPPORTED_SPRITE_IMAGE_FORMAT,
-                    formatValue);
+            } catch (final IllegalArgumentException e) {
+                messageCollector.warning(MessageType.UNSUPPORTED_SPRITE_IMAGE_FORMAT, formatValue);
                 format = SpriteImageFormat.PNG;
             }
         }
 
         // Layout is optional
-        final String ie6ModeString = CssSyntaxUtils.getValue(rules,
-            PROPERTY_SPRITE_IE6_MODE);
-        final Ie6Mode ie6Mode = valueOf(ie6ModeString, Ie6Mode.class, Ie6Mode.AUTO,
-            messageCollector, MessageType.UNSUPPORTED_IE6_MODE);
-        if (StringUtils.isNotBlank(ie6ModeString) && format != SpriteImageFormat.PNG)
-        {
+        final String ie6ModeString = CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IE6_MODE);
+        final Ie6Mode ie6Mode = valueOf(ie6ModeString, Ie6Mode.class, Ie6Mode.AUTO, messageCollector,
+                MessageType.UNSUPPORTED_IE6_MODE);
+        if (StringUtils.isNotBlank(ie6ModeString) && format != SpriteImageFormat.PNG) {
             messageCollector.notice(MessageType.IGNORING_IE6_MODE, format.name());
         }
 
         // Matte color
         final Color matteColor;
-        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_MATTE_COLOR))
-        {
-            matteColor = CssSyntaxUtils.parseColor(
-                rules.get(PROPERTY_SPRITE_MATTE_COLOR).value, messageCollector, null);
-        }
-        else
-        {
+        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_MATTE_COLOR)) {
+            matteColor = CssSyntaxUtils.parseColor(rules.get(PROPERTY_SPRITE_MATTE_COLOR).value, messageCollector,
+                    null);
+        } else {
             matteColor = null;
         }
 
         final float scale;
-        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_SCALE))
-        {
+        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_SCALE)) {
             scale = Float.parseFloat(rules.get(PROPERTY_SPRITE_SCALE).value);
-        }
-        else
-        {
+        } else {
             scale = 1.0f;
         }
 
-        return new SpriteImageDirective(id, imagePath, layout, format, ie6Mode,
-            matteColor, uidGenerator, scale, SpriteLayoutProperties.parse(directiveString,
-                layout, messageCollector));
+        return new SpriteImageDirective(id, imagePath, layout, format, ie6Mode, matteColor, uidGenerator, scale,
+                SpriteLayoutProperties.parse(directiveString, layout, messageCollector));
     }
 
     /**
      * Value of.
      *
-     * @param <T> the generic type
-     * @param stringValue the string value
-     * @param enumClass the enum class
-     * @param defaultValue the default value
-     * @param messageCollector the message collector
-     * @param messageType the message type
+     * @param <T>
+     *            the generic type
+     * @param stringValue
+     *            the string value
+     * @param enumClass
+     *            the enum class
+     * @param defaultValue
+     *            the default value
+     * @param messageCollector
+     *            the message collector
+     * @param messageType
+     *            the message type
+     *
      * @return the t
      */
-    private static <T extends Enum<T>> T valueOf(String stringValue, Class<T> enumClass,
-        T defaultValue, MessageLog messageCollector, MessageType messageType)
-    {
-        if (StringUtils.isNotBlank(stringValue))
-        {
-            try
-            {
+    private static <T extends Enum<T>> T valueOf(String stringValue, Class<T> enumClass, T defaultValue,
+            MessageLog messageCollector, MessageType messageType) {
+        if (StringUtils.isNotBlank(stringValue)) {
+            try {
                 return Enum.valueOf(enumClass, stringValue.toUpperCase());
-            }
-            catch (IllegalArgumentException e)
-            {
+            } catch (IllegalArgumentException e) {
                 messageCollector.warning(messageType, stringValue);
                 return defaultValue;
             }
-        }
-        else
-        {
+        } else {
             return defaultValue;
         }
     }

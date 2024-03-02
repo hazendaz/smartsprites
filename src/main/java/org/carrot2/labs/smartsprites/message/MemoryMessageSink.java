@@ -42,15 +42,13 @@ import java.util.List;
 /**
  * Collects messages in a {@link List}, see {@link #messages}.
  */
-public class MemoryMessageSink implements MessageSink
-{
+public class MemoryMessageSink implements MessageSink {
     /**
      * Contains collected messages.
      */
     public final List<Message> messages = new ArrayList<>();
 
-    public void add(Message message)
-    {
+    public void add(Message message) {
         messages.add(message);
     }
 }

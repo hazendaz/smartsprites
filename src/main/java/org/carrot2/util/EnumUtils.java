@@ -39,43 +39,38 @@ package org.carrot2.util;
 /**
  * Various utility methods for working with Java 5 enum types.
  */
-public class EnumUtils
-{
+public class EnumUtils {
 
     /**
      * Instantiates a new enum utils.
      */
-    private EnumUtils()
-    {
+    private EnumUtils() {
         // Prevent Instantiation
     }
 
     /**
-     * Returns the enum instance corresponding to the provided <code>name</code> or
-     * <code>defaultValue</code> if no enum value corresponds to <code>name</code>.
+     * Returns the enum instance corresponding to the provided <code>name</code> or <code>defaultValue</code> if no enum
+     * value corresponds to <code>name</code>.
      *
-     * @param <T> the generic type
-     * @param name the name
-     * @param enumClass the enum class
-     * @param defaultValue the default value
+     * @param <T>
+     *            the generic type
+     * @param name
+     *            the name
+     * @param enumClass
+     *            the enum class
+     * @param defaultValue
+     *            the default value
+     *
      * @return the t
      */
-    public static <T extends Enum<T>> T valueOf(String name, Class<T> enumClass,
-        T defaultValue)
-    {
-        if (StringUtils.isNotBlank(name))
-        {
-            try
-            {
+    public static <T extends Enum<T>> T valueOf(String name, Class<T> enumClass, T defaultValue) {
+        if (StringUtils.isNotBlank(name)) {
+            try {
                 return Enum.valueOf(enumClass, name);
-            }
-            catch (IllegalArgumentException e)
-            {
+            } catch (IllegalArgumentException e) {
                 return defaultValue;
             }
-        }
-        else
-        {
+        } else {
             return defaultValue;
         }
     }

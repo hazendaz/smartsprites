@@ -47,17 +47,18 @@ import org.kohsuke.args4j.ParserProperties;
 /**
  * The entry class for SmartSprites.
  */
-public class SmartSprites
-{
-    
+public class SmartSprites {
+
     /**
      * Entry point to SmartSprites. All parameters are passed as JVM properties.
      *
-     * @param args the arguments
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @param args
+     *            the arguments
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
-    public static void main(String [] args) throws IOException
-    {
+    public static void main(String[] args) throws IOException {
         final SmartSpritesParameters parameters = new SmartSpritesParameters();
 
         final ParserProperties parserProperties = ParserProperties.defaults();
@@ -65,36 +66,31 @@ public class SmartSprites
 
         final CmdLineParser parser = new CmdLineParser(parameters, parserProperties);
 
-        if (args.length == 0)
-        {
+        if (args.length == 0) {
             printUsage(parser);
             return;
         }
-        
-        try
-        {
+
+        try {
             parser.parseArgument(args);
-        }
-        catch (CmdLineException e)
-        {
+        } catch (CmdLineException e) {
             printUsage(parser);
             System.out.println("\n" + e.getMessage());
             return;
         }
-        
+
         // Get parameters form system properties
-        final MessageLog messageLog = new MessageLog(new PrintStreamMessageSink(
-            System.out, parameters.getLogLevel()));
+        final MessageLog messageLog = new MessageLog(new PrintStreamMessageSink(System.out, parameters.getLogLevel()));
         new SpriteBuilder(parameters, messageLog).buildSprites();
     }
 
     /**
      * Prints the usage.
      *
-     * @param parser the parser
+     * @param parser
+     *            the parser
      */
-    private static void printUsage(final CmdLineParser parser)
-    {
+    private static void printUsage(final CmdLineParser parser) {
         System.out.print("Usage: smartsprites");
         parser.printSingleLineUsage(System.out);
         System.out.println();

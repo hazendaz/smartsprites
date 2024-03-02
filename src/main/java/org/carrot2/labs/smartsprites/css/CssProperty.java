@@ -37,41 +37,42 @@
 package org.carrot2.labs.smartsprites.css;
 
 /**
- * Represents a single CSS property and its value, e.g.
- * <code>background-image: url(img.png)</code>.
+ * Represents a single CSS property and its value, e.g. <code>background-image: url(img.png)</code>.
  */
-public class CssProperty
-{
-    
+public class CssProperty {
+
     /** The rule. */
     public final String rule;
-    
+
     /** The value. */
     public final String value;
-    
+
     /** The important. */
     public final boolean important;
 
     /**
      * Instantiates a new css property.
      *
-     * @param rule the rule
-     * @param value the value
+     * @param rule
+     *            the rule
+     * @param value
+     *            the value
      */
-    public CssProperty(String rule, String value)
-    {
+    public CssProperty(String rule, String value) {
         this(rule, value, false);
     }
 
     /**
      * Instantiates a new css property.
      *
-     * @param rule the rule
-     * @param value the value
-     * @param important the important
+     * @param rule
+     *            the rule
+     * @param value
+     *            the value
+     * @param important
+     *            the important
      */
-    public CssProperty(String rule, String value, boolean important)
-    {
+    public CssProperty(String rule, String value, boolean important) {
         this.rule = rule;
         this.value = value;
         this.important = important;

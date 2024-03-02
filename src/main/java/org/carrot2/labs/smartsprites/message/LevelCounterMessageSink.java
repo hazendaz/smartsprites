@@ -41,24 +41,20 @@ import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
 /**
  * Counts the number of messages logged with different levels.
  */
-public class LevelCounterMessageSink implements MessageSink
-{
-    
-    /**  Number of info messages. */
+public class LevelCounterMessageSink implements MessageSink {
+
+    /** Number of info messages. */
     private int infoCount = 0;
 
-    /**  Number of warning messages. */
+    /** Number of warning messages. */
     private int warnCount = 0;
 
-    public void add(Message message)
-    {
-        if (MessageLevel.INFO.equals(message.level))
-        {
+    public void add(Message message) {
+        if (MessageLevel.INFO.equals(message.level)) {
             infoCount++;
         }
 
-        if (MessageLevel.WARN.equals(message.level))
-        {
+        if (MessageLevel.WARN.equals(message.level)) {
             warnCount++;
         }
     }
@@ -68,8 +64,7 @@ public class LevelCounterMessageSink implements MessageSink
      *
      * @return the info count
      */
-    public int getInfoCount()
-    {
+    public int getInfoCount() {
         return infoCount;
     }
 
@@ -78,8 +73,7 @@ public class LevelCounterMessageSink implements MessageSink
      *
      * @return the warn count
      */
-    public int getWarnCount()
-    {
+    public int getWarnCount() {
         return warnCount;
     }
 }

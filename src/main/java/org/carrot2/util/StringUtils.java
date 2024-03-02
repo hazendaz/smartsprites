@@ -47,30 +47,31 @@ public class StringUtils {
     /**
      * Instantiates a new string utils.
      */
-    private StringUtils()
-    {
+    private StringUtils() {
         // Prevent Instantiation
     }
 
     /**
      * Checks if is blank.
      *
-     * @param string the string
+     * @param string
+     *            the string
+     *
      * @return true, if is blank
      */
-    public static boolean isBlank(final String string)
-    {
+    public static boolean isBlank(final String string) {
         return Strings.isNullOrEmpty(string) ? true : CharMatcher.whitespace().matchesAllOf(string);
     }
 
     /**
      * Checks if is not blank.
      *
-     * @param string the string
+     * @param string
+     *            the string
+     *
      * @return true, if is not blank
      */
-    public static boolean isNotBlank(final String string)
-    {
+    public static boolean isNotBlank(final String string) {
         return !StringUtils.isBlank(string);
     }
 

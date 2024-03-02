@@ -41,29 +41,26 @@ import java.util.Collection;
 /**
  * Various utility methods for working with {@link Collection}s.
  */
-public class CollectionUtils
-{
+public class CollectionUtils {
 
     /**
      * Instantiates a new collection utils.
      */
-    private CollectionUtils()
-    {
+    private CollectionUtils() {
         // Prevent Instantiation
     }
 
     /**
-     * Converts a {@link Collection} to a {@link String} separating entries by
-     * <code>, </code>.
+     * Converts a {@link Collection} to a {@link String} separating entries by <code>, </code>.
      *
-     * @param collection the collection
+     * @param collection
+     *            the collection
+     *
      * @return the string
      */
-    public static String toString(Collection<?> collection)
-    {
+    public static String toString(Collection<?> collection) {
         final StringBuilder string = new StringBuilder();
-        for (final Object object : collection)
-        {
+        for (final Object object : collection) {
             string.append(object.toString());
             string.append(", ");
         }

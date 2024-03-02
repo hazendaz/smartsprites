@@ -35,6 +35,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * Internal message logging system. 
+ * Internal message logging system.
  */
 package org.carrot2.labs.smartsprites.message;

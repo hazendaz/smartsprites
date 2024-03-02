@@ -37,6 +37,7 @@
 package org.carrot2.labs.smartsprites;
 
 import com.google.common.hash.Hashing;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -48,15 +49,13 @@ import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteUidType;
 /**
  * A merged sprite image consisting of a number of individual images.
  */
-public class SpriteImage
-{
-    
-    /**  The rendered sprite image bitmap. */
+public class SpriteImage {
+
+    /** The rendered sprite image bitmap. */
     public final BufferedImage sprite;
 
     /**
-     * All {@link SpriteReferenceReplacement}s corresponding to the individual images this
-     * sprite image consists of.
+     * All {@link SpriteReferenceReplacement}s corresponding to the individual images this sprite image consists of.
      */
     public final Map<SpriteReferenceOccurrence, SpriteReferenceReplacement> spriteReferenceReplacements;
 
@@ -74,9 +73,8 @@ public class SpriteImage
     public String resolvedPath;
 
     /**
-     * The {@link SpriteImageDirective#imagePath} with variables resolved and the
-     * IE6-specific suffix, <code>null</code> if {@link #hasReducedForIe6} is
-     * <code>false</code>.
+     * The {@link SpriteImageDirective#imagePath} with variables resolved and the IE6-specific suffix, <code>null</code>
+     * if {@link #hasReducedForIe6} is <code>false</code>.
      */
     public String resolvedPathIe6;
 
@@ -96,23 +94,27 @@ public class SpriteImage
     public float scaleRatio;
 
     /** The Constant SPRITE_VARIABLE. */
-    private static final Pattern SPRITE_VARIABLE = Pattern.compile("${sprite}",
-        Pattern.LITERAL);
+    private static final Pattern SPRITE_VARIABLE = Pattern.compile("${sprite}", Pattern.LITERAL);
 
     /**
      * Instantiates a new sprite image.
      *
-     * @param sprite the sprite
-     * @param spriteImageOccurrence the sprite image occurrence
-     * @param spriteReplacements the sprite replacements
-     * @param width the width
-     * @param height the height
-     * @param scale the scale
+     * @param sprite
+     *            the sprite
+     * @param spriteImageOccurrence
+     *            the sprite image occurrence
+     * @param spriteReplacements
+     *            the sprite replacements
+     * @param width
+     *            the width
+     * @param height
+     *            the height
+     * @param scale
+     *            the scale
      */
     public SpriteImage(BufferedImage sprite, SpriteImageOccurrence spriteImageOccurrence,
-        Map<SpriteReferenceOccurrence, SpriteReferenceReplacement> spriteReplacements,
-        int width, int height, float scale)
-    {
+            Map<SpriteReferenceOccurrence, SpriteReferenceReplacement> spriteReplacements, int width, int height,
+            float scale) {
         this.sprite = sprite;
         this.spriteReferenceReplacements = spriteReplacements;
         this.spriteImageOccurrence = spriteImageOccurrence;
@@ -120,8 +122,7 @@ public class SpriteImage
         this.spriteHeight = height;
         this.scaleRatio = scale;
 
-        for (SpriteReferenceReplacement replacement : spriteReplacements.values())
-        {
+        for (SpriteReferenceReplacement replacement : spriteReplacements.values()) {
             replacement.spriteImage = this;
         }
     }
@@ -129,31 +130,33 @@ public class SpriteImage
     /**
      * Resolve image path.
      *
-     * @param image the image
-     * @param timestamp the timestamp
-     * @param reducedForIe6 the reduced for ie 6
+     * @param image
+     *            the image
+     * @param timestamp
+     *            the timestamp
+     * @param reducedForIe6
+     *            the reduced for ie 6
+     *
      * @return the string
-     * @throws IOException Signals that an I/O exception has occurred.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
-    String resolveImagePath(byte [] image, String timestamp, boolean reducedForIe6) throws IOException
-    {
+    String resolveImagePath(byte[] image, String timestamp, boolean reducedForIe6) throws IOException {
         String imagePath = spriteImageOccurrence.spriteImageDirective.imagePath;
 
         // Backwards compatibility: if there are no place holders in the path
         // and the UID type is defined, append the UID as a query string just like
         // the previous versions did. To be removed in 0.4.0.
         if (spriteImageOccurrence.spriteImageDirective.uidType != SpriteUidType.NONE
-            && !SpriteUidType.SHA512.pattern.matcher(imagePath).find()
-            && !SpriteUidType.DATE.pattern.matcher(imagePath).find())
-        {
-            imagePath += "?${"
-                + spriteImageOccurrence.spriteImageDirective.uidType.toString() + "}";
+                && !SpriteUidType.SHA512.pattern.matcher(imagePath).find()
+                && !SpriteUidType.DATE.pattern.matcher(imagePath).find()) {
+            imagePath += "?${" + spriteImageOccurrence.spriteImageDirective.uidType.toString() + "}";
         }
 
         // Resolve SHA512 hash
         Matcher sha512Matcher = SpriteUidType.SHA512.pattern.matcher(imagePath);
-        if (sha512Matcher.find())
-        {
+        if (sha512Matcher.find()) {
             // Compute SHA512 only when necessary
             imagePath = sha512Matcher.replaceAll(computeSha512(image));
         }
@@ -162,66 +165,55 @@ public class SpriteImage
         imagePath = SpriteUidType.DATE.pattern.matcher(imagePath).replaceAll(timestamp);
 
         // Resolve sprite name
-        imagePath = SPRITE_VARIABLE.matcher(imagePath).replaceAll(
-            spriteImageOccurrence.spriteImageDirective.spriteId);
+        imagePath = SPRITE_VARIABLE.matcher(imagePath).replaceAll(spriteImageOccurrence.spriteImageDirective.spriteId);
 
-        if (reducedForIe6)
-        {
+        if (reducedForIe6) {
             this.resolvedPathIe6 = addIe6Suffix(imagePath, reducedForIe6);
             return this.resolvedPathIe6;
-        }
-        else
-        {
+        } else {
             this.resolvedPath = addIe6Suffix(imagePath, reducedForIe6);
             return this.resolvedPath;
         }
     }
 
     /**
-     * Adds IE6 suffix to the sprite image path for IE6 reduced images. We make sure we
-     * don't add the suffix to the directory names or after the '?' character.
+     * Adds IE6 suffix to the sprite image path for IE6 reduced images. We make sure we don't add the suffix to the
+     * directory names or after the '?' character.
      *
-     * @param spritePath the sprite path
-     * @param ie6Reduced the ie 6 reduced
+     * @param spritePath
+     *            the sprite path
+     * @param ie6Reduced
+     *            the ie 6 reduced
+     *
      * @return the string
      */
-    static String addIe6Suffix(String spritePath, boolean ie6Reduced)
-    {
-        if (ie6Reduced)
-        {
+    static String addIe6Suffix(String spritePath, boolean ie6Reduced) {
+        if (ie6Reduced) {
             final StringBuilder ie6Path = new StringBuilder();
 
             int lastFoundIndex = 0;
 
             final int lastSlashIndex = spritePath.lastIndexOf('/');
-            if (lastSlashIndex >= 0)
-            {
+            if (lastSlashIndex >= 0) {
                 ie6Path.append(spritePath, lastFoundIndex, lastSlashIndex + 1);
                 lastFoundIndex = lastSlashIndex + 1;
             }
 
             int lastDotIndex = spritePath.lastIndexOf('.');
-            if (lastDotIndex < lastFoundIndex)
-            {
+            if (lastDotIndex < lastFoundIndex) {
                 lastDotIndex = -1;
             }
             final int firstQuestionMarkIndex = spritePath.indexOf('?', lastFoundIndex);
 
-            if (lastDotIndex >= 0
-                && (lastDotIndex < firstQuestionMarkIndex || firstQuestionMarkIndex < 0))
-            {
+            if (lastDotIndex >= 0 && (lastDotIndex < firstQuestionMarkIndex || firstQuestionMarkIndex < 0)) {
                 ie6Path.append(spritePath, lastFoundIndex, lastDotIndex);
                 ie6Path.append("-ie6");
                 ie6Path.append(spritePath, lastDotIndex, spritePath.length());
-            }
-            else if (firstQuestionMarkIndex >= 0)
-            {
+            } else if (firstQuestionMarkIndex >= 0) {
                 ie6Path.append(spritePath, lastFoundIndex, firstQuestionMarkIndex);
                 ie6Path.append("-ie6");
                 ie6Path.append(spritePath, firstQuestionMarkIndex, spritePath.length());
-            }
-            else
-            {
+            } else {
                 ie6Path.append(spritePath, lastFoundIndex, spritePath.length());
                 ie6Path.append("-ie6");
             }
@@ -234,11 +226,12 @@ public class SpriteImage
     /**
      * Computes Sha512 using guava.
      *
-     * @param image the image
+     * @param image
+     *            the image
+     *
      * @return the string
      */
-    private static String computeSha512(byte[] image)
-    {
+    private static String computeSha512(byte[] image) {
         return Hashing.sha512().hashBytes(image).toString();
     }
 }

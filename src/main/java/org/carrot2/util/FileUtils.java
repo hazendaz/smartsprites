@@ -46,49 +46,47 @@ import org.apache.commons.io.FilenameUtils;
 /**
  * Various utility methods for working with {@link File}s.
  */
-public class FileUtils
-{
+public class FileUtils {
 
     /**
      * Instantiates a new file utils.
      */
-    private FileUtils()
-    {
+    private FileUtils() {
         // Prevent Instantiation
     }
 
     /**
-     * Creates a new {@link File} from the provided path and attempts to execute
-     * {@link File#getCanonicalFile()}. In case of a failure, returns the result 
-     * of {@link File#getAbsoluteFile()}.
+     * Creates a new {@link File} from the provided path and attempts to execute {@link File#getCanonicalFile()}. In
+     * case of a failure, returns the result of {@link File#getAbsoluteFile()}.
      *
-     * @param path the path
+     * @param path
+     *            the path
+     *
      * @return the canonical or absolute file
      */
-    public static File getCanonicalOrAbsoluteFile(String path)
-    {
+    public static File getCanonicalOrAbsoluteFile(String path) {
         File file = new File(path);
-        try
-        {
+        try {
             return file.getCanonicalFile();
-        }
-        catch (final IOException e)
-        {
+        } catch (final IOException e) {
             return file.getAbsoluteFile();
         }
     }
 
     /**
-     * Changes the root directory of a file. For example, file is /a/b/c/d/e and oldRoot
-     * is /a/b/c, and newRoot is /x/y, the result will be /x/y/d/e.
+     * Changes the root directory of a file. For example, file is /a/b/c/d/e and oldRoot is /a/b/c, and newRoot is /x/y,
+     * the result will be /x/y/d/e.
      *
-     * @param file the file
-     * @param oldRoot the old root
-     * @param newRoot the new root
+     * @param file
+     *            the file
+     * @param oldRoot
+     *            the old root
+     * @param newRoot
+     *            the new root
+     *
      * @return the string
      */
-    public static String changeRoot(String file, String oldRoot, String newRoot)
-    {
+    public static String changeRoot(String file, String oldRoot, String newRoot) {
         // File is assumed to be a subpath of oldRoot, so PathUtils.getRelativeFilePath()
         // shouldn't return null here.
         final String relativePath = PathUtils.getRelativeFilePath(oldRoot, file);
@@ -96,22 +94,23 @@ public class FileUtils
     }
 
     /**
-     * Removes useless segments in relative paths, e.g. replaces
-     * <code>../path/../other/file.css</code> with <code>../other/file.css</code>
+     * Removes useless segments in relative paths, e.g. replaces <code>../path/../other/file.css</code> with
+     * <code>../other/file.css</code>
      *
-     * @param path the path
-     * @param separator the separator
+     * @param path
+     *            the path
+     * @param separator
+     *            the separator
+     *
      * @return the string
      */
-    public static String canonicalize(String path, String separator)
-    {
+    public static String canonicalize(String path, String separator) {
         String replaced = path;
         String toReplace = null;
         final String separatorEscaped = Pattern.quote(separator);
-        final Pattern pattern = Pattern.compile("[^" + separatorEscaped + "\\.]+"
-            + separatorEscaped + "\\.\\." + separatorEscaped + "?");
-        while (!replaced.equals(toReplace))
-        {
+        final Pattern pattern = Pattern
+                .compile("[^" + separatorEscaped + "\\.]+" + separatorEscaped + "\\.\\." + separatorEscaped + "?");
+        while (!replaced.equals(toReplace)) {
             toReplace = replaced;
             replaced = pattern.matcher(toReplace).replaceFirst("");
         }
@@ -119,77 +118,73 @@ public class FileUtils
     }
 
     /**
-     * Attempts to delete the provided files and throws an {@link IOException} in case
-     * {@link File#delete()} returns <code>false</code> for any of them.
+     * Attempts to delete the provided files and throws an {@link IOException} in case {@link File#delete()} returns
+     * <code>false</code> for any of them.
      *
-     * @param files the files
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @param files
+     *            the files
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
-    public static void deleteThrowingExceptions(File... files) throws IOException
-    {
-        if (files == null)
-        {
+    public static void deleteThrowingExceptions(File... files) throws IOException {
+        if (files == null) {
             return;
         }
 
         final ArrayList<String> undeletedFiles = new ArrayList<>();
-        for (File file : files)
-        {
-            if (file == null)
-            {
+        for (File file : files) {
+            if (file == null) {
                 continue;
             }
 
-            if (file.exists() && !file.delete())
-            {
+            if (file.exists() && !file.delete()) {
                 undeletedFiles.add(file.getPath());
             }
         }
 
-        if (!undeletedFiles.isEmpty())
-        {
+        if (!undeletedFiles.isEmpty()) {
             throw new IOException("Unable to delete files: " + undeletedFiles.toString());
         }
     }
 
     /**
-     * Calls {@link File#mkdirs()} on the provided argument and throws an
-     * {@link IOException} if the call returns <code>false</code>.
+     * Calls {@link File#mkdirs()} on the provided argument and throws an {@link IOException} if the call returns
+     * <code>false</code>.
      *
-     * @param dirs the dirs
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @param dirs
+     *            the dirs
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
-    public static void mkdirsThrowingExceptions(File dirs) throws IOException
-    {
-        if (dirs.exists())
-        {
+    public static void mkdirsThrowingExceptions(File dirs) throws IOException {
+        if (dirs.exists()) {
             return;
         }
 
-        if (!dirs.mkdirs())
-        {
+        if (!dirs.mkdirs()) {
             throw new IOException("Unable to create directories: " + dirs.getPath());
         }
     }
 
     /**
-     * Returns <code>true</code> if file is contained in the parent directory or any
-     * parent of the parent directory.
+     * Returns <code>true</code> if file is contained in the parent directory or any parent of the parent directory.
      *
-     * @param file the file
-     * @param parent the parent
+     * @param file
+     *            the file
+     * @param parent
+     *            the parent
+     *
      * @return true, if is file in parent
      */
-    public static boolean isFileInParent(File file, File parent)
-    {
+    public static boolean isFileInParent(File file, File parent) {
         final File fileParent = file.getParentFile();
-        if (fileParent == null)
-        {
+        if (fileParent == null) {
             return false;
         }
 
-        if (fileParent.equals(parent))
-        {
+        if (fileParent.equals(parent)) {
             return true;
         }
 
