@@ -53,13 +53,15 @@ import com.google.common.collect.Sets;
  */
 public class SpriteReferenceDirective
 {
+    
+    /** The Constant PROPERTY_SPRITE_REF. */
     public static final String PROPERTY_SPRITE_REF = "sprite-ref";
 
-    /** Allowed properties of this directive */
+    /**  Allowed properties of this directive. */
     private static final Set<String> ALLOWED_PROPERTIES = ImmutableSet
         .of(PROPERTY_SPRITE_REF);
 
-    /** Sprite id for this individual image */
+    /**  Sprite id for this individual image. */
     public final String spriteRef;
 
     /**
@@ -67,6 +69,12 @@ public class SpriteReferenceDirective
      */
     public final SpriteLayoutProperties spriteLayoutProperties;
 
+    /**
+     * Instantiates a new sprite reference directive.
+     *
+     * @param spriteImageId the sprite image id
+     * @param spriteLayoutProperties the sprite layout properties
+     */
     public SpriteReferenceDirective(String spriteImageId,
         SpriteLayoutProperties spriteLayoutProperties)
     {
@@ -77,6 +85,11 @@ public class SpriteReferenceDirective
     /**
      * Parses a {@link SpriteReferenceDirective} from the provided {@link String}, logging
      * messages to the provided {@link MessageLog}.
+     *
+     * @param directiveString the directive string
+     * @param spriteImages the sprite images
+     * @param messageCollector the message collector
+     * @return the sprite reference directive
      */
     public static SpriteReferenceDirective parse(String directiveString,
         Map<String, SpriteImageDirective> spriteImages, MessageLog messageCollector)

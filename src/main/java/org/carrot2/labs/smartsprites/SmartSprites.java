@@ -49,8 +49,12 @@ import org.kohsuke.args4j.ParserProperties;
  */
 public class SmartSprites
 {
+    
     /**
      * Entry point to SmartSprites. All parameters are passed as JVM properties.
+     *
+     * @param args the arguments
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static void main(String [] args) throws IOException
     {
@@ -84,6 +88,11 @@ public class SmartSprites
         new SpriteBuilder(parameters, messageLog).buildSprites();
     }
 
+    /**
+     * Prints the usage.
+     *
+     * @param parser the parser
+     */
     private static void printUsage(final CmdLineParser parser)
     {
         System.out.print("Usage: smartsprites");

@@ -50,7 +50,8 @@ import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteUidType;
  */
 public class SpriteImage
 {
-    /** The rendered sprite image bitmap */
+    
+    /**  The rendered sprite image bitmap. */
     public final BufferedImage sprite;
 
     /**
@@ -64,10 +65,7 @@ public class SpriteImage
      */
     public final SpriteImageOccurrence spriteImageOccurrence;
 
-    /**
-     * Indicates whether this sprite has been also generated in an alpha/color degraded
-     * version for IE6;
-     */
+    /** Indicates whether this sprite has been also generated in an alpha/color degraded version for IE6;. */
     public boolean hasReducedForIe6;
 
     /**
@@ -97,9 +95,20 @@ public class SpriteImage
      */
     public float scaleRatio;
 
+    /** The Constant SPRITE_VARIABLE. */
     private static final Pattern SPRITE_VARIABLE = Pattern.compile("${sprite}",
         Pattern.LITERAL);
 
+    /**
+     * Instantiates a new sprite image.
+     *
+     * @param sprite the sprite
+     * @param spriteImageOccurrence the sprite image occurrence
+     * @param spriteReplacements the sprite replacements
+     * @param width the width
+     * @param height the height
+     * @param scale the scale
+     */
     public SpriteImage(BufferedImage sprite, SpriteImageOccurrence spriteImageOccurrence,
         Map<SpriteReferenceOccurrence, SpriteReferenceReplacement> spriteReplacements,
         int width, int height, float scale)
@@ -117,6 +126,15 @@ public class SpriteImage
         }
     }
 
+    /**
+     * Resolve image path.
+     *
+     * @param image the image
+     * @param timestamp the timestamp
+     * @param reducedForIe6 the reduced for ie 6
+     * @return the string
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     String resolveImagePath(byte [] image, String timestamp, boolean reducedForIe6) throws IOException
     {
         String imagePath = spriteImageOccurrence.spriteImageDirective.imagePath;
@@ -162,6 +180,10 @@ public class SpriteImage
     /**
      * Adds IE6 suffix to the sprite image path for IE6 reduced images. We make sure we
      * don't add the suffix to the directory names or after the '?' character.
+     *
+     * @param spritePath the sprite path
+     * @param ie6Reduced the ie 6 reduced
+     * @return the string
      */
     static String addIe6Suffix(String spritePath, boolean ie6Reduced)
     {
@@ -211,6 +233,9 @@ public class SpriteImage
 
     /**
      * Computes Sha512 using guava.
+     *
+     * @param image the image
+     * @return the string
      */
     private static String computeSha512(byte[] image)
     {

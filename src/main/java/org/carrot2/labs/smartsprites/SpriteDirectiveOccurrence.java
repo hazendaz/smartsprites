@@ -41,12 +41,19 @@ package org.carrot2.labs.smartsprites;
  */
 public class SpriteDirectiveOccurrence
 {
-    /** CSS file in which this directive was found */
+    
+    /**  CSS file in which this directive was found. */
     public final String cssFile;
 
-    /** Line number on which the directive occurred */
+    /**  Line number on which the directive occurred. */
     public final int line;
 
+    /**
+     * Instantiates a new sprite directive occurrence.
+     *
+     * @param cssFile the css file
+     * @param line the line
+     */
     public SpriteDirectiveOccurrence(String cssFile, int line)
     {
         this.cssFile = cssFile;

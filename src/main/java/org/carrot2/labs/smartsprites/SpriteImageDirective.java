@@ -58,15 +58,29 @@ import com.google.common.collect.Sets;
  */
 public class SpriteImageDirective
 {
+    
+    /** The Constant PROPERTY_SPRITE_ID. */
     public static final String PROPERTY_SPRITE_ID = "sprite";
+    
+    /** The Constant PROPERTY_SPRITE_IMAGE_LAYOUT. */
     public static final String PROPERTY_SPRITE_IMAGE_LAYOUT = "sprite-layout";
+    
+    /** The Constant PROPERTY_SPRITE_IMAGE_URL. */
     public static final String PROPERTY_SPRITE_IMAGE_URL = "sprite-image";
+    
+    /** The Constant PROPERTY_SPRITE_IMAGE_UID_SUFFIX. */
     public static final String PROPERTY_SPRITE_IMAGE_UID_SUFFIX = "sprite-image-uid";
+    
+    /** The Constant PROPERTY_SPRITE_MATTE_COLOR. */
     public static final String PROPERTY_SPRITE_MATTE_COLOR = "sprite-matte-color";
+    
+    /** The Constant PROPERTY_SPRITE_IE6_MODE. */
     public static final String PROPERTY_SPRITE_IE6_MODE = "sprite-ie6-mode";
+    
+    /** The Constant PROPERTY_SPRITE_SCALE. */
     public static final String PROPERTY_SPRITE_SCALE = "sprite-scale";
 
-    /** A set of allowed properties */
+    /**  A set of allowed properties. */
     private static final Set<String> ALLOWED_PROPERTIES = ImmutableSet.of(
         PROPERTY_SPRITE_ID, PROPERTY_SPRITE_IMAGE_LAYOUT, PROPERTY_SPRITE_IMAGE_URL,
         PROPERTY_SPRITE_MATTE_COLOR, PROPERTY_SPRITE_IE6_MODE,
@@ -87,8 +101,12 @@ public class SpriteImageDirective
          */
         HORIZONTAL;
 
+        /** The value. */
         private String value;
 
+        /**
+         * Instantiates a new sprite image layout.
+         */
         private SpriteImageLayout()
         {
             this.value = name().toLowerCase();
@@ -100,6 +118,11 @@ public class SpriteImageDirective
             return value;
         }
 
+        /**
+         * Values as string.
+         *
+         * @return the string
+         */
         public static String valuesAsString()
         {
             final String list = Lists.newArrayList(values()).toString();
@@ -127,10 +150,15 @@ public class SpriteImageDirective
          */
         SHA512;
 
+        /** The value. */
         private String value;
 
+        /** The pattern. */
         public final Pattern pattern;
 
+        /**
+         * Instantiates a new sprite uid type.
+         */
         private SpriteUidType()
         {
             this.value = name().toLowerCase();
@@ -143,6 +171,11 @@ public class SpriteImageDirective
             return value;
         }
 
+        /**
+         * Values as string.
+         *
+         * @return the string
+         */
         public static String valuesAsString()
         {
             final String list = Lists.newArrayList(values()).toString();
@@ -155,10 +188,20 @@ public class SpriteImageDirective
      */
     public enum SpriteImageFormat
     {
-        PNG, GIF, JPG;
+        
+        /** The png. */
+        PNG, 
+ /** The gif. */
+ GIF, 
+ /** The jpg. */
+ JPG;
 
+        /** The value. */
         private String value;
 
+        /**
+         * Instantiates a new sprite image format.
+         */
         private SpriteImageFormat()
         {
             this.value = name().toLowerCase();
@@ -170,11 +213,22 @@ public class SpriteImageDirective
             return value;
         }
 
+        /**
+         * Gets the value.
+         *
+         * @param value the value
+         * @return the value
+         */
         public static SpriteImageFormat getValue(String value)
         {
             return valueOf(value.toUpperCase());
         }
 
+        /**
+         * Values as string.
+         *
+         * @return the string
+         */
         public static String valuesAsString()
         {
             final String list = Lists.newArrayList(values()).toString();
@@ -187,14 +241,19 @@ public class SpriteImageDirective
      */
     public enum Ie6Mode
     {
-        /** No IE6-friendly image will be created for this sprite, even if needed */
+        
+        /**  No IE6-friendly image will be created for this sprite, even if needed. */
         NONE,
 
-        /** IE6-friendly image will be generated for this sprite if needed */
+        /**  IE6-friendly image will be generated for this sprite if needed. */
         AUTO;
 
+        /** The value. */
         private String value;
 
+        /**
+         * Instantiates a new ie 6 mode.
+         */
         private Ie6Mode()
         {
             this.value = name().toLowerCase();
@@ -206,6 +265,11 @@ public class SpriteImageDirective
             return value;
         }
 
+        /**
+         * Values as string.
+         *
+         * @return the string
+         */
         public static String valuesAsString()
         {
             final String list = Lists.newArrayList(values()).toString();
@@ -278,6 +342,18 @@ public class SpriteImageDirective
     private static final Set<String> ALLOWED_VARIABLES = ImmutableSet.of(PROPERTY_SPRITE_ID,
         SpriteUidType.DATE.toString(), SpriteUidType.SHA512.toString());
 
+    /**
+     * Instantiates a new sprite image directive.
+     *
+     * @param id the id
+     * @param imageUrl the image url
+     * @param layout the layout
+     * @param format the format
+     * @param ie6Mode the ie 6 mode
+     * @param matteColor the matte color
+     * @param uidType the uid type
+     * @param scale the scale
+     */
     public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout,
         SpriteImageFormat format, Ie6Mode ie6Mode, Color matteColor, SpriteUidType uidType, float scale)
     {
@@ -285,6 +361,19 @@ public class SpriteImageDirective
             new SpriteLayoutProperties(layout));
     }
 
+    /**
+     * Instantiates a new sprite image directive.
+     *
+     * @param id the id
+     * @param imageUrl the image url
+     * @param layout the layout
+     * @param format the format
+     * @param ie6Mode the ie 6 mode
+     * @param matteColor the matte color
+     * @param uidType the uid type
+     * @param scale the scale
+     * @param spriteLayoutProperties the sprite layout properties
+     */
     public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout,
         SpriteImageFormat format, Ie6Mode ie6Mode, Color matteColor,
         SpriteUidType uidType, float scale, SpriteLayoutProperties spriteLayoutProperties)
@@ -303,6 +392,10 @@ public class SpriteImageDirective
     /**
      * Parses a string into a {@link SpriteImageDirective}, logging messages to the
      * provided {@link MessageLog}s.
+     *
+     * @param directiveString the directive string
+     * @param messageCollector the message collector
+     * @return the sprite image directive
      */
     public static SpriteImageDirective parse(String directiveString,
         MessageLog messageCollector)
@@ -440,6 +533,17 @@ public class SpriteImageDirective
                 layout, messageCollector));
     }
 
+    /**
+     * Value of.
+     *
+     * @param <T> the generic type
+     * @param stringValue the string value
+     * @param enumClass the enum class
+     * @param defaultValue the default value
+     * @param messageCollector the message collector
+     * @param messageType the message type
+     * @return the t
+     */
     private static <T extends Enum<T>> T valueOf(String stringValue, Class<T> enumClass,
         T defaultValue, MessageLog messageCollector, MessageType messageType)
     {

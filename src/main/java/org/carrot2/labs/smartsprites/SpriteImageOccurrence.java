@@ -41,8 +41,17 @@ package org.carrot2.labs.smartsprites;
  */
 public class SpriteImageOccurrence extends SpriteDirectiveOccurrence
 {
+    
+    /** The sprite image directive. */
     public final SpriteImageDirective spriteImageDirective;
 
+    /**
+     * Instantiates a new sprite image occurrence.
+     *
+     * @param spriteImageDirective the sprite image directive
+     * @param cssFile the css file
+     * @param line the line
+     */
     public SpriteImageOccurrence(SpriteImageDirective spriteImageDirective,
         String cssFile, int line)
     {

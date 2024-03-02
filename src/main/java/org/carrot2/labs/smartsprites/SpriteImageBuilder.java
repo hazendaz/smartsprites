@@ -69,16 +69,17 @@ import com.google.common.io.Closeables;
  */
 public class SpriteImageBuilder
 {
-    /** This builder's configuration */
+    
+    /**  This builder's configuration. */
     public final SmartSpritesParameters parameters;
 
-    /** This builder's message log */
+    /**  This builder's message log. */
     private final MessageLog messageLog;
 
-    /** Image merger for this builder */
+    /**  Image merger for this builder. */
     private SpriteImageRenderer spriteImageRenderer;
 
-    /** The resource handler */
+    /**  The resource handler. */
     private ResourceHandler resourceHandler;
 
     /**
@@ -90,6 +91,10 @@ public class SpriteImageBuilder
 
     /**
      * Creates a {@link SpriteImageBuilder} with the provided parameters and log.
+     *
+     * @param parameters the parameters
+     * @param messageLog the message log
+     * @param resourceHandler the resource handler
      */
     SpriteImageBuilder(SmartSpritesParameters parameters, MessageLog messageLog,
         ResourceHandler resourceHandler)
@@ -102,7 +107,11 @@ public class SpriteImageBuilder
 
     /**
      * Builds all sprite images based on the collected directives.
-     * @throws IOException 
+     *
+     * @param spriteImageOccurrencesBySpriteId the sprite image occurrences by sprite id
+     * @param spriteReferenceOccurrencesBySpriteId the sprite reference occurrences by sprite id
+     * @return the multimap
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Multimap<String, SpriteReferenceReplacement> buildSpriteImages(
         Map<String, SpriteImageOccurrence> spriteImageOccurrencesBySpriteId,
@@ -133,7 +142,11 @@ public class SpriteImageBuilder
 
     /**
      * Builds sprite image for a single sprite image directive.
-     * @throws IOException 
+     *
+     * @param spriteImageOccurrence the sprite image occurrence
+     * @param spriteReferenceOccurrences the sprite reference occurrences
+     * @return the map
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Map<SpriteReferenceOccurrence, SpriteReferenceReplacement> buildSpriteReplacements(
         SpriteImageOccurrence spriteImageOccurrence,
@@ -214,7 +227,11 @@ public class SpriteImageBuilder
 
     /**
      * Writes sprite image to the disk.
-     * @throws IOException 
+     *
+     * @param spriteImage the sprite image
+     * @param mergedImage the merged image
+     * @param ie6Reduced the ie 6 reduced
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     private void writeSprite(SpriteImage spriteImage, final BufferedImage mergedImage,
         boolean ie6Reduced) throws IOException
@@ -289,6 +306,10 @@ public class SpriteImageBuilder
      * Computes the image path. If the imagePath is relative, it's taken relative to the
      * cssFile. If imagePath is absolute (starts with '/') and documentRootDir is not
      * null, it's taken relative to documentRootDir.
+     *
+     * @param cssFile the css file
+     * @param imagePath the image path
+     * @return the image file
      */
     String getImageFile(String cssFile, String imagePath)
     {
@@ -309,6 +330,11 @@ public class SpriteImageBuilder
 
     /**
      * Calculates total dimensions and lays out a single sprite image.
+     *
+     * @param spriteImageOccurrence the sprite image occurrence
+     * @param images the images
+     * @param messageLog the message log
+     * @return the sprite image
      */
     static SpriteImage buildSpriteImage(SpriteImageOccurrence spriteImageOccurrence,
         Map<SpriteReferenceOccurrence, BufferedImage> images, MessageLog messageLog)
@@ -410,6 +436,10 @@ public class SpriteImageBuilder
 
     /**
      * Calculates the width/ height of "repeated" sprites.
+     *
+     * @param images the images
+     * @param layout the layout
+     * @return the int
      */
     static int calculateLeastCommonMultiple(
         Map<SpriteReferenceOccurrence, BufferedImage> images, SpriteImageLayout layout)
@@ -442,6 +472,9 @@ public class SpriteImageBuilder
     /**
      * Groups {@link SpriteReferenceReplacement}s by the line number of their
      * corresponding directives.
+     *
+     * @param spriteReferenceReplacements the sprite reference replacements
+     * @return the sprite replacements by line number
      */
     static Map<Integer, SpriteReferenceReplacement> getSpriteReplacementsByLineNumber(
         Collection<SpriteReferenceReplacement> spriteReferenceReplacements)
@@ -460,6 +493,9 @@ public class SpriteImageBuilder
     /**
      * Groups {@link SpriteImageOccurrence}s by the line number of their corresponding
      * directives.
+     *
+     * @param spriteImageOccurrences the sprite image occurrences
+     * @return the sprite image occurrences by line number
      */
     static Map<Integer, SpriteImageOccurrence> getSpriteImageOccurrencesByLineNumber(
         Collection<SpriteImageOccurrence> spriteImageOccurrences)
@@ -480,8 +516,15 @@ public class SpriteImageBuilder
      */
     static final class BufferedImageEqualsWrapper
     {
+        
+        /** The image. */
         BufferedImage image;
 
+        /**
+         * Instantiates a new buffered image equals wrapper.
+         *
+         * @param image the image
+         */
         BufferedImageEqualsWrapper(BufferedImage image)
         {
             this.image = image;
@@ -554,6 +597,9 @@ public class SpriteImageBuilder
          * This is useful in {@link #equals(Object)} and {@link #hashCode()} to ignore
          * pixels that have different colors but are invisible anyway because of full
          * transparency.
+         *
+         * @param pixel the pixel
+         * @return the int
          */
         private static int ignoreFullTransparency(int pixel)
         {

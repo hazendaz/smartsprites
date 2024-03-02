@@ -148,24 +148,33 @@ public final class SmartSpritesParameters
     /** The default suffix to be added to the generated CSS files. */
     public static final String DEFAULT_CSS_FILE_SUFFIX = "-sprite";
 
-    /** By default, we use full color only when necessary */
+    /**  By default, we use full color only when necessary. */
     public static final PngDepth DEFAULT_SPRITE_PNG_DEPTH = PngDepth.AUTO;
 
-    /** By default, we don't generate separate sprites for IE6 */
+    /**  By default, we don't generate separate sprites for IE6. */
     public static final boolean DEFAULT_SPRITE_PNG_IE6 = false;
 
-    /** By default, we'll assume CSS files are UTF-8 encoded */
+    /**  By default, we'll assume CSS files are UTF-8 encoded. */
     public static final String DEFAULT_CSS_FILE_ENCODING = StandardCharsets.UTF_8.name();
 
     /** The default logging level. */
     public static final MessageLevel DEFAULT_LOGGING_LEVEL = MessageLevel.INFO;
 
-    /** By default, we don't generate sprite directive in output css */
+    /**  By default, we don't generate sprite directive in output css. */
     public static final boolean DEFAULT_MARK_SPRITE_IMAGES = false;
 
+    /**
+     * The Enum PngDepth.
+     */
     public enum PngDepth
     {
-        AUTO, INDEXED, DIRECT;
+        
+        /** The auto. */
+        AUTO, 
+ /** The indexed. */
+ INDEXED, 
+ /** The direct. */
+ DIRECT;
     }
 
     /**
@@ -179,6 +188,8 @@ public final class SmartSpritesParameters
 
     /**
      * Creates the parameters with most default values.
+     *
+     * @param rootDir the root dir
      */
     public SmartSpritesParameters(String rootDir)
     {
@@ -189,6 +200,16 @@ public final class SmartSpritesParameters
 
     /**
      * Creates the parameters.
+     *
+     * @param rootDir the root dir
+     * @param cssFiles the css files
+     * @param outputDir the output dir
+     * @param documentRootDir the document root dir
+     * @param logLevel the log level
+     * @param cssFileSuffix the css file suffix
+     * @param spritePngDepth the sprite png depth
+     * @param spritePngIe6 the sprite png ie 6
+     * @param cssEncoding the css encoding
      */
     public SmartSpritesParameters(String rootDir, List<String> cssFiles,
         String outputDir, String documentRootDir, MessageLevel logLevel,
@@ -201,6 +222,17 @@ public final class SmartSpritesParameters
 
     /**
      * Creates the parameters.
+     *
+     * @param rootDir the root dir
+     * @param cssFiles the css files
+     * @param outputDir the output dir
+     * @param documentRootDir the document root dir
+     * @param logLevel the log level
+     * @param cssFileSuffix the css file suffix
+     * @param spritePngDepth the sprite png depth
+     * @param spritePngIe6 the sprite png ie 6
+     * @param cssEncoding the css encoding
+     * @param markSpriteImages the mark sprite images
      */
     public SmartSpritesParameters(String rootDir, List<String> cssFiles,
         String outputDir, String documentRootDir, MessageLevel logLevel,
@@ -222,7 +254,8 @@ public final class SmartSpritesParameters
     /**
      * Validates the provided parameters. All resource paths are resolved against the local
      * file system.
-     * 
+     *
+     * @param log the log
      * @return <code>true</code> if the parameters are valid
      */
     public boolean validate(MessageLog log)
@@ -295,6 +328,12 @@ public final class SmartSpritesParameters
         return valid;
     }
 
+    /**
+     * Gets the css file suffix.
+     *
+     * @param suffix the suffix
+     * @return the css file suffix
+     */
     private String getCssFileSuffix(String suffix)
     {
         if (suffix == null)
@@ -316,77 +355,153 @@ public final class SmartSpritesParameters
         }
     }
 
+    /**
+     * Gets the root dir.
+     *
+     * @return the root dir
+     */
     public String getRootDir()
     {
         return rootDir;
     }
 
+    /**
+     * Gets the root dir file.
+     *
+     * @return the root dir file
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public File getRootDirFile() throws IOException
     {
         return rootDir.startsWith("..") ? new File(rootDir).getCanonicalFile()
             : new File(rootDir);
     }
 
+    /**
+     * Checks for root dir.
+     *
+     * @return true, if successful
+     */
     public boolean hasRootDir()
     {
         return StringUtils.isNotBlank(rootDir);
     }
 
+    /**
+     * Gets the css files.
+     *
+     * @return the css files
+     */
     public List<String> getCssFiles()
     {
         return cssFiles;
     }
 
+    /**
+     * Checks for css files.
+     *
+     * @return true, if successful
+     */
     public boolean hasCssFiles()
     {
         return cssFiles != null && !cssFiles.isEmpty();
     }
 
+    /**
+     * Gets the output dir.
+     *
+     * @return the output dir
+     */
     public String getOutputDir()
     {
         return outputDir;
     }
 
+    /**
+     * Checks for output dir.
+     *
+     * @return true, if successful
+     */
     public boolean hasOutputDir()
     {
         return StringUtils.isNotBlank(outputDir);
     }
 
+    /**
+     * Gets the document root dir.
+     *
+     * @return the document root dir
+     */
     public String getDocumentRootDir()
     {
         return documentRootDir;
     }
 
+    /**
+     * Checks for document root dir.
+     *
+     * @return true, if successful
+     */
     public boolean hasDocumentRootDir()
     {
         return StringUtils.isNotBlank(documentRootDir);
     }
 
+    /**
+     * Gets the log level.
+     *
+     * @return the log level
+     */
     public MessageLevel getLogLevel()
     {
         return logLevel;
     }
 
+    /**
+     * Gets the css file suffix.
+     *
+     * @return the css file suffix
+     */
     public String getCssFileSuffix()
     {
         return cssFileSuffix;
     }
 
+    /**
+     * Gets the sprite png depth.
+     *
+     * @return the sprite png depth
+     */
     public PngDepth getSpritePngDepth()
     {
         return spritePngDepth;
     }
 
+    /**
+     * Checks if is sprite png ie 6.
+     *
+     * @return true, if is sprite png ie 6
+     */
     public boolean isSpritePngIe6()
     {
         return spritePngIe6;
     }
 
+    /**
+     * Checks if is mark sprite images.
+     *
+     * @return true, if is mark sprite images
+     */
     public boolean isMarkSpriteImages()
     {
         return markSpriteImages;
     }
 
+    /**
+     * Gets the css file encoding.
+     *
+     * @return the css file encoding
+     */
     public String getCssFileEncoding()
     {
         return cssFileEncoding;

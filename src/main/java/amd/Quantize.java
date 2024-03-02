@@ -35,6 +35,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package amd;
+
 /**
  * (#)Quantize.java    0.90 9/19/00 Adam Doppelt
  * 
@@ -44,40 +45,39 @@ package amd;
  * an image are placed into an oct tree. The oct tree is reduced in
  * size, and the pixels from the original image are reassigned to the
  * nodes in the reduced tree.<p>
- *
+ * 
  * Here is the copyright notice from ImageMagick:
  * 
  * <pre>
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  Permission is hereby granted, free of charge, to any person obtaining a    %
-%  copy of this software and associated documentation files ("ImageMagick"),  %
-%  to deal in ImageMagick without restriction, including without limitation   %
-%  the rights to use, copy, modify, merge, publish, distribute, sublicense,   %
-%  and/or sell copies of ImageMagick, and to permit persons to whom the       %
-%  ImageMagick is furnished to do so, subject to the following conditions:    %
-%                                                                             %
-%  The above copyright notice and this permission notice shall be included in %
-%  all copies or substantial portions of ImageMagick.                         %
-%                                                                             %
-%  The software is provided "as is", without warranty of any kind, express or %
-%  implied, including but not limited to the warranties of merchantability,   %
-%  fitness for a particular purpose and noninfringement.  In no event shall   %
-%  E. I. du Pont de Nemours and Company be liable for any claim, damages or   %
-%  other liability, whether in an action of contract, tort or otherwise,      %
-%  arising from, out of or in connection with ImageMagick or the use or other %
-%  dealings in ImageMagick.                                                   %
-%                                                                             %
-%  Except as contained in this notice, the name of the E. I. du Pont de       %
-%  Nemours and Company shall not be used in advertising or otherwise to       %
-%  promote the sale, use or other dealings in ImageMagick without prior       %
-%  written authorization from the E. I. du Pont de Nemours and Company.       %
-%                                                                             %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-</pre>
+ * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ * %  Permission is hereby granted, free of charge, to any person obtaining a    %
+ * %  copy of this software and associated documentation files ("ImageMagick"),  %
+ * %  to deal in ImageMagick without restriction, including without limitation   %
+ * %  the rights to use, copy, modify, merge, publish, distribute, sublicense,   %
+ * %  and/or sell copies of ImageMagick, and to permit persons to whom the       %
+ * %  ImageMagick is furnished to do so, subject to the following conditions:    %
+ * %                                                                             %
+ * %  The above copyright notice and this permission notice shall be included in %
+ * %  all copies or substantial portions of ImageMagick.                         %
+ * %                                                                             %
+ * %  The software is provided "as is", without warranty of any kind, express or %
+ * %  implied, including but not limited to the warranties of merchantability,   %
+ * %  fitness for a particular purpose and noninfringement.  In no event shall   %
+ * %  E. I. du Pont de Nemours and Company be liable for any claim, damages or   %
+ * %  other liability, whether in an action of contract, tort or otherwise,      %
+ * %  arising from, out of or in connection with ImageMagick or the use or other %
+ * %  dealings in ImageMagick.                                                   %
+ * %                                                                             %
+ * %  Except as contained in this notice, the name of the E. I. du Pont de       %
+ * %  Nemours and Company shall not be used in advertising or otherwise to       %
+ * %  promote the sale, use or other dealings in ImageMagick without prior       %
+ * %  written authorization from the E. I. du Pont de Nemours and Company.       %
+ * %                                                                             %
+ * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ * </pre>
  *
- *
- * @version 0.90 19 Sep 2000
  * @author <a href="http://www.gurge.com/amd/">Adam Doppelt</a>
+ * @version 0.90 19 Sep 2000
  */
 public class Quantize {
 
@@ -272,14 +272,23 @@ public class Quantize {
 %
 */
     
-    static final boolean QUICK = false;
+    /** The Constant QUICK. */
+static final boolean QUICK = false;
     
+    /** The Constant MAX_RGB. */
     static final int MAX_RGB = 255;
+    
+    /** The Constant MAX_NODES. */
     static final int MAX_NODES = 266817;
+    
+    /** The Constant MAX_TREE_DEPTH. */
     static final int MAX_TREE_DEPTH = 8;
 
+    /** The squares. */
     // these are precomputed in advance
     static int[] SQUARES;
+    
+    /** The shift. */
     static int[] SHIFT;
 
     static {
@@ -294,6 +303,9 @@ public class Quantize {
         }
     }
 
+    /**
+     * Instantiates a new quantize.
+     */
     private Quantize()
     {
         // Prevent Instantiation
@@ -302,6 +314,9 @@ public class Quantize {
     /**
      * Reduce the image to the given number of colors. The pixels are
      * reduced in place.
+     *
+     * @param pixels the pixels
+     * @param maxColors the max colors
      * @return The new color palette.
      */
     public static int[] quantizeImage(int[][] pixels, int maxColors) {
@@ -312,21 +327,41 @@ public class Quantize {
         return cube.colormap;
     }
     
+    /**
+     * The Class Cube.
+     */
     static class Cube {
+        
+        /** The pixels. */
         int[][] pixels;
+        
+        /** The max colors. */
         int maxColors;
+        
+        /** The colormap. */
         int[] colormap;
         
+        /** The root. */
         Node root;
+        
+        /** The depth. */
         int depth;
 
         // counter for the number of colors in the cube. this gets
+        /** The colors. */
         // recalculated often.
         int colors;
 
+        /** The nodes. */
         // counter for the number of nodes in the tree
         int nodes;
 
+        /**
+         * Instantiates a new cube.
+         *
+         * @param pixels the pixels
+         * @param maxColors the max colors
+         */
         Cube(int[][] pixels, int maxColors) {
             this.pixels = pixels;
             this.maxColors = maxColors;
@@ -430,6 +465,9 @@ public class Quantize {
             }
         }
 
+        /**
+         * Reduction.
+         */
         /*
          * reduction repeatedly prunes the tree until the number of
          * nodes with unique > 0 is less than or equal to the maximum
@@ -454,10 +492,17 @@ public class Quantize {
          * The result of a closest color search.
          */
         static class Search {
+            
+            /** The distance. */
             int distance;
+            
+            /** The color number. */
             int colorNumber;
         }
 
+        /**
+         * Assignment.
+         */
         /*
          * Procedure assignment generates the output image from the
          * pruned tree. The output image consists of two parts: (1) A
@@ -530,37 +575,66 @@ public class Quantize {
          * A single Node in the tree.
          */
         static class Node {
+            
+            /** The cube. */
             Cube cube;
 
+            /** The parent. */
             // parent node
             Node parent;
 
+            /** The child. */
             // child nodes
             Node[] child;
+            
+            /** The nchild. */
             int nchild;
 
+            /** The id. */
             // our index within our parent
             int id;
+            
+            /** The level. */
             // our level within the tree
             int level;
+            
+            /** The mid red. */
             // our color midpoint
             int midRed;
+            
+            /** The mid green. */
             int midGreen;
+            
+            /** The mid blue. */
             int midBlue;
 
+            /** The number pixels. */
             // the pixel count for this node and all children
             int numberPixels;
             
+            /** The unique. */
             // the pixel count for this node
             int unique;
+            
+            /** The total red. */
             // the sum of all pixels contained in this node
             int totalRed;
+            
+            /** The total green. */
             int totalGreen;
+            
+            /** The total blue. */
             int totalBlue;
 
+            /** The color number. */
             // used to build the colormap
             int colorNumber;
 
+            /**
+             * Instantiates a new node.
+             *
+             * @param cube the cube
+             */
             Node(Cube cube) {
                 this.cube = cube;
                 this.parent = this;
@@ -575,6 +649,13 @@ public class Quantize {
                 this.midBlue  = (MAX_RGB + 1) >> 1;
             }
         
+            /**
+             * Instantiates a new node.
+             *
+             * @param parent the parent
+             * @param id the id
+             * @param level the level
+             */
             Node(Node parent, int id, int level) {
                 this.cube = parent.cube;
                 this.parent = parent;
@@ -634,9 +715,13 @@ public class Quantize {
             /**
              * Remove any nodes that have fewer than threshold
              * pixels. Also, as long as we're walking the tree:
-             *
+             * 
              *  - figure out the color with the fewest pixels
              *  - recalculate the total number of colors in the tree
+             *
+             * @param threshold the threshold
+             * @param nextThreshold the next threshold
+             * @return the int
              */
             int reduce(int threshold, int nextThreshold) {
                 if (nchild != 0) {
@@ -659,6 +744,9 @@ public class Quantize {
                 return nextThreshold;
             }
 
+            /**
+             * Colormap.
+             */
             /*
              * colormap traverses the color cube tree and notes each
              * colormap entry. A colormap entry is any node in the
@@ -685,6 +773,14 @@ public class Quantize {
                 }
             }
 
+            /**
+             * Closest color.
+             *
+             * @param red the red
+             * @param green the green
+             * @param blue the blue
+             * @param search the search
+             */
             /* ClosestColor traverses the color cube tree at a
              * particular node and determines which colormap entry
              * best represents the input color.
@@ -710,6 +806,12 @@ public class Quantize {
 
             /**
              * Figure out the distance between this node and som color.
+             *
+             * @param color the color
+             * @param r the r
+             * @param g the g
+             * @param b the b
+             * @return the int
              */
             static final int distance(int color, int r, int g, int b) {
                 return (SQUARES[((color >> 16) & 0xFF) - r + MAX_RGB] +

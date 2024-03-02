@@ -57,6 +57,9 @@ import com.google.common.base.Strings;
 public class PathUtils {
 
 
+    /**
+     * Instantiates a new path utils.
+     */
     private PathUtils()
     {
         // Prevent Instantiation
@@ -64,7 +67,7 @@ public class PathUtils {
 
     /**
      * This method can calculate the relative path between two pathes on a file system.
-     *
+     * 
      * <pre>
      * PathUtils.getRelativeFilePath( null, null )                                   = ""
      * PathUtils.getRelativeFilePath( null, "/usr/local/java/bin" )                  = ""
@@ -79,8 +82,8 @@ public class PathUtils {
      * </pre>
      * Note: On Windows based system, the <code>/</code> character should be replaced by <code>\</code> character.
      *
-     * @param oldPath
-     * @param newPath
+     * @param oldPath the old path
+     * @param newPath the new path
      * @return a relative file path from <code>oldPath</code>.
      */
     public static final String getRelativeFilePath( final String oldPath, final String newPath )
@@ -144,6 +147,14 @@ public class PathUtils {
     // Private methods
     // ----------------------------------------------------------------------
 
+    /**
+     * Builds the relative path.
+     *
+     * @param toPath the to path
+     * @param fromPath the from path
+     * @param separatorChar the separator char
+     * @return the string
+     */
     private static final String buildRelativePath( String toPath,  String fromPath, final char separatorChar )
     {
         // use tokenizer to traverse paths and for lazy checking

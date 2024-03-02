@@ -75,23 +75,26 @@ public class SpriteBuilder
     private static final HashSet<String> OVERRIDING_PROPERTIES = Sets.newHashSet(
         "background-position", "background-image");
 
-    /** This builder's configuration */
+    /**  This builder's configuration. */
     public final SmartSpritesParameters parameters;
 
-    /** This builder's message log */
+    /**  This builder's message log. */
     private final MessageLog messageLog;
 
-    /** Directive occurrence collector for this builder */
+    /**  Directive occurrence collector for this builder. */
     private final SpriteDirectiveOccurrenceCollector spriteDirectiveOccurrenceCollector;
 
-    /** SpriteImageBuilder for this builder */
+    /**  SpriteImageBuilder for this builder. */
     private final SpriteImageBuilder spriteImageBuilder;
 
-    /** Resource handler */
+    /**  Resource handler. */
     private ResourceHandler resourceHandler;
 
     /**
      * Creates a {@link SpriteBuilder} with the provided parameters and log.
+     *
+     * @param parameters the parameters
+     * @param messageLog the message log
      */
     public SpriteBuilder(SmartSpritesParameters parameters, MessageLog messageLog)
     {
@@ -101,6 +104,10 @@ public class SpriteBuilder
 
     /**
      * Creates a {@link SpriteBuilder} with the provided parameters and log.
+     *
+     * @param parameters the parameters
+     * @param messageLog the message log
+     * @param resourceHandler the resource handler
      */
     public SpriteBuilder(SmartSpritesParameters parameters, MessageLog messageLog,
         ResourceHandler resourceHandler)
@@ -117,6 +124,8 @@ public class SpriteBuilder
     /**
      * Performs processing for this builder's parameters. This method resolves all paths
      * against the local file system.
+     *
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public void buildSprites() throws IOException
     {
@@ -183,6 +192,12 @@ public class SpriteBuilder
         buildSprites(filePaths);
     }
 
+    /**
+     * Filter files outside root dir.
+     *
+     * @param filePaths the file paths
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     private void filterFilesOutsideRootDir(Collection<String> filePaths)
         throws IOException
     {
@@ -205,6 +220,7 @@ public class SpriteBuilder
      * @param filePaths paths of CSS files to process. Non-absolute paths will be taken
      *            relative to the current working directory. Both platform-specific and
      *            '/' as the file separator are supported.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public void buildSprites(Collection<String> filePaths) throws IOException
     {
@@ -260,6 +276,10 @@ public class SpriteBuilder
 
     /**
      * Rewrites the original files to refer to the generated sprite images.
+     *
+     * @param spriteImageOccurrencesByFile the sprite image occurrences by file
+     * @param spriteReplacementsByFile the sprite replacements by file
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     private void rewriteCssFiles(
         final Multimap<String, SpriteImageOccurrence> spriteImageOccurrencesByFile,
@@ -303,6 +323,11 @@ public class SpriteBuilder
 
     /**
      * Rewrites one CSS file to refer to the generated sprite images.
+     *
+     * @param originalCssFile the original css file
+     * @param spriteImageOccurrencesByLineNumber the sprite image occurrences by line number
+     * @param spriteReplacementsByLineNumber the sprite replacements by line number
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     private void createProcessedCss(String originalCssFile,
         Map<Integer, SpriteImageOccurrence> spriteImageOccurrencesByLineNumber,
@@ -420,6 +445,11 @@ public class SpriteBuilder
      * replacements. The imagePath is relative to the CSS which declared the sprite image.
      * As it may happen that the image is referenced in another CSS file, we must make
      * sure the paths are correctly translated.
+     *
+     * @param imagePath the image path
+     * @param originalCssFile the original css file
+     * @param spriteReferenceReplacement the sprite reference replacement
+     * @return the relative to replacement location
      */
     private String getRelativeToReplacementLocation(String imagePath,
         String originalCssFile,
@@ -440,6 +470,9 @@ public class SpriteBuilder
 
     /**
      * Gets the name of the processed CSS file.
+     *
+     * @param originalCssFile the original css file
+     * @return the processed css file
      */
     String getProcessedCssFile(String originalCssFile)
     {

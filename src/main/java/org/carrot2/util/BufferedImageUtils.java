@@ -47,9 +47,13 @@ import java.util.Set;
  */
 public class BufferedImageUtils
 {
+    
     /**
      * Returns <code>true</code> if the provided image has partially transparent areas
      * (alpha channel).
+     *
+     * @param image the image
+     * @return true, if successful
      */
     public static boolean hasPartialTransparency(BufferedImage image)
     {
@@ -73,7 +77,10 @@ public class BufferedImageUtils
     }
 
     /**
-     * Returns <code>true</code> if the provided image has any kind of transparent areas
+     * Returns <code>true</code> if the provided image has any kind of transparent areas.
+     *
+     * @param image the image
+     * @return true, if successful
      */
     public static boolean hasTransparency(BufferedImage image)
     {
@@ -99,6 +106,9 @@ public class BufferedImageUtils
     /**
      * Returns the number of distinct colors (excluding transparency) in the
      * <code>image</code>.
+     *
+     * @param image the image
+     * @return the int
      */
     public static int countDistinctColors(BufferedImage image)
     {
@@ -108,6 +118,9 @@ public class BufferedImageUtils
     /**
      * Returns the <code>image</code>'s distinct colors in an RGB format, discarding
      * transparency information.
+     *
+     * @param image the image
+     * @return the distinct colors
      */
     public static int [] getDistinctColors(BufferedImage image)
     {
@@ -118,6 +131,10 @@ public class BufferedImageUtils
      * Returns the <code>image</code>'s distinct colors in an RGB format, discarding
      * transparency information. Adds <code>padding</code> empty slots at the beginning of
      * the returned array.
+     *
+     * @param image the image
+     * @param padding the padding
+     * @return the distinct colors
      */
     public static int [] getDistinctColors(BufferedImage image, int padding)
     {
@@ -153,6 +170,9 @@ public class BufferedImageUtils
     /**
      * Returns a two dimensional array of the <code>image</code>'s RGB values, including
      * transparency.
+     *
+     * @param image the image
+     * @return the rgb
      */
     public static int [][] getRgb(BufferedImage image)
     {
@@ -176,6 +196,10 @@ public class BufferedImageUtils
      * Performs matting of the <code>source</code> image using <code>matteColor</code>.
      * Matting is rendering partial transparencies using solid color as if the original
      * image was put on top of a bitmap filled with <code>matteColor</code>.
+     *
+     * @param source the source
+     * @param matteColor the matte color
+     * @return the buffered image
      */
     public static BufferedImage matte(BufferedImage source, Color matteColor)
     {
@@ -214,6 +238,11 @@ public class BufferedImageUtils
      * Draws <code>image</code> on the <code>canvas</code> placing the top left corner of
      * <code>image</code> at <code>x</code> / <code>y</code> offset from the top left
      * corner of <code>canvas</code>.
+     *
+     * @param image the image
+     * @param canvas the canvas
+     * @param x the x
+     * @param y the y
      */
     public static void drawImage(BufferedImage image, BufferedImage canvas, int x, int y)
     {
@@ -223,6 +252,9 @@ public class BufferedImageUtils
             .getWidth());
     }
 
+    /**
+     * Instantiates a new buffered image utils.
+     */
     private BufferedImageUtils()
     {
     }

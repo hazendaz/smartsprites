@@ -54,12 +54,19 @@ import org.carrot2.util.ColorQuantizer.ColorReductionInfo;
  */
 public class SpriteImageRenderer
 {
-    /** This builder's configuration */
+    
+    /**  This builder's configuration. */
     public final SmartSpritesParameters parameters;
 
-    /** This builder's message log */
+    /**  This builder's message log. */
     private final MessageLog messageLog;
 
+    /**
+     * Instantiates a new sprite image renderer.
+     *
+     * @param parameters the parameters
+     * @param messageLog the message log
+     */
     SpriteImageRenderer(SmartSpritesParameters parameters, MessageLog messageLog)
     {
         this.parameters = parameters;
@@ -68,6 +75,9 @@ public class SpriteImageRenderer
 
     /**
      * If needed, quantizes the image.
+     *
+     * @param spriteImage the sprite image
+     * @return the buffered image[]
      */
     BufferedImage [] render(SpriteImage spriteImage)
     {
@@ -134,6 +144,12 @@ public class SpriteImageRenderer
 
     /**
      * Performs quantization, logs the appropriate messages if needed.
+     *
+     * @param sprite the sprite
+     * @param spriteImage the sprite image
+     * @param colorReductionInfo the color reduction info
+     * @param logLevel the log level
+     * @return the buffered image
      */
     private BufferedImage quantize(BufferedImage sprite, SpriteImage spriteImage,
         final ColorReductionInfo colorReductionInfo, MessageLevel logLevel)

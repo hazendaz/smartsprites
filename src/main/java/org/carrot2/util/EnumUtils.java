@@ -42,6 +42,9 @@ package org.carrot2.util;
 public class EnumUtils
 {
 
+    /**
+     * Instantiates a new enum utils.
+     */
     private EnumUtils()
     {
         // Prevent Instantiation
@@ -50,6 +53,12 @@ public class EnumUtils
     /**
      * Returns the enum instance corresponding to the provided <code>name</code> or
      * <code>defaultValue</code> if no enum value corresponds to <code>name</code>.
+     *
+     * @param <T> the generic type
+     * @param name the name
+     * @param enumClass the enum class
+     * @param defaultValue the default value
+     * @return the t
      */
     public static <T extends Enum<T>> T valueOf(String name, Class<T> enumClass,
         T defaultValue)

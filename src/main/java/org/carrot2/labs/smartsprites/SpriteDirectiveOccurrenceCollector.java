@@ -60,23 +60,27 @@ import com.google.common.io.Closeables;
  */
 public class SpriteDirectiveOccurrenceCollector
 {
-    /** A regular expression for extracting sprite image directives */
+    
+    /**  A regular expression for extracting sprite image directives. */
     private static final Pattern SPRITE_IMAGE_DIRECTIVE = Pattern
         .compile("/\\*+\\s+(sprite:[^*]*)\\*+/");
 
-    /** A regular expression for extracting sprite reference directives */
+    /**  A regular expression for extracting sprite reference directives. */
     private static final Pattern SPRITE_REFERENCE_DIRECTIVE = Pattern
         .compile("/\\*+\\s+(sprite-ref:[^*]*)\\*+/");
 
-    /** This builder's message log */
+    /**  This builder's message log. */
     private final MessageLog messageLog;
 
-    /** The resource handler */
+    /**  The resource handler. */
     private final ResourceHandler resourceHandler;
 
     /**
      * Creates a {@link SpriteDirectiveOccurrenceCollector} with the provided parameters
      * and log.
+     *
+     * @param messageLog the message log
+     * @param resourceHandler the resource handler
      */
     SpriteDirectiveOccurrenceCollector(MessageLog messageLog,
         ResourceHandler resourceHandler)
@@ -87,6 +91,10 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Collects {@link SpriteImageOccurrence}s from a single CSS file.
+     *
+     * @param cssFile the css file
+     * @return the collection
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Collection<SpriteImageOccurrence> collectSpriteImageOccurrences(String cssFile)
         throws IOException
@@ -134,6 +142,11 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Collects {@link SpriteReferenceOccurrence}s from a single CSS file.
+     *
+     * @param cssFile the css file
+     * @param spriteImageDirectives the sprite image directives
+     * @return the collection
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Collection<SpriteReferenceOccurrence> collectSpriteReferenceOccurrences(
         String cssFile, Map<String, SpriteImageDirective> spriteImageDirectives)
@@ -191,6 +204,10 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Collects {@link SpriteImageOccurrence}s from the provided CSS files.
+     *
+     * @param filePaths the file paths
+     * @return the multimap
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Multimap<String, SpriteImageOccurrence> collectSpriteImageOccurrences(
         Collection<String> filePaths) throws IOException
@@ -210,6 +227,11 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Collects {@link SpriteReferenceOccurrence}s from the provided CSS files.
+     *
+     * @param files the files
+     * @param spriteImageDirectivesBySpriteId the sprite image directives by sprite id
+     * @return the multimap
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Multimap<String, SpriteReferenceOccurrence> collectSpriteReferenceOccurrences(
         Collection<String> files,
@@ -232,6 +254,9 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Groups {@link SpriteImageDirective}s by sprite id.
+     *
+     * @param spriteImageOccurrencesByFile the sprite image occurrences by file
+     * @return the map
      */
     Map<String, SpriteImageOccurrence> mergeSpriteImageOccurrences(
         final Multimap<String, SpriteImageOccurrence> spriteImageOccurrencesByFile)
@@ -263,6 +288,9 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Groups {@link SpriteReferenceOccurrence}s by sprite id.
+     *
+     * @param spriteEntriesByFile the sprite entries by file
+     * @return the multimap
      */
     static Multimap<String, SpriteReferenceOccurrence> mergeSpriteReferenceOccurrences(
         final Multimap<String, SpriteReferenceOccurrence> spriteEntriesByFile)
@@ -281,6 +309,9 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Extract the sprite image directive string to be parsed.
+     *
+     * @param cssLine the css line
+     * @return the string
      */
     static String extractSpriteImageDirectiveString(String cssLine)
     {
@@ -298,6 +329,9 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Extract the sprite reference directive string to be parsed.
+     *
+     * @param css the css
+     * @return the string
      */
     static String extractSpriteReferenceDirectiveString(String css)
     {
@@ -315,6 +349,9 @@ public class SpriteDirectiveOccurrenceCollector
 
     /**
      * Extract the url to the image to be added to a sprite.
+     *
+     * @param css the css
+     * @return the css property
      */
     CssProperty extractSpriteReferenceCssProperty(String css)
     {

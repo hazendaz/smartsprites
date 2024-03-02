@@ -51,31 +51,35 @@ import org.carrot2.labs.smartsprites.SmartSpritesParameters;
  */
 public interface ResourceHandler
 {
+    
     /**
      * Returns the resource input stream for the provided path.
-     * 
+     *
      * @param path the resource path
      * @return the resource stream or <code>null</code> if the resource could not be
      *         opened.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     InputStream getResourceAsInputStream(String path) throws IOException;
 
     /**
      * Returns the reader for the provided path. Implementations are responsible for
      * creating the reader with the right charset.
-     * 
+     *
      * @param path the resource path
      * @return the reader or <code>null</code> if the resource could not be opened.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Reader getResourceAsReader(String path) throws IOException;
 
     /**
      * Returns the resource output stream for the provided path. If the resource already
      * exists, its content should be overwritten.
-     * 
+     *
      * @param path the resource path
      * @return the resource stream or <code>null</code> if the resource could not be
      *         opened.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     OutputStream getResourceAsOutputStream(String path) throws IOException;
 
@@ -83,9 +87,10 @@ public interface ResourceHandler
      * Returns the writer for the provided path. If the resource already exists, its
      * content should be overwritten. Implementations are responsible for creating the
      * writer with the right charset.
-     * 
+     *
      * @param path the resource path
      * @return the writer or <code>null</code> if the resource could not be opened.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     Writer getResourceAsWriter(String path) throws IOException;
 

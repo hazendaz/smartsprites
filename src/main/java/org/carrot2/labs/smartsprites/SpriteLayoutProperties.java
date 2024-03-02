@@ -54,13 +54,23 @@ import com.google.common.collect.Lists;
  */
 public class SpriteLayoutProperties
 {
+    
+    /** The Constant PROPERTY_SPRITE_ALIGNMENT. */
     public static final String PROPERTY_SPRITE_ALIGNMENT = "sprite-alignment";
+    
+    /** The Constant PROPERTY_SPRITE_MARGIN_BOTTOM. */
     public static final String PROPERTY_SPRITE_MARGIN_BOTTOM = "sprite-margin-bottom";
+    
+    /** The Constant PROPERTY_SPRITE_MARGIN_TOP. */
     public static final String PROPERTY_SPRITE_MARGIN_TOP = "sprite-margin-top";
+    
+    /** The Constant PROPERTY_SPRITE_MARGIN_RIGHT. */
     public static final String PROPERTY_SPRITE_MARGIN_RIGHT = "sprite-margin-right";
+    
+    /** The Constant PROPERTY_SPRITE_MARGIN_LEFT. */
     public static final String PROPERTY_SPRITE_MARGIN_LEFT = "sprite-margin-left";
 
-    /** Allowed properties of this directive */
+    /**  Allowed properties of this directive. */
     static final Set<String> ALLOWED_PROPERTIES = ImmutableSet.of(
         PROPERTY_SPRITE_ALIGNMENT, PROPERTY_SPRITE_MARGIN_LEFT,
         PROPERTY_SPRITE_MARGIN_RIGHT, PROPERTY_SPRITE_MARGIN_TOP,
@@ -96,13 +106,15 @@ public class SpriteLayoutProperties
          */
         REPEAT,
         
-        /**
-         * To the center of a vertical or horizontal sprite
-         */
+        /** To the center of a vertical or horizontal sprite. */
         CENTER;
 
+        /** The value. */
         private String value;
 
+        /**
+         * Instantiates a new sprite alignment.
+         */
         private SpriteAlignment()
         {
             this.value = name().toLowerCase();
@@ -114,11 +126,22 @@ public class SpriteLayoutProperties
             return value;
         }
 
+        /**
+         * Gets the value.
+         *
+         * @param value the value
+         * @return the value
+         */
         public static SpriteAlignment getValue(String value)
         {
             return valueOf(value.toUpperCase());
         }
 
+        /**
+         * Values as string.
+         *
+         * @return the string
+         */
         public static String valuesAsString()
         {
             final String list = Lists.newArrayList(values()).toString();
@@ -126,21 +149,30 @@ public class SpriteLayoutProperties
         }
     }
 
-    /** Alignment of this individual image */
+    /**  Alignment of this individual image. */
     public final SpriteAlignment alignment;
 
-    /** Left margin of the individual image */
+    /**  Left margin of the individual image. */
     public final int marginLeft;
 
-    /** Right margin of the individual image */
+    /**  Right margin of the individual image. */
     public final int marginRight;
 
-    /** Top margin of the individual image */
+    /**  Top margin of the individual image. */
     public final int marginTop;
 
-    /** Bottom margin of the individual image */
+    /**  Bottom margin of the individual image. */
     public final int marginBottom;
 
+    /**
+     * Instantiates a new sprite layout properties.
+     *
+     * @param alignment the alignment
+     * @param marginLeft the margin left
+     * @param marginRight the margin right
+     * @param marginTop the margin top
+     * @param marginBottom the margin bottom
+     */
     public SpriteLayoutProperties(SpriteAlignment alignment, int marginLeft,
         int marginRight, int marginTop, int marginBottom)
     {
@@ -153,6 +185,8 @@ public class SpriteLayoutProperties
 
     /**
      * Creates an instance with default values.
+     *
+     * @param layout the layout
      */
     SpriteLayoutProperties(SpriteImageLayout layout)
     {
@@ -162,6 +196,11 @@ public class SpriteLayoutProperties
     /**
      * Parses a {@link SpriteLayoutProperties} from the provided {@link String} logging
      * messages to the provided {@link MessageLog}.
+     *
+     * @param directiveString the directive string
+     * @param spriteImageLayout the sprite image layout
+     * @param messageCollector the message collector
+     * @return the sprite layout properties
      */
     public static SpriteLayoutProperties parse(String directiveString,
         SpriteImageLayout spriteImageLayout, MessageLog messageCollector)
@@ -173,6 +212,12 @@ public class SpriteLayoutProperties
     /**
      * Parses a {@link SpriteLayoutProperties} from the provided {@link String}, using the
      * provided defaults and logging messages to the provided {@link MessageLog}.
+     *
+     * @param directiveString the directive string
+     * @param spriteImageLayout the sprite image layout
+     * @param defaults the defaults
+     * @param messageCollector the message collector
+     * @return the sprite layout properties
      */
     public static SpriteLayoutProperties parse(String directiveString,
         SpriteImageLayout spriteImageLayout, SpriteLayoutProperties defaults,
@@ -225,6 +270,11 @@ public class SpriteLayoutProperties
     /**
      * Corrects sprite alignment if necessary based on the layout of the enclosing sprite
      * image.
+     *
+     * @param spriteImageLayout the sprite image layout
+     * @param alignment the alignment
+     * @param messageCollector the message collector
+     * @return the sprite alignment
      */
     private static SpriteAlignment correctAlignment(SpriteImageLayout spriteImageLayout,
         SpriteAlignment alignment, MessageLog messageCollector)
@@ -255,6 +305,9 @@ public class SpriteLayoutProperties
 
     /**
      * Returns default alignment for given sprite image directive.
+     *
+     * @param spriteImageLayout the sprite image layout
+     * @return the default alignment
      */
     private static SpriteAlignment getDefaultAlignment(SpriteImageLayout spriteImageLayout)
     {
@@ -270,6 +323,12 @@ public class SpriteLayoutProperties
 
     /**
      * Parses margin value.
+     *
+     * @param marginRule the margin rule
+     * @param rules the rules
+     * @param defaultMargin the default margin
+     * @param messageLog the message log
+     * @return the margin
      */
     private static int getMargin(String marginRule, Map<String, CssProperty> rules,
         int defaultMargin, MessageLog messageLog)

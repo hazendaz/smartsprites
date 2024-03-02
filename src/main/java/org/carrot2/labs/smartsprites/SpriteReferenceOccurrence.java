@@ -47,15 +47,25 @@ import org.carrot2.util.BufferedImageUtils;
  */
 public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence
 {
-    /** The directive */
+    
+    /**  The directive. */
     public final SpriteReferenceDirective spriteReferenceDirective;
 
     /** CSS file relative path to the individual image to be added to a sprite. */
     public final String imagePath;
 
-    /** Indicates whether the original css property has been marked as important */
+    /**  Indicates whether the original css property has been marked as important. */
     public final boolean important;
 
+    /**
+     * Instantiates a new sprite reference occurrence.
+     *
+     * @param spriteReferenceDirective the sprite reference directive
+     * @param imageFile the image file
+     * @param cssFile the css file
+     * @param line the line
+     * @param important the important
+     */
     public SpriteReferenceOccurrence(SpriteReferenceDirective spriteReferenceDirective,
         String imageFile, String cssFile, int line, boolean important)
     {
@@ -67,6 +77,10 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence
 
     /**
      * Computes the minimum width the individual image will need when rendering.
+     *
+     * @param image the image
+     * @param layout the layout
+     * @return the required width
      */
     public int getRequiredWidth(BufferedImage image, SpriteImageLayout layout)
     {
@@ -88,6 +102,10 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence
 
     /**
      * Computes the minimum height the individual image will need when rendering.
+     *
+     * @param image the image
+     * @param layout the layout
+     * @return the required height
      */
     public int getRequiredHeight(BufferedImage image, SpriteImageLayout layout)
     {
@@ -201,6 +219,10 @@ public class SpriteReferenceOccurrence extends SpriteDirectiveOccurrence
      * Returns the {@link SpriteReferenceReplacement} corresponding to the occurrence,
      * taking into account the layout the the enclosing sprite and the offset at which the
      * individual image was rendered.
+     *
+     * @param layout the layout
+     * @param offset the offset
+     * @return the sprite reference replacement
      */
     public SpriteReferenceReplacement buildReplacement(SpriteImageLayout layout,
         int offset)

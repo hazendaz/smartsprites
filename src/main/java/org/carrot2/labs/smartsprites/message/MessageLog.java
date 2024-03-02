@@ -45,17 +45,20 @@ import com.google.common.collect.Lists;
  */
 public class MessageLog
 {
-    /** Current line in the CSS file */
+    
+    /**  Current line in the CSS file. */
     private int line = 0;
 
-    /** CSS file currently processed */
+    /**  CSS file currently processed. */
     private String cssPath = null;
 
-    /** Sinks for messages */
+    /**  Sinks for messages. */
     private final List<MessageSink> sinks;
 
     /**
      * Creates a {@link MessageLog} with the provided {@link MessageSink}s.
+     *
+     * @param sinks the sinks
      */
     public MessageLog(MessageSink... sinks)
     {
@@ -64,6 +67,10 @@ public class MessageLog
 
     /**
      * Logs a message to this log.
+     *
+     * @param level the level
+     * @param type the type
+     * @param arguments the arguments
      */
     public void log(Message.MessageLevel level, Message.MessageType type,
         Object... arguments)
@@ -76,6 +83,9 @@ public class MessageLog
 
     /**
      * Logs an information message to this log.
+     *
+     * @param type the type
+     * @param arguments the arguments
      */
     public void info(Message.MessageType type, Object... arguments)
     {
@@ -84,6 +94,9 @@ public class MessageLog
 
     /**
      * Logs a warning message to this log.
+     *
+     * @param type the type
+     * @param arguments the arguments
      */
     public void notice(Message.MessageType type, Object... arguments)
     {
@@ -92,6 +105,9 @@ public class MessageLog
 
     /**
      * Logs a warning message to this log.
+     *
+     * @param type the type
+     * @param arguments the arguments
      */
     public void deprecation(Message.MessageType type, Object... arguments)
     {
@@ -100,6 +116,9 @@ public class MessageLog
     
     /**
      * Logs a warning message to this log.
+     *
+     * @param type the type
+     * @param arguments the arguments
      */
     public void warning(Message.MessageType type, Object... arguments)
     {
@@ -108,6 +127,9 @@ public class MessageLog
     
     /**
      * Logs an error message to this log.
+     *
+     * @param type the type
+     * @param arguments the arguments
      */
     public void error(Message.MessageType type, Object... arguments)
     {
@@ -116,6 +138,9 @@ public class MessageLog
 
     /**
      * Logs a status message to this log.
+     *
+     * @param type the type
+     * @param arguments the arguments
      */
     public void status(Message.MessageType type, Object... arguments)
     {
@@ -124,12 +149,19 @@ public class MessageLog
 
     /**
      * Sets current CSS line for this log.
+     *
+     * @param line the new line
      */
     public void setLine(int line)
     {
         this.line = line;
     }
     
+    /**
+     * Sets the css file.
+     *
+     * @param cssFilePath the new css file
+     */
     public void setCssFile(String cssFilePath)
     {
         this.cssPath = cssFilePath;
@@ -137,6 +169,8 @@ public class MessageLog
     
     /**
      * Adds a {@link MessageSink} to this log.
+     *
+     * @param sink the sink
      */
     public void addMessageSink(MessageSink sink)
     {

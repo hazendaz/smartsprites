@@ -57,44 +57,97 @@ import org.carrot2.util.EnumUtils;
  */
 public class SmartSpritesTask extends Task
 {
+    
+    /** The root dir. */
     private String rootDir;
+    
+    /** The output dir. */
     private String outputDir;
+    
+    /** The document root dir. */
     private String documentRootDir;
+    
+    /** The log level. */
     private MessageLevel logLevel;
+    
+    /** The fail on level. */
     private MessageLevel failOnLevel = MessageLevel.ERROR;
+    
+    /** The css file suffix. */
     private String cssFileSuffix = SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX;
+    
+    /** The css file encoding. */
     private String cssFileEncoding = SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING;
+    
+    /** The sprite png depth. */
     private PngDepth spritePngDepth = SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH;
+    
+    /** The sprite png ie 6. */
     private boolean spritePngIe6 = SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6;
+    
+    /** The mark sprite images. */
     private boolean markSpriteImages = SmartSpritesParameters.DEFAULT_MARK_SPRITE_IMAGES;
 
+    /** The css files. */
     private List<String> cssFiles = new ArrayList<>();
 
+    /**
+     * Sets the root dir.
+     *
+     * @param dir the new root dir
+     */
     public void setRootDir(File dir)
     {
         this.rootDir = dir.getPath();
     }
 
+    /**
+     * Sets the output dir.
+     *
+     * @param outputDir the new output dir
+     */
     public void setOutputDir(File outputDir)
     {
         this.outputDir = outputDir.getPath();
     }
 
+    /**
+     * Sets the document root dir.
+     *
+     * @param documentRootDir the new document root dir
+     */
     public void setDocumentRootDir(File documentRootDir)
     {
         this.documentRootDir = documentRootDir.getPath();
     }
 
+    /**
+     * Sets the log level.
+     *
+     * @param logLevel the new log level
+     */
     public void setLogLevel(String logLevel)
     {
         this.logLevel = getLogLevelFromString(logLevel, MessageLevel.INFO);
     }
 
+    /**
+     * Sets the fail on level.
+     *
+     * @param failOnLevel the new fail on level
+     */
     public void setFailOnLevel(String failOnLevel)
     {
         this.failOnLevel = getLogLevelFromString(failOnLevel, MessageLevel.ERROR);
     }
 
+    /**
+     * Gets the log level from string.
+     *
+     * @param logLevel the log level
+     * @param defaultLevel the default level
+     * @return the log level from string
+     */
     private MessageLevel getLogLevelFromString(String logLevel, MessageLevel defaultLevel)
     {
         try
@@ -107,27 +160,52 @@ public class SmartSpritesTask extends Task
         }
     }
 
+    /**
+     * Sets the css file encoding.
+     *
+     * @param cssFileEncoding the new css file encoding
+     */
     public void setCssFileEncoding(String cssFileEncoding)
     {
         this.cssFileEncoding = cssFileEncoding;
     }
 
+    /**
+     * Sets the css file suffix.
+     *
+     * @param cssFileSuffix the new css file suffix
+     */
     public void setCssFileSuffix(String cssFileSuffix)
     {
         this.cssFileSuffix = cssFileSuffix;
     }
 
+    /**
+     * Sets the sprite png depth.
+     *
+     * @param spritePngDepthString the new sprite png depth
+     */
     public void setSpritePngDepth(String spritePngDepthString)
     {
         this.spritePngDepth = EnumUtils.valueOf(spritePngDepthString, PngDepth.class,
             SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH);
     }
 
+    /**
+     * Sets the sprite png ie 6.
+     *
+     * @param spritePngIe6 the new sprite png ie 6
+     */
     public void setSpritePngIe6(boolean spritePngIe6)
     {
         this.spritePngIe6 = spritePngIe6;
     }
 
+    /**
+     * Sets the mark sprite images.
+     *
+     * @param markSpriteImages the new mark sprite images
+     */
     public void setMarkSpriteImages(boolean markSpriteImages)
     {
         this.markSpriteImages = markSpriteImages;
@@ -162,6 +240,9 @@ public class SmartSpritesTask extends Task
         }
     }
 
+    /**
+     * The Class AntLogMessageSink.
+     */
     private class AntLogMessageSink implements MessageSink
     {
         public void add(Message message)
@@ -173,9 +254,16 @@ public class SmartSpritesTask extends Task
         }
     }
 
+    /**
+     * The Class FailureDetectorMessageSink.
+     */
     private class FailureDetectorMessageSink implements MessageSink
     {
+        
+        /** The should fail. */
         boolean shouldFail = false;
+        
+        /** The failure level. */
         MessageLevel failureLevel = null;
 
         public void add(Message message)
@@ -190,6 +278,11 @@ public class SmartSpritesTask extends Task
         }
     }
 
+    /**
+     * Adds the configured fileset.
+     *
+     * @param fileset the fileset
+     */
     public void addConfiguredFileset(FileSet fileset)
     {
         for (Iterator<Resource> it = fileset.iterator(); it.hasNext();)

@@ -49,6 +49,9 @@ import org.apache.commons.io.FilenameUtils;
 public class FileUtils
 {
 
+    /**
+     * Instantiates a new file utils.
+     */
     private FileUtils()
     {
         // Prevent Instantiation
@@ -58,6 +61,9 @@ public class FileUtils
      * Creates a new {@link File} from the provided path and attempts to execute
      * {@link File#getCanonicalFile()}. In case of a failure, returns the result 
      * of {@link File#getAbsoluteFile()}.
+     *
+     * @param path the path
+     * @return the canonical or absolute file
      */
     public static File getCanonicalOrAbsoluteFile(String path)
     {
@@ -75,6 +81,11 @@ public class FileUtils
     /**
      * Changes the root directory of a file. For example, file is /a/b/c/d/e and oldRoot
      * is /a/b/c, and newRoot is /x/y, the result will be /x/y/d/e.
+     *
+     * @param file the file
+     * @param oldRoot the old root
+     * @param newRoot the new root
+     * @return the string
      */
     public static String changeRoot(String file, String oldRoot, String newRoot)
     {
@@ -87,6 +98,10 @@ public class FileUtils
     /**
      * Removes useless segments in relative paths, e.g. replaces
      * <code>../path/../other/file.css</code> with <code>../other/file.css</code>
+     *
+     * @param path the path
+     * @param separator the separator
+     * @return the string
      */
     public static String canonicalize(String path, String separator)
     {
@@ -106,6 +121,9 @@ public class FileUtils
     /**
      * Attempts to delete the provided files and throws an {@link IOException} in case
      * {@link File#delete()} returns <code>false</code> for any of them.
+     *
+     * @param files the files
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static void deleteThrowingExceptions(File... files) throws IOException
     {
@@ -137,6 +155,9 @@ public class FileUtils
     /**
      * Calls {@link File#mkdirs()} on the provided argument and throws an
      * {@link IOException} if the call returns <code>false</code>.
+     *
+     * @param dirs the dirs
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static void mkdirsThrowingExceptions(File dirs) throws IOException
     {
@@ -154,6 +175,10 @@ public class FileUtils
     /**
      * Returns <code>true</code> if file is contained in the parent directory or any
      * parent of the parent directory.
+     *
+     * @param file the file
+     * @param parent the parent
+     * @return true, if is file in parent
      */
     public static boolean isFileInParent(File file, File parent)
     {

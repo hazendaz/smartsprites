@@ -44,6 +44,9 @@ import java.util.Collection;
 public class CollectionUtils
 {
 
+    /**
+     * Instantiates a new collection utils.
+     */
     private CollectionUtils()
     {
         // Prevent Instantiation
@@ -52,6 +55,9 @@ public class CollectionUtils
     /**
      * Converts a {@link Collection} to a {@link String} separating entries by
      * <code>, </code>.
+     *
+     * @param collection the collection
+     * @return the string
      */
     public static String toString(Collection<?> collection)
     {

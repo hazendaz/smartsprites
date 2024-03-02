@@ -49,12 +49,14 @@ public class PrintStreamMessageSink implements MessageSink
     /** The stream to print messages to. */
     private final PrintStream printStream;
 
-    /** Logging level */
+    /**  Logging level. */
     private final MessageLevel level;
 
     /**
      * Creates a {@link PrintStreamMessageSink} with the provided <code>printStream</code>
      * and {@link MessageLevel#INFO} logging level.
+     *
+     * @param printStream the print stream
      */
     public PrintStreamMessageSink(PrintStream printStream)
     {
@@ -64,6 +66,9 @@ public class PrintStreamMessageSink implements MessageSink
     /**
      * Creates a {@link PrintStreamMessageSink} with the provided <code>printStream</code>
      * and logging <code>level</code>.
+     *
+     * @param printStream the print stream
+     * @param level the level
      */
     public PrintStreamMessageSink(PrintStream printStream, MessageLevel level)
     {

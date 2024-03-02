@@ -47,9 +47,13 @@ import amd.Quantize;
  */
 public class ColorQuantizer
 {
-    /** Maximum number of colors in an indexed image, leaving one for transparency */
+    
+    /**  Maximum number of colors in an indexed image, leaving one for transparency. */
     public static final int MAX_INDEXED_COLORS = 255;
 
+    /**
+     * Instantiates a new color quantizer.
+     */
     private ColorQuantizer()
     {
         // Prevent Instantiation
@@ -58,7 +62,8 @@ public class ColorQuantizer
     /**
      * Quantizes the image to {@link #MAX_INDEXED_COLORS} with white matte for areas with
      * partial transparency (full transparency will be preserved).
-     * 
+     *
+     * @param source the source
      * @return {@link BufferedImage} with type {@link BufferedImage#TYPE_BYTE_INDEXED} and
      *         quantized colors
      */
@@ -71,7 +76,9 @@ public class ColorQuantizer
      * Quantizes the image to {@link #MAX_INDEXED_COLORS} with the provided matte
      * {@link Color} for areas with partial transparency (full transparency will be
      * preserved).
-     * 
+     *
+     * @param source the source
+     * @param matteColor the matte color
      * @return {@link BufferedImage} with type {@link BufferedImage#TYPE_BYTE_INDEXED} and
      *         quantized colors
      */
@@ -84,7 +91,10 @@ public class ColorQuantizer
      * Quantizes the image to the provided number of colors with the provided matte
      * {@link Color} for areas with partial transparency (full transparency will be
      * preserved).
-     * 
+     *
+     * @param source the source
+     * @param matteColor the matte color
+     * @param maxColors the max colors
      * @return {@link BufferedImage} with type {@link BufferedImage#TYPE_BYTE_INDEXED} and
      *         quantized colors
      */
@@ -135,7 +145,9 @@ public class ColorQuantizer
      * Reduces a direct color buffered image to an indexed color one without quality loss.
      * To make sure no quality loss will occur, check the results of the
      * {@link #getColorReductionInfo(BufferedImage)} method call.
-     * 
+     *
+     * @param source the source
+     * @return the buffered image
      * @throws IllegalArgumentException if the application of this method would result in
      *             image quality loss
      */
@@ -182,6 +194,9 @@ public class ColorQuantizer
 
     /**
      * Returns a {@link ColorReductionInfo} for the provided image.
+     *
+     * @param source the source
+     * @return the color reduction info
      */
     public static ColorReductionInfo getColorReductionInfo(BufferedImage source)
     {
@@ -195,12 +210,19 @@ public class ColorQuantizer
      */
     public static class ColorReductionInfo
     {
-        /** Number of distinct colors in the image */
+        
+        /**  Number of distinct colors in the image. */
         public int distinctColors;
 
-        /** True if the image has partially transparent areas (alpha channel) */
+        /**  True if the image has partially transparent areas (alpha channel). */
         public boolean hasPartialTransparency;
 
+        /**
+         * Instantiates a new color reduction info.
+         *
+         * @param hasPartialTransparency the has partial transparency
+         * @param distinctColors the distinct colors
+         */
         public ColorReductionInfo(boolean hasPartialTransparency, int distinctColors)
         {
             this.hasPartialTransparency = hasPartialTransparency;
@@ -210,6 +232,8 @@ public class ColorQuantizer
         /**
          * Returns true if the image can be saved in a 8-bit indexed color format with
          * 1-bit transparency without quality loss.
+         *
+         * @return true, if successful
          */
         public boolean canReduceWithoutQualityLoss()
         {

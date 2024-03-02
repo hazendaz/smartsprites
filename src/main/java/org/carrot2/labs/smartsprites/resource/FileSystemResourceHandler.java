@@ -65,10 +65,11 @@ import org.carrot2.util.StringUtils;
  */
 public class FileSystemResourceHandler implements ResourceHandler
 {
-    /** The message log */
+    
+    /**  The message log. */
     private final MessageLog messageLog;
 
-    /** The root directory */
+    /**  The root directory. */
     private final String documentRootDir;
 
     /** The charset to assume in the {@link #getResourceAsReader(String)} method. */

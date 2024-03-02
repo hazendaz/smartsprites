@@ -52,13 +52,20 @@ import org.carrot2.util.StringUtils;
  */
 public class CssSyntaxUtils
 {
+    
+    /** The Constant URL_PATTERN. */
     private static final Pattern URL_PATTERN = Pattern
         .compile("[uU][rR][lL]\\((['\"]?)([^'\"]*)\\1\\)");
 
+    /** The Constant COLOR_PATTERN. */
     private static final Pattern COLOR_PATTERN = Pattern.compile("#([0-9a-f]{6})");
 
+    /** The Constant IMPORTANT_PATTERN. */
     private static final Pattern IMPORTANT_PATTERN = Pattern.compile("!\\s*important");
 
+    /**
+     * Instantiates a new css syntax utils.
+     */
     private CssSyntaxUtils()
     {
         // Prevent Instantiation
@@ -66,6 +73,9 @@ public class CssSyntaxUtils
 
     /**
      * Extracts CSS properties from the provided {@link String}.
+     *
+     * @param text the text
+     * @return the list
      */
     public static List<CssProperty> extractProperties(String text)
     {
@@ -75,6 +85,10 @@ public class CssSyntaxUtils
     /**
      * Extracts CSS properties from the provided {@link String} and logs warnings to the
      * provided {@link MessageLog}.
+     *
+     * @param text the text
+     * @param messageLog the message log
+     * @return the list
      */
     public static List<CssProperty> extractRules(String text, MessageLog messageLog)
     {
@@ -115,6 +129,9 @@ public class CssSyntaxUtils
     /**
      * Converts the provided collection of CSS properties to a {@link Map} with keys being
      * property names and values being {@link CssProperty} objects.
+     *
+     * @param rules the rules
+     * @return the map
      */
     public static Map<String, CssProperty> propertiesAsMap(Collection<CssProperty> rules)
     {
@@ -128,6 +145,10 @@ public class CssSyntaxUtils
 
     /**
      * Returns the value of a CSS property if it exists, <code>null</code> otherwise.
+     *
+     * @param rules the rules
+     * @param property the property
+     * @return the value
      */
     public static String getValue(Map<String, CssProperty> rules, String property)
     {
@@ -145,6 +166,10 @@ public class CssSyntaxUtils
     /**
      * Returns <code>true</code> if the the provided map contains a property with the
      * specified name that has a non-blank value.
+     *
+     * @param properties the properties
+     * @param propertyName the property name
+     * @return true, if successful
      */
     public static boolean hasNonBlankValue(Map<String, CssProperty> properties,
         String propertyName)
@@ -155,6 +180,9 @@ public class CssSyntaxUtils
 
     /**
      * Extracts the actual url from the CSS url expression like <code>url('actua_url')</code>.
+     *
+     * @param urlValue the url value
+     * @return the string
      */
     public static String unpackUrl(String urlValue)
     {
@@ -164,6 +192,10 @@ public class CssSyntaxUtils
     /**
      * Extracts the actual url from the CSS url expression like <code>url('actua_url')</code> and logs
      * warnings to the provided {@link MessageLog}.
+     *
+     * @param urlValue the url value
+     * @param messageLog the message log
+     * @return the string
      */
     public static String unpackUrl(String urlValue, MessageLog messageLog)
     {
@@ -184,6 +216,11 @@ public class CssSyntaxUtils
      * Parses a hexadecimal format (#fff or #ffffff) of CSS color into a {@link Color}
      * object. The RGB format (rgb(100, 0, 0)) is currently not supported. In case of
      * parse errors, the default is returned
+     *
+     * @param colorValue the color value
+     * @param messageLog the message log
+     * @param defaultColor the default color
+     * @return the color
      */
     public static Color parseColor(String colorValue, MessageLog messageLog,
         Color defaultColor)
