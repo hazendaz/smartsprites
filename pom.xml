@@ -115,6 +115,9 @@
 
     <!-- Global properties. -->
     <properties>
+        <!-- Checkstyle -->
+        <checkstyle.config>checkstyle-4space.xml</checkstyle.config>
+
         <!-- Automatic Module Name -->
         <module.name>org.carrot2.labs.smartsprites</module.name>
 
