@@ -4,6 +4,8 @@ Smartsprites uses github releases now.  See [releases](https://github.com/hazend
 
 Legacy release notes can be found here.  Eventually, I will try to properly tag all these and move this same data over to releases instead given its not a huge amount.
 
+See [index](https://hazendaz.github.io/smartsprites/website/index.html) for more detailed information.
+
 - v0.2.12, released: March 2016
 
     - Dependency updates.
@@ -82,6 +84,13 @@ Legacy release notes can be found here.  Eventually, I will try to properly tag 
 - v0.2.2, released: April 2009
 
     - Support for appending SHA512 hashes or timestamps to sprite image URLs [SMARTSPRITES-25](https://issues.carrot2.org/browse/SMARTSPRITES-25).
+
+        ```
+         sha512: SHA512 hash of the sprite image file created by SmartSprites. The hash will change only if the sprite image content or file format changes.
+
+         date: timestamp taken at the time of sprite image generation. The timestamp will be different every time SmartSprites processing is run, even if the sprite images do not change 
+         ```
+
     - Bugfix: [SMARTSPRITES-26](https://issues.carrot2.org/browse/SMARTSPRITES-26).
 
 
