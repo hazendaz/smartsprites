@@ -194,6 +194,22 @@
                         <windowtitle>SmartSprites v${project.version} API Documentation (JavaDoc)</windowtitle>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${license.plugin}</version>
+                    <configuration>
+                        <licenseSets>
+                            <licenseSet>
+                                <excludes combine.children="append">
+                                    <!-- Exclude web.iff file -->
+                                    <exclude>**/*web.iff</exclude>
+                                </excludes>
+                            </licenseSet>
+                        </licenseSets>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
