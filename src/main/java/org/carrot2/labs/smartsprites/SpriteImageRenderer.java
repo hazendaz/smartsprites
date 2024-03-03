@@ -93,7 +93,7 @@ public class SpriteImageRenderer {
 
         final BufferedImage[] result = new BufferedImage[2];
 
-        if (isPngDirect || isPngAuto && !canReduceWithoutQualityLoss || isJpg) {
+        if (isPngDirect || (isPngAuto && !canReduceWithoutQualityLoss) || isJpg) {
             result[0] = sprite;
 
             if (spriteImageDirective.matteColor != null) {

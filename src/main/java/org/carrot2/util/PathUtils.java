@@ -118,8 +118,8 @@ public class PathUtils {
             return null;
         }
 
-        if (toPath.startsWith(":", 1) && !fromPath.startsWith(":", 1)
-                || !toPath.startsWith(":", 1) && fromPath.startsWith(":", 1)) {
+        if ((toPath.startsWith(":", 1) && !fromPath.startsWith(":", 1))
+                || (!toPath.startsWith(":", 1) && fromPath.startsWith(":", 1))) {
             // one has a drive path element and the other doesnt, no relative path.
             return null;
         }
