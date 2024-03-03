@@ -84,9 +84,6 @@ public class SmartSpritesTask extends Task {
     /** The sprite png depth. */
     private PngDepth spritePngDepth = SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH;
 
-    /** The sprite png ie 6. */
-    private boolean spritePngIe6 = SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6;
-
     /** The mark sprite images. */
     private boolean markSpriteImages = SmartSpritesParameters.DEFAULT_MARK_SPRITE_IMAGES;
 
@@ -193,16 +190,6 @@ public class SmartSpritesTask extends Task {
     }
 
     /**
-     * Sets the sprite png ie 6.
-     *
-     * @param spritePngIe6
-     *            the new sprite png ie 6
-     */
-    public void setSpritePngIe6(boolean spritePngIe6) {
-        this.spritePngIe6 = spritePngIe6;
-    }
-
-    /**
      * Sets the mark sprite images.
      *
      * @param markSpriteImages
@@ -215,8 +202,7 @@ public class SmartSpritesTask extends Task {
     @Override
     public void execute() {
         final SmartSpritesParameters parameters = new SmartSpritesParameters(rootDir, cssFiles, outputDir,
-                documentRootDir, logLevel, cssFileSuffix, spritePngDepth, spritePngIe6, cssFileEncoding,
-                markSpriteImages);
+                documentRootDir, logLevel, cssFileSuffix, spritePngDepth, cssFileEncoding, markSpriteImages);
 
         final FailureDetectorMessageSink failureDetectorMessageSink = new FailureDetectorMessageSink();
         MessageLog log = new MessageLog(new AntLogMessageSink(), failureDetectorMessageSink);

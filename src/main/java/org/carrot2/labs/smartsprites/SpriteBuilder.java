@@ -343,15 +343,6 @@ public class SpriteBuilder {
                             + "')" + (important ? " !important" : "") + ";"
                             + (markSpriteImages ? " /** sprite:sprite */" : "") + "\n");
 
-                    if (spriteReferenceReplacement.spriteImage.hasReducedForIe6) {
-                        processedCssWriter.write("  -background-image: url('"
-                                + getRelativeToReplacementLocation(
-                                        spriteReferenceReplacement.spriteImage.resolvedPathIe6, originalCssFile,
-                                        spriteReferenceReplacement)
-                                + "')" + (important ? " !important" : "") + ";"
-                                + (markSpriteImages ? " /** sprite:sprite */" : "") + "\n");
-                    }
-
                     processedCssWriter
                             .write("  background-position: " + spriteReferenceReplacement.horizontalPositionString + " "
                                     + spriteReferenceReplacement.verticalPositionString

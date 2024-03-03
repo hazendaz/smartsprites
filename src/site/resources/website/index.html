@@ -179,13 +179,6 @@
         </li>
 
         <li>
-          <strong>Special support for
-          Internet Explorer 6</strong>: SmartSprites can generate IE6-friendly
-          PNG8 sprites preserving transparency wherever possible. Optionally, a matte color
-          can be set for each sprite separately.
-        </li>
-
-        <li>
           <strong class="new">(NEW!)</strong><strong>CSS- and
           document-root-relative image paths</strong>: Paths to individual
           images and the resulting sprites can be specified both relatively to
@@ -440,16 +433,7 @@ sprite-image: url('../sprite.png?<strong>${sha512}</strong>')</code>
                 transparencies on sprites saved in GIF or PNG8 formats. Note:
                 currently only the 6-digit hexadecimal color specifications are
                 supported.  See also the <a href="#png-depth">PNG color
-                depth</a> and <a href="#png-ie6">IE6-friendly PNG</a> options.
-                </li>
-
-                <li>
-                  <strong>IE6 compatibility mode</strong>, syntax: <tt>sprite-ie6-mode:
-                  auto | none</tt>, optional, default value: <tt>auto</tt>.
-                  Specifies whether an IE6-compatible image for this sprite should be generated
-                  when necessary (<tt>auto</tt>) or should not be generated at all
-                  (<tt>none</tt>). See the <a href="#png-ie6">IE6-friendly PNG</a> option for
-                  more details.
+                depth</a> options.
                 </li>
               </ul>
             </li>
@@ -763,7 +747,6 @@ sprite-image: url('../sprite.png?<strong>${sha512}</strong>')</code>
 
               <ol>
                 <li><strong>INFO</strong>: information messages, can be safely ignored</li>
-                <li><strong>IE6NOTICE</strong>: notices related to possible quality loss when creating IE6-friendly sprite images, see also the <a href="png-ie6">IE6-friendly PNG</a> option</li>
                 <li><strong>WARN</strong>: warnings related to syntax, IO and sprite rendering quality loss problems that may cause the converted sprite-based designs look broken</li>
               </ol>
             </li>
@@ -793,32 +776,6 @@ sprite-image: url('../sprite.png?<strong>${sha512}</strong>')</code>
                   property.
                 </li>
               </ol>
-            </li>
-
-            <li>
-              <a name="png-ie6"><strong>--sprite-png-ie6</strong></a>: Enables generation of
-              IE6-friendly sprite images, optional, default: <tt>disabled</tt>.
-
-              <p>
-                If <tt>sprite-png-ie6</tt> is specified, for each PNG sprite image with partial
-                transparencies (alpha channel) or more than 255 colors and any transparencies, SmartSprites will
-                generate a corresponding color-reduced PNG8 file for IE6. An extra IE6-only
-                CSS rule will be added to the generated CSS file to ensure that IE6 (and only IE6)
-                uses the color-reduced version:
-              </p>
-
-              <code>#web {
-  width: 17px; height: 17px;
-  background-repeat: no-repeat;
-  background-image: url('../img/mysprite.png');
-  <strong>-background-image: url('../img/mysprite-ie6.png');</strong>
-  background-position: left -0px;
-}</code>
-
-              <p>
-                See also the <tt><a href="#sprite-matte-color">sprite-matte-color</a></tt>
-                property.
-              </p>
             </li>
 
             <li>

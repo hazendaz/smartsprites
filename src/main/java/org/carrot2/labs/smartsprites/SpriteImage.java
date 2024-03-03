@@ -64,19 +64,10 @@ public class SpriteImage {
      */
     public final SpriteImageOccurrence spriteImageOccurrence;
 
-    /** Indicates whether this sprite has been also generated in an alpha/color degraded version for IE6;. */
-    public boolean hasReducedForIe6;
-
     /**
      * The {@link SpriteImageDirective#imagePath} with variables resolved.
      */
     public String resolvedPath;
-
-    /**
-     * The {@link SpriteImageDirective#imagePath} with variables resolved and the IE6-specific suffix, <code>null</code>
-     * if {@link #hasReducedForIe6} is <code>false</code>.
-     */
-    public String resolvedPathIe6;
 
     /**
      * The width of the final sprite.
@@ -134,15 +125,13 @@ public class SpriteImage {
      *            the image
      * @param timestamp
      *            the timestamp
-     * @param reducedForIe6
-     *            the reduced for ie 6
      *
      * @return the string
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    String resolveImagePath(byte[] image, String timestamp, boolean reducedForIe6) throws IOException {
+    String resolveImagePath(byte[] image, String timestamp) throws IOException {
         String imagePath = spriteImageOccurrence.spriteImageDirective.imagePath;
 
         // Backwards compatibility: if there are no place holders in the path
@@ -167,59 +156,8 @@ public class SpriteImage {
         // Resolve sprite name
         imagePath = SPRITE_VARIABLE.matcher(imagePath).replaceAll(spriteImageOccurrence.spriteImageDirective.spriteId);
 
-        if (reducedForIe6) {
-            this.resolvedPathIe6 = addIe6Suffix(imagePath, reducedForIe6);
-            return this.resolvedPathIe6;
-        }
-        this.resolvedPath = addIe6Suffix(imagePath, reducedForIe6);
+        this.resolvedPath = imagePath;
         return this.resolvedPath;
-    }
-
-    /**
-     * Adds IE6 suffix to the sprite image path for IE6 reduced images. We make sure we don't add the suffix to the
-     * directory names or after the '?' character.
-     *
-     * @param spritePath
-     *            the sprite path
-     * @param ie6Reduced
-     *            the ie 6 reduced
-     *
-     * @return the string
-     */
-    static String addIe6Suffix(String spritePath, boolean ie6Reduced) {
-        if (ie6Reduced) {
-            final StringBuilder ie6Path = new StringBuilder();
-
-            int lastFoundIndex = 0;
-
-            final int lastSlashIndex = spritePath.lastIndexOf('/');
-            if (lastSlashIndex >= 0) {
-                ie6Path.append(spritePath, lastFoundIndex, lastSlashIndex + 1);
-                lastFoundIndex = lastSlashIndex + 1;
-            }
-
-            int lastDotIndex = spritePath.lastIndexOf('.');
-            if (lastDotIndex < lastFoundIndex) {
-                lastDotIndex = -1;
-            }
-            final int firstQuestionMarkIndex = spritePath.indexOf('?', lastFoundIndex);
-
-            if (lastDotIndex >= 0 && (lastDotIndex < firstQuestionMarkIndex || firstQuestionMarkIndex < 0)) {
-                ie6Path.append(spritePath, lastFoundIndex, lastDotIndex);
-                ie6Path.append("-ie6");
-                ie6Path.append(spritePath, lastDotIndex, spritePath.length());
-            } else if (firstQuestionMarkIndex >= 0) {
-                ie6Path.append(spritePath, lastFoundIndex, firstQuestionMarkIndex);
-                ie6Path.append("-ie6");
-                ie6Path.append(spritePath, firstQuestionMarkIndex, spritePath.length());
-            } else {
-                ie6Path.append(spritePath, lastFoundIndex, spritePath.length());
-                ie6Path.append("-ie6");
-            }
-
-            return ie6Path.toString();
-        }
-        return spritePath;
     }
 
     /**

@@ -164,7 +164,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     @Test
     void testSimpleHorizontalSpriteImportant() throws FileNotFoundException, IOException {
         final File testDir = testDir("simple-horizontal-sprite-important");
-        buildSprites(testDir, true);
+        buildSprites(testDir);
 
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
@@ -350,7 +350,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File documentRootDir = testDir("absolute-image-url/absolute-path");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, documentRootDir, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         final File spriteFile = new File(documentRootDir, "img/sprite.png");
@@ -377,7 +377,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         org.carrot2.util.FileUtils.mkdirsThrowingExceptions(outputDir);
         buildSprites(filesystemSmartSpritesParameters(testDir, outputDir, documentRootDir, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
@@ -408,7 +408,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File documentRootDir = testDir("scaled-sprite");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, documentRootDir, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
@@ -435,7 +435,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File documentRootDir = testDir("scaled-sprite-fractional");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, documentRootDir, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
@@ -470,7 +470,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         org.carrot2.util.FileUtils.mkdirsThrowingExceptions(outputDir);
         buildSprites(filesystemSmartSpritesParameters(rootDir, outputDir, null, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         assertThat(processedCss(new File(rootDir, "style.css")))
                 .hasSameTextualContentAs(new File(rootDir, "style-expected.css"));
@@ -540,7 +540,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File testDir = testDir("indexed-color");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, PngDepth.DIRECT,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-bit-alpha.gif")).isIndexedColor()
                 .hasBitAlpha();
@@ -567,7 +567,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File testDir = testDir("indexed-color");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, PngDepth.INDEXED,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-bit-alpha.gif")).isIndexedColor()
                 .hasBitAlpha();
@@ -637,7 +637,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File testDir = testDir("matte-color");
         buildSprites(filesystemSmartSpritesParameters(testDir, null, null, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, PngDepth.INDEXED,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-bit-alpha.png")).isIndexedColor()
                 .hasBitAlpha();
@@ -666,50 +666,6 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     }
 
     /**
-     * Test ie 6 indexed color.
-     *
-     * @throws FileNotFoundException
-     *             the file not found exception
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    @Test
-    void testIe6IndexedColor() throws FileNotFoundException, IOException {
-        final File testDir = testDir("indexed-color-ie6");
-        buildSprites(filesystemSmartSpritesParameters(testDir, null, null, MessageLevel.INFO,
-                SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, PngDepth.AUTO, true,
-                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
-
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-bit-alpha.gif")).isIndexedColor()
-                .hasBitAlpha();
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-bit-alpha.png")).isIndexedColor()
-                .hasBitAlpha();
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-full-alpha.png")).isDirectColor()
-                .hasTrueAlpha();
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-full-alpha-ie6.png")).isIndexedColor()
-                .hasBitAlpha();
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-many-colors.png")).isDirectColor()
-                .doesNotHaveAlpha();
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-many-colors-bit-alpha-ie6.png"))
-                .isIndexedColor().hasBitAlpha();
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-many-colors-bit-alpha-no-ie6.png"))
-                .isDirectColor().hasBitAlpha();
-        org.carrot2.labs.test.Assertions.assertThat(sprite(testDir, "img/sprite-many-colors-bit-alpha.png"))
-                .isDirectColor().hasBitAlpha();
-
-        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-
-        assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
-        assertThat(messages).isEquivalentTo(Message.MessageLevel.IE6NOTICE,
-                new Message(Message.MessageLevel.IE6NOTICE, Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR,
-                        null, 63, "full-alpha"),
-                new Message(Message.MessageLevel.IE6NOTICE, Message.MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT,
-                        null, 63, "full-alpha"),
-                new Message(Message.MessageLevel.IE6NOTICE, Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null,
-                        77, "many-colors-bit-alpha", 293, 255));
-    }
-
-    /**
      * Test sprite image uid sha 512.
      *
      * @throws FileNotFoundException
@@ -731,29 +687,6 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         // in turn depends on the Java version used.
         //
         // assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-    }
-
-    /**
-     * Test sprite image uid sha 512 ie 6.
-     *
-     * @throws FileNotFoundException
-     *             the file not found exception
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    @Test
-    @EnabledOnJre(JRE.JAVA_8)
-    void testSpriteImageUidSha512Ie6() throws FileNotFoundException, IOException {
-        final File testDir = testDir("sprite-image-uid-sha512-ie6");
-        buildSprites(filesystemSmartSpritesParameters(testDir, null, null, MessageLevel.INFO,
-                SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, PngDepth.AUTO, true,
-                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
-
-        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
-        assertThat(new File(testDir, "img/sprite-ie6.png")).exists();
-        assertThat(sprite(testDir)).hasSize(new Dimension(20, 20));
-        assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
 
     /**
@@ -1103,25 +1036,9 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      *             Signals that an I/O exception has occurred.
      */
     private void buildSprites(File dir) throws IOException {
-        buildSprites(dir, false);
-    }
-
-    /**
-     * Builds the sprites.
-     *
-     * @param dir
-     *            the dir
-     * @param ie6
-     *            the ie 6
-     *
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private void buildSprites(File dir, boolean ie6) throws IOException {
         buildSprites(new SmartSpritesParameters(dir.getPath(), null, null, null,
                 SmartSpritesParameters.DEFAULT_LOGGING_LEVEL, SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH, ie6,
-                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
     }
 
     /**
@@ -1153,8 +1070,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     private void buildSprites(List<String> cssFiles, String rootDir, String outputDir) throws IOException {
         buildSprites(new SmartSpritesParameters(rootDir, cssFiles, outputDir, null,
                 SmartSpritesParameters.DEFAULT_LOGGING_LEVEL, SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX,
-                SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH, SmartSpritesParameters.DEFAULT_SPRITE_PNG_IE6,
-                SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
+                SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH, SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
     }
 
     /**
@@ -1186,8 +1102,6 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      *            the css file suffix
      * @param spritePngDepth
      *            the sprite png depth
-     * @param spritePngIe6
-     *            the sprite png ie 6
      * @param cssEncoding
      *            the css encoding
      *
@@ -1195,10 +1109,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      */
     private static SmartSpritesParameters filesystemSmartSpritesParameters(File rootDir, File outputDir,
             File documentRootDir, MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth,
-            boolean spritePngIe6, String cssEncoding) {
+            String cssEncoding) {
         return new SmartSpritesParameters(rootDir.getPath(), null, outputDir != null ? outputDir.getPath() : null,
                 documentRootDir != null ? documentRootDir.getPath() : null, logLevel, cssFileSuffix, spritePngDepth,
-                spritePngIe6, cssEncoding);
+                cssEncoding);
     }
 
 }

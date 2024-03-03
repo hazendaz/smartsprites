@@ -40,12 +40,10 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import org.carrot2.labs.smartsprites.SmartSpritesParameters.PngDepth;
-import org.carrot2.labs.smartsprites.SpriteImageDirective.Ie6Mode;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageFormat;
 import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
 import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.carrot2.labs.smartsprites.message.MessageLog;
-import org.carrot2.util.BufferedImageUtils;
 import org.carrot2.util.ColorQuantizer;
 import org.carrot2.util.ColorQuantizer.ColorReductionInfo;
 
@@ -98,14 +96,7 @@ public class SpriteImageRenderer {
         if (isPngDirect || isPngAuto && !canReduceWithoutQualityLoss || isJpg) {
             result[0] = sprite;
 
-            // If needed, generate a quantized version for IE6. If the image has >255
-            // colors but doesn't have any transparency, we don't need an IE6 version,
-            // because IE6 can handle PNG24 with no transparency correctly.
-            if (parameters.isSpritePngIe6() && isPng && BufferedImageUtils.hasTransparency(sprite)
-                    && spriteImageDirective.ie6Mode != Ie6Mode.NONE) {
-                result[1] = quantize(sprite, spriteImage, colorReductionInfo, MessageLevel.IE6NOTICE);
-                spriteImage.hasReducedForIe6 = true;
-            } else if (spriteImageDirective.matteColor != null) {
+            if (spriteImageDirective.matteColor != null) {
                 // Can't or no need to handle indexed color
                 messageLog.warning(MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, spriteImageDirective.spriteId);
             }

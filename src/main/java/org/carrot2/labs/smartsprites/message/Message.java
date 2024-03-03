@@ -40,7 +40,6 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 import org.carrot2.labs.smartsprites.SpriteImageDirective;
-import org.carrot2.labs.smartsprites.SpriteImageDirective.Ie6Mode;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageFormat;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageLayout;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteUidType;
@@ -63,11 +62,6 @@ public class Message implements Serializable {
          * Information message, can be ignored.
          */
         INFO(1),
-
-        /**
-         * Notice messages related to IE6 problems.
-         */
-        IE6NOTICE(2),
 
         /**
          * Notice messages related to deprecated features.
@@ -254,16 +248,9 @@ public class Message implements Serializable {
         UNSUPPORTED_LAYOUT(
                 "Unsupported layout: %s. Supported layouts are: " + SpriteImageLayout.valuesAsString() + "."),
 
-        /** The unsupported ie6 mode. */
-        UNSUPPORTED_IE6_MODE("Unsupported ie6 mode: %s. Supported ie6 modes are: " + Ie6Mode.valuesAsString() + "."),
-
         /** The unsupported uid type. */
         UNSUPPORTED_UID_TYPE(
                 "Unsupported uid type: %s. Supported uid types are: " + SpriteUidType.valuesAsString() + "."),
-
-        /** The ignoring ie6 mode. */
-        IGNORING_IE6_MODE(
-                "The sprite-ie6-mode applies only to PNG sprites. Ignoring for a %s sprite."),
 
         /** The jpg does not support indexed color. */
         JPG_DOES_NOT_SUPPORT_INDEXED_COLOR("JPG format does not support indexed color"),

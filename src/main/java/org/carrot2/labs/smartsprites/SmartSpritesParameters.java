@@ -121,12 +121,6 @@ public final class SmartSpritesParameters {
     private PngDepth spritePngDepth;
 
     /**
-     * If <code>true</code>, SmartSprites will generate IE6-friendly PNG sprites if needed.
-     */
-    @Option(name = "--sprite-png-ie6")
-    private boolean spritePngIe6;
-
-    /**
      * If <code>true</code>, SmartSprites will generate the sprite directive indicating that the image is a sprite
      * image.
      */
@@ -138,9 +132,6 @@ public final class SmartSpritesParameters {
 
     /** By default, we use full color only when necessary. */
     public static final PngDepth DEFAULT_SPRITE_PNG_DEPTH = PngDepth.AUTO;
-
-    /** By default, we don't generate separate sprites for IE6. */
-    public static final boolean DEFAULT_SPRITE_PNG_IE6 = false;
 
     /** By default, we'll assume CSS files are UTF-8 encoded. */
     public static final String DEFAULT_CSS_FILE_ENCODING = StandardCharsets.UTF_8.name();
@@ -180,7 +171,7 @@ public final class SmartSpritesParameters {
      */
     public SmartSpritesParameters(String rootDir) {
         this(rootDir, null, null, null, MessageLevel.INFO, DEFAULT_CSS_FILE_SUFFIX, DEFAULT_SPRITE_PNG_DEPTH,
-                DEFAULT_SPRITE_PNG_IE6, DEFAULT_CSS_FILE_ENCODING, DEFAULT_MARK_SPRITE_IMAGES);
+                DEFAULT_CSS_FILE_ENCODING, DEFAULT_MARK_SPRITE_IMAGES);
     }
 
     /**
@@ -200,16 +191,13 @@ public final class SmartSpritesParameters {
      *            the css file suffix
      * @param spritePngDepth
      *            the sprite png depth
-     * @param spritePngIe6
-     *            the sprite png ie 6
      * @param cssEncoding
      *            the css encoding
      */
     public SmartSpritesParameters(String rootDir, List<String> cssFiles, String outputDir, String documentRootDir,
-            MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
-            String cssEncoding) {
-        this(rootDir, cssFiles, outputDir, documentRootDir, logLevel, cssFileSuffix, spritePngDepth, spritePngIe6,
-                cssEncoding, DEFAULT_MARK_SPRITE_IMAGES);
+            MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth, String cssEncoding) {
+        this(rootDir, cssFiles, outputDir, documentRootDir, logLevel, cssFileSuffix, spritePngDepth, cssEncoding,
+                DEFAULT_MARK_SPRITE_IMAGES);
     }
 
     /**
@@ -229,16 +217,14 @@ public final class SmartSpritesParameters {
      *            the css file suffix
      * @param spritePngDepth
      *            the sprite png depth
-     * @param spritePngIe6
-     *            the sprite png ie 6
      * @param cssEncoding
      *            the css encoding
      * @param markSpriteImages
      *            the mark sprite images
      */
     public SmartSpritesParameters(String rootDir, List<String> cssFiles, String outputDir, String documentRootDir,
-            MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth, boolean spritePngIe6,
-            String cssEncoding, boolean markSpriteImages) {
+            MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth, String cssEncoding,
+            boolean markSpriteImages) {
         this.rootDir = rootDir;
         this.cssFiles = cssFiles;
         this.outputDir = outputDir;
@@ -247,7 +233,6 @@ public final class SmartSpritesParameters {
         this.cssFileEncoding = cssEncoding;
         this.cssFileSuffix = getCssFileSuffix(cssFileSuffix);
         this.spritePngDepth = spritePngDepth;
-        this.spritePngIe6 = spritePngIe6;
         this.markSpriteImages = markSpriteImages;
     }
 
@@ -443,15 +428,6 @@ public final class SmartSpritesParameters {
      */
     public PngDepth getSpritePngDepth() {
         return spritePngDepth;
-    }
-
-    /**
-     * Checks if is sprite png ie 6.
-     *
-     * @return true, if is sprite png ie 6
-     */
-    public boolean isSpritePngIe6() {
-        return spritePngIe6;
     }
 
     /**

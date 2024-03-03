@@ -100,18 +100,6 @@ public class MessageLog {
      * @param arguments
      *            the arguments
      */
-    public void notice(Message.MessageType type, Object... arguments) {
-        log(Message.MessageLevel.IE6NOTICE, type, arguments);
-    }
-
-    /**
-     * Logs a warning message to this log.
-     *
-     * @param type
-     *            the type
-     * @param arguments
-     *            the arguments
-     */
     public void deprecation(Message.MessageType type, Object... arguments) {
         log(Message.MessageLevel.DEPRECATION, type, arguments);
     }

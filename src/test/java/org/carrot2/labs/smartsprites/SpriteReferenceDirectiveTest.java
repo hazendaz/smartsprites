@@ -46,7 +46,6 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.util.Map;
 
-import org.carrot2.labs.smartsprites.SpriteImageDirective.Ie6Mode;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageFormat;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageLayout;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteUidType;
@@ -63,18 +62,16 @@ class SpriteReferenceDirectiveTest extends TestWithMemoryMessageSink {
 
     /** The Constant VERTICAL_SPRITE_IMAGE_DIRECTIVE. */
     private static final SpriteImageDirective VERTICAL_SPRITE_IMAGE_DIRECTIVE = new SpriteImageDirective("vsprite",
-            "sprite.png", SpriteImageLayout.VERTICAL, SpriteImageFormat.PNG, Ie6Mode.AUTO, Color.WHITE,
-            SpriteUidType.NONE, 1);
+            "sprite.png", SpriteImageLayout.VERTICAL, SpriteImageFormat.PNG, Color.WHITE, SpriteUidType.NONE, 1);
 
     /** The Constant HORIZONTAL_SPRITE_IMAGE_DIRECTIVE. */
     private static final SpriteImageDirective HORIZONTAL_SPRITE_IMAGE_DIRECTIVE = new SpriteImageDirective("hsprite",
-            "hsprite.png", SpriteImageLayout.HORIZONTAL, SpriteImageFormat.PNG, Ie6Mode.AUTO, Color.WHITE,
-            SpriteUidType.NONE, 1);
+            "hsprite.png", SpriteImageLayout.HORIZONTAL, SpriteImageFormat.PNG, Color.WHITE, SpriteUidType.NONE, 1);
 
     /** The Constant VERTICAL_SPRITE_IMAGE_DIRECTIVE_WITH_LAYOUT. */
     private static final SpriteImageDirective VERTICAL_SPRITE_IMAGE_DIRECTIVE_WITH_LAYOUT = new SpriteImageDirective(
-            "vsprite", "sprite.png", SpriteImageLayout.VERTICAL, SpriteImageFormat.PNG, Ie6Mode.AUTO, Color.WHITE,
-            SpriteUidType.NONE, 1, new SpriteLayoutProperties(SpriteAlignment.REPEAT, 1, 2, 3, 4));
+            "vsprite", "sprite.png", SpriteImageLayout.VERTICAL, SpriteImageFormat.PNG, Color.WHITE, SpriteUidType.NONE,
+            1, new SpriteLayoutProperties(SpriteAlignment.REPEAT, 1, 2, 3, 4));
 
     /** The Constant SPRITE_IMAGE_DIRECTIVES. */
     private static final Map<String, SpriteImageDirective> SPRITE_IMAGE_DIRECTIVES = ImmutableMap.of("vsprite",

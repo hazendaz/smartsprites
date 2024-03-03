@@ -193,11 +193,7 @@ public class SpriteImageBuilder {
         // Render the sprite into the required formats, perform quantization if needed
         final BufferedImage[] mergedImages = spriteImageRenderer.render(spriteImage);
 
-        writeSprite(spriteImage, mergedImages[0], false);
-        if (mergedImages[1] != null) {
-            // Write IE6 version if generated
-            writeSprite(spriteImage, mergedImages[1], true);
-        }
+        writeSprite(spriteImage, mergedImages[0]);
 
         return spriteImage.spriteReferenceReplacements;
     }
@@ -209,14 +205,11 @@ public class SpriteImageBuilder {
      *            the sprite image
      * @param mergedImage
      *            the merged image
-     * @param ie6Reduced
-     *            the ie 6 reduced
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private void writeSprite(SpriteImage spriteImage, final BufferedImage mergedImage, boolean ie6Reduced)
-            throws IOException {
+    private void writeSprite(SpriteImage spriteImage, final BufferedImage mergedImage) throws IOException {
         final SpriteImageOccurrence spriteImageOccurrence = spriteImage.spriteImageOccurrence;
         final SpriteImageDirective spriteImageDirective = spriteImageOccurrence.spriteImageDirective;
 
@@ -242,7 +235,7 @@ public class SpriteImageBuilder {
 
         // Build file name
         byte[] spriteImageBytes = spriteImageByteArrayOutputStream.toByteArray();
-        String resolvedImagePath = spriteImage.resolveImagePath(spriteImageBytes, timestamp.toString(), ie6Reduced);
+        String resolvedImagePath = spriteImage.resolveImagePath(spriteImageBytes, timestamp.toString());
         if (resolvedImagePath.indexOf('?') >= 0) {
             resolvedImagePath = resolvedImagePath.substring(0, resolvedImagePath.indexOf('?'));
         }

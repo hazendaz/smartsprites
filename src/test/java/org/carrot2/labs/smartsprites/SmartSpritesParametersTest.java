@@ -163,8 +163,9 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      */
     @Test
     void testValidateNoOutputDirAndEmptyCssFileSuffix() {
-        checkInvalid(new SmartSpritesParameters(null, Lists.newArrayList("css/file.css"), null, null, null, "", null,
-                false, null), Message.error(MessageType.CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR));
+        checkInvalid(
+                new SmartSpritesParameters(null, Lists.newArrayList("css/file.css"), null, null, null, "", null, null),
+                Message.error(MessageType.CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR));
     }
 
     /**
@@ -243,7 +244,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      * @return the smart sprites parameters
      */
     private static SmartSpritesParameters parameters(String rootDir, String outputDir, String documentRootDir) {
-        return new SmartSpritesParameters(rootDir, null, outputDir, documentRootDir, null, null, null, false, null);
+        return new SmartSpritesParameters(rootDir, null, outputDir, documentRootDir, null, null, null, null);
     }
 
     /**
@@ -259,7 +260,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      * @return the smart sprites parameters
      */
     private static SmartSpritesParameters parameters(String rootDir, List<String> cssFiles, String outputDir) {
-        return new SmartSpritesParameters(rootDir, cssFiles, outputDir, null, null, null, null, false, null);
+        return new SmartSpritesParameters(rootDir, cssFiles, outputDir, null, null, null, null, null);
     }
 
     /**

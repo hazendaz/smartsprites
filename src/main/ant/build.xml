@@ -69,8 +69,7 @@ Please provide SmartSprite parameters in a 'smartsprites.properties' file.
                   cssfileencoding="${css.file.encoding}"
                   cssfilesuffix="${css.file.suffix}"
                   loglevel="${log.level}"
-                  spritepngdepth="${sprite.png.depth}"
-                  spritepngie6="${sprite.png.ie6}" />
+                  spritepngdepth="${sprite.png.depth}" />
 
     <!--
          Alternatively, instead of rootdir, you can provide individual CSS
@@ -89,8 +88,7 @@ Please provide SmartSprite parameters in a 'smartsprites.properties' file.
                   cssfileencoding="${css.file.encoding}"
                   cssfilesuffix="${css.file.suffix}"
                   loglevel="${log.level}"
-                  spritepngdepth="${sprite.png.depth}"
-                  spritepngie6="${sprite.png.ie6}">
+                  spritepngdepth="${sprite.png.depth}">
       <fileset dir="${root.dir.path}">
         <include name="**/*.css" />
       </fileset>
