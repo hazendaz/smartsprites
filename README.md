@@ -20,7 +20,7 @@ Heads up, discontinued software from original author!
 
 Since the modern web does not rely on small bitmaps any more, SmartSprites becomes irrelevant. We're not planning any new releases, but feel free to fork and use the code if you find it useful.
 
-This fork is in fact alive still in case of needing it since I support the maven plugin I felt it smartsprites to continue for now as there are users of this still.
+This fork is in fact alive still in case of needing it since I support the maven plugin I felt it reasonable for smartsprites to continue for now as there are users of this still.
 
 Quick start
 -----------
