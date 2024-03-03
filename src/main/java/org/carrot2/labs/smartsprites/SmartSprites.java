@@ -94,6 +94,7 @@ public class SmartSprites {
         System.out.print("Usage: smartsprites");
         parser.printSingleLineUsage(System.out);
         System.out.println();
-        System.out.println("\nPlease see https://www.w3schools.com/css/css_image_sprites.asp for detailed option descriptions.");
+        System.out.println(
+                "\nPlease see https://www.w3schools.com/css/css_image_sprites.asp for detailed option descriptions.");
     }
 }
