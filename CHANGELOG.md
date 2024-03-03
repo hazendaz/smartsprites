@@ -59,7 +59,8 @@ Legacy release notes can be found here.  Eventually, I will try to properly tag 
 
     - Bugfix: [SMARTSPRITES-31](https://issues.carrot2.org/browse/SMARTSPRITES-31).
     - Bugfix: [SMARTSPRITES-32](https://issues.carrot2.org/browse/SMARTSPRITES-32).
-    - `#css-file-encoding` CSS file encoding parameter added [SMARTSPRITES-33](https://issues.carrot2.org/browse/SMARTSPRITES-33).
+    - CSS file encoding parameter added [SMARTSPRITES-33](https://issues.carrot2.org/browse/SMARTSPRITES-33).
+        ```--css-file-encoding: The encoding to assume for input and output CSS files, default: UTF-8. For the list of allowed values, please see the list of encodings supported in Java.```
 
 - v0.2.2, released: April 2009
 
