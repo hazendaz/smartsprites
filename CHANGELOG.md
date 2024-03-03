@@ -51,6 +51,15 @@ Legacy release notes can be found here.  Eventually, I will try to properly tag 
 
     - Removal of duplicate images from sprites [SMARTSPRITES-18](https://issues.carrot2.org/browse/SMARTSPRITES-18).
     - Support for specifying individual CSS files to process [SMARTSPRITES-37](https://issues.carrot2.org/browse/SMARTSPRITES-37)
+
+        ``` --css-files: paths of CSS files to process, required if root-dir-path not specified, default: not specified.
+
+            SmartSprites will process all CSS files listed using this option. If css-files is to be used together with output-dir-path, root-dir-path must also be specified so that SmartSprites can preserve the directory structure found in root-dir-path in output-dir-path. If root-dir-path and output-dir-path are used, css-files outside of root-dir-path will be ignored.
+
+            Relative CSS file paths provided using this option will be resolved against the current working directory. Please note that SmartSprites will not expand any wildcards (like style/*.css), it assumes the expansion is performed at the command line shell level.
+
+            To specify the list of CSS files to process in the SmartSprites Ant task, use one or more nested fileset elements. Please see the build.xml file in the distribution archive for an example.```
+
     - Bugfix: [SMARTSPRITES-42](https://issues.carrot2.org/browse/SMARTSPRITES-42)
     - Bugfix: [SMARTSPRITES-45](https://issues.carrot2.org/browse/SMARTSPRITES-45)
     - Google Collections JAR updated to version 1.0-rc2.
@@ -60,6 +69,7 @@ Legacy release notes can be found here.  Eventually, I will try to properly tag 
     - Bugfix: [SMARTSPRITES-31](https://issues.carrot2.org/browse/SMARTSPRITES-31).
     - Bugfix: [SMARTSPRITES-32](https://issues.carrot2.org/browse/SMARTSPRITES-32).
     - CSS file encoding parameter added [SMARTSPRITES-33](https://issues.carrot2.org/browse/SMARTSPRITES-33).
+
         ```--css-file-encoding: The encoding to assume for input and output CSS files, default: UTF-8. For the list of allowed values, please see the list of encodings supported in Java.```
 
 - v0.2.2, released: April 2009
