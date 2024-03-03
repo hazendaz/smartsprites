@@ -86,9 +86,11 @@ See [index](https://hazendaz.github.io/smartsprites/website/index.html) for more
     - Support for appending SHA512 hashes or timestamps to sprite image URLs [SMARTSPRITES-25](https://issues.carrot2.org/browse/SMARTSPRITES-25).
 
         ```
-         sha512: SHA512 hash of the sprite image file created by SmartSprites. The hash will change only if the sprite image content or file format changes.
+         sha512: SHA512 hash of the sprite image file created by SmartSprites. The hash will change only if the sprite image
+         content or file format changes.
 
-         date: timestamp taken at the time of sprite image generation. The timestamp will be different every time SmartSprites processing is run, even if the sprite images do not change 
+         date: timestamp taken at the time of sprite image generation. The timestamp will be different every time SmartSprites
+         processing is run, even if the sprite images do not change 
          ```
 
     - Bugfix: [SMARTSPRITES-26](https://issues.carrot2.org/browse/SMARTSPRITES-26).
@@ -97,7 +99,7 @@ See [index](https://hazendaz.github.io/smartsprites/website/index.html) for more
 - v0.2.1, released: October 2008
 
     - Ant not needed anymore to run SmartSprites.
-    - Partial support for the ```<tt>!important</tt>``` modifier in ```<tt>background-image</tt>``` declarations, see [SMARTSPRITES-23](https://issues.carrot2.org/browse/SMARTSPRITES-23?focusedCommentId=10914#action_10914) for a more in-depth discussion.
+    - Partial support for the ```!important``` modifier in ```background-image``` declarations, see [SMARTSPRITES-23](https://issues.carrot2.org/browse/SMARTSPRITES-23?focusedCommentId=10914#action_10914) for a more in-depth discussion.
 
 - v0.2, released: August 2008
 
