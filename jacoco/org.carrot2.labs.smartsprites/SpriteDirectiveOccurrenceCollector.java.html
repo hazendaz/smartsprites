@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteDirectiveOccurrenceCollector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteDirectiveOccurrenceCollector.java</span></div><h1>SpriteDirectiveOccurrenceCollector.java</h1><pre class="source lang-java linenums">/*
+ * SmartSprites Project
+ *
+ * Copyright (C) 2007-2009, Stanisław Osiński.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of  source code must  retain the above  copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following  disclaimer in  the documentation  and/or
+ *   other materials provided with the distribution.
+ *
+ * - Neither the name of the SmartSprites Project nor the names of its contributors
+ *   may  be used  to endorse  or  promote  products derived   from  this  software
+ *   without specific prior written permission.
+ *
+ * - We kindly request that you include in the end-user documentation provided with
+ *   the redistribution and/or in the software itself an acknowledgement equivalent
+ *   to  the  following: &quot;This product includes software developed by the SmartSprites
+ *   Project.&quot;
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
+ * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
+ * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
+ * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
+ * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.carrot2.labs.smartsprites;
+
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.carrot2.labs.smartsprites.css.CssProperty;
+import org.carrot2.labs.smartsprites.css.CssSyntaxUtils;
+import org.carrot2.labs.smartsprites.message.Message.MessageType;
+import org.carrot2.labs.smartsprites.message.MessageLog;
+import org.carrot2.labs.smartsprites.resource.ResourceHandler;
+
+/**
+ * Methods for collecting SmartSprites directives from CSS files.
+ */
+public class SpriteDirectiveOccurrenceCollector {
+
+    /** A regular expression for extracting sprite image directives. */
+<span class="fc" id="L63">    private static final Pattern SPRITE_IMAGE_DIRECTIVE = Pattern.compile(&quot;/\\*+\\s+(sprite:[^*]*)\\*+/&quot;);</span>
+
+    /** A regular expression for extracting sprite reference directives. */
+<span class="fc" id="L66">    private static final Pattern SPRITE_REFERENCE_DIRECTIVE = Pattern.compile(&quot;/\\*+\\s+(sprite-ref:[^*]*)\\*+/&quot;);</span>
+
+    /** This builder's message log. */
+    private final MessageLog messageLog;
+
+    /** The resource handler. */
+    private final ResourceHandler resourceHandler;
+
+    /**
+     * Creates a {@link SpriteDirectiveOccurrenceCollector} with the provided parameters and log.
+     *
+     * @param messageLog
+     *            the message log
+     * @param resourceHandler
+     *            the resource handler
+     */
+<span class="fc" id="L82">    SpriteDirectiveOccurrenceCollector(MessageLog messageLog, ResourceHandler resourceHandler) {</span>
+<span class="fc" id="L83">        this.resourceHandler = resourceHandler;</span>
+<span class="fc" id="L84">        this.messageLog = messageLog;</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Collects {@link SpriteImageOccurrence}s from a single CSS file.
+     *
+     * @param cssFile
+     *            the css file
+     *
+     * @return the collection
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    Collection&lt;SpriteImageOccurrence&gt; collectSpriteImageOccurrences(String cssFile) throws IOException {
+<span class="fc" id="L99">        final Collection&lt;SpriteImageOccurrence&gt; occurrences = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L100">        messageLog.setCssFile(null);</span>
+<span class="fc" id="L101">        messageLog.info(MessageType.READING_SPRITE_IMAGE_DIRECTIVES, cssFile);</span>
+<span class="fc" id="L102">        messageLog.setCssFile(cssFile);</span>
+
+<span class="fc" id="L104">        int lineNumber = -1;</span>
+        String line;
+
+<span class="fc" id="L107">        try (BufferedReader reader = new BufferedReader(resourceHandler.getResourceAsReader(cssFile))) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L109">                lineNumber++;</span>
+<span class="fc" id="L110">                messageLog.setLine(lineNumber);</span>
+
+<span class="fc" id="L112">                final String spriteImageDirectiveString = extractSpriteImageDirectiveString(line);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">                if (spriteImageDirectiveString == null) {</span>
+<span class="fc" id="L114">                    continue;</span>
+                }
+
+<span class="fc" id="L117">                final SpriteImageDirective directive = SpriteImageDirective.parse(spriteImageDirectiveString,</span>
+                        messageLog);
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                if (directive == null) {</span>
+<span class="nc" id="L120">                    continue;</span>
+                }
+
+<span class="fc" id="L123">                occurrences.add(new SpriteImageOccurrence(directive, cssFile, lineNumber));</span>
+<span class="fc" id="L124">            }</span>
+        }
+
+<span class="fc" id="L127">        return occurrences;</span>
+    }
+
+    /**
+     * Collects {@link SpriteReferenceOccurrence}s from a single CSS file.
+     *
+     * @param cssFile
+     *            the css file
+     * @param spriteImageDirectives
+     *            the sprite image directives
+     *
+     * @return the collection
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    Collection&lt;SpriteReferenceOccurrence&gt; collectSpriteReferenceOccurrences(String cssFile,
+            Map&lt;String, SpriteImageDirective&gt; spriteImageDirectives) throws IOException {
+<span class="fc" id="L145">        final Collection&lt;SpriteReferenceOccurrence&gt; directives = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L147">        messageLog.setCssFile(null);</span>
+<span class="fc" id="L148">        messageLog.info(MessageType.READING_SPRITE_REFERENCE_DIRECTIVES, cssFile);</span>
+<span class="fc" id="L149">        messageLog.setCssFile(cssFile);</span>
+
+<span class="fc" id="L151">        int lineNumber = -1;</span>
+        String line;
+
+<span class="fc" id="L154">        try (BufferedReader reader = new BufferedReader(resourceHandler.getResourceAsReader(cssFile))) {</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L156">                lineNumber++;</span>
+<span class="fc" id="L157">                messageLog.setLine(lineNumber);</span>
+
+<span class="fc" id="L159">                final String directiveString = extractSpriteReferenceDirectiveString(line);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                if (directiveString == null) {</span>
+<span class="fc" id="L161">                    continue;</span>
+                }
+
+<span class="fc" id="L164">                final CssProperty backgroundProperty = extractSpriteReferenceCssProperty(line);</span>
+<span class="fc" id="L165">                final String imageUrl = CssSyntaxUtils.unpackUrl(backgroundProperty.value, messageLog);</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">                if (imageUrl == null) {</span>
+<span class="nc" id="L167">                    continue;</span>
+                }
+
+<span class="fc" id="L170">                final SpriteReferenceDirective directive = SpriteReferenceDirective.parse(directiveString,</span>
+                        spriteImageDirectives, messageLog);
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                if (directive == null) {</span>
+<span class="nc" id="L173">                    continue;</span>
+                }
+
+<span class="fc" id="L176">                directives.add(new SpriteReferenceOccurrence(directive, imageUrl, cssFile, lineNumber,</span>
+                        backgroundProperty.important));
+<span class="fc" id="L178">            }</span>
+        }
+
+<span class="fc" id="L181">        return directives;</span>
+    }
+
+    /**
+     * Collects {@link SpriteImageOccurrence}s from the provided CSS files.
+     *
+     * @param filePaths
+     *            the file paths
+     *
+     * @return the multimap
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    Multimap&lt;String, SpriteImageOccurrence&gt; collectSpriteImageOccurrences(Collection&lt;String&gt; filePaths)
+            throws IOException {
+<span class="fc" id="L197">        final Multimap&lt;String, SpriteImageOccurrence&gt; spriteImageOccurrencesByFile = LinkedListMultimap.create();</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        for (final String cssFile : filePaths) {</span>
+<span class="fc" id="L199">            messageLog.setCssFile(cssFile);</span>
+
+<span class="fc" id="L201">            final Collection&lt;SpriteImageOccurrence&gt; spriteImageOccurrences = collectSpriteImageOccurrences(cssFile);</span>
+
+<span class="fc" id="L203">            spriteImageOccurrencesByFile.putAll(cssFile, spriteImageOccurrences);</span>
+<span class="fc" id="L204">        }</span>
+<span class="fc" id="L205">        return spriteImageOccurrencesByFile;</span>
+    }
+
+    /**
+     * Collects {@link SpriteReferenceOccurrence}s from the provided CSS files.
+     *
+     * @param files
+     *            the files
+     * @param spriteImageDirectivesBySpriteId
+     *            the sprite image directives by sprite id
+     *
+     * @return the multimap
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    Multimap&lt;String, SpriteReferenceOccurrence&gt; collectSpriteReferenceOccurrences(Collection&lt;String&gt; files,
+            final Map&lt;String, SpriteImageDirective&gt; spriteImageDirectivesBySpriteId) throws IOException {
+<span class="fc" id="L223">        final Multimap&lt;String, SpriteReferenceOccurrence&gt; spriteEntriesByFile = LinkedListMultimap.create();</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        for (final String cssFile : files) {</span>
+<span class="fc" id="L225">            messageLog.setCssFile(cssFile);</span>
+
+<span class="fc" id="L227">            final Collection&lt;SpriteReferenceOccurrence&gt; spriteReferenceOccurrences = collectSpriteReferenceOccurrences(</span>
+                    cssFile, spriteImageDirectivesBySpriteId);
+
+<span class="fc" id="L230">            spriteEntriesByFile.putAll(cssFile, spriteReferenceOccurrences);</span>
+<span class="fc" id="L231">        }</span>
+<span class="fc" id="L232">        return spriteEntriesByFile;</span>
+    }
+
+    /**
+     * Groups {@link SpriteImageDirective}s by sprite id.
+     *
+     * @param spriteImageOccurrencesByFile
+     *            the sprite image occurrences by file
+     *
+     * @return the map
+     */
+    Map&lt;String, SpriteImageOccurrence&gt; mergeSpriteImageOccurrences(
+            final Multimap&lt;String, SpriteImageOccurrence&gt; spriteImageOccurrencesByFile) {
+<span class="fc" id="L245">        final Map&lt;String, SpriteImageOccurrence&gt; spriteImageDirectivesBySpriteId = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        for (final Map.Entry&lt;String, SpriteImageOccurrence&gt; entry : spriteImageOccurrencesByFile.entries()) {</span>
+<span class="fc" id="L247">            final String cssFile = entry.getKey();</span>
+<span class="fc" id="L248">            final SpriteImageOccurrence spriteImageOccurrence = entry.getValue();</span>
+
+<span class="fc" id="L250">            messageLog.setCssFile(cssFile);</span>
+
+            // Add to the global map, checking for duplicates
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">            if (spriteImageDirectivesBySpriteId.containsKey(spriteImageOccurrence.spriteImageDirective.spriteId)) {</span>
+<span class="nc" id="L254">                messageLog.warning(MessageType.IGNORING_SPRITE_IMAGE_REDEFINITION);</span>
+            } else {
+<span class="fc" id="L256">                spriteImageDirectivesBySpriteId.put(spriteImageOccurrence.spriteImageDirective.spriteId,</span>
+                        spriteImageOccurrence);
+            }
+<span class="fc" id="L259">        }</span>
+<span class="fc" id="L260">        return spriteImageDirectivesBySpriteId;</span>
+    }
+
+    /**
+     * Groups {@link SpriteReferenceOccurrence}s by sprite id.
+     *
+     * @param spriteEntriesByFile
+     *            the sprite entries by file
+     *
+     * @return the multimap
+     */
+    static Multimap&lt;String, SpriteReferenceOccurrence&gt; mergeSpriteReferenceOccurrences(
+            final Multimap&lt;String, SpriteReferenceOccurrence&gt; spriteEntriesByFile) {
+        final Multimap&lt;String, SpriteReferenceOccurrence&gt; spriteReferenceOccurrencesBySpriteId = LinkedListMultimap
+<span class="fc" id="L274">                .create();</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        for (final SpriteReferenceOccurrence spriteReferenceOccurrence : spriteEntriesByFile.values()) {</span>
+<span class="fc" id="L276">            spriteReferenceOccurrencesBySpriteId.put(spriteReferenceOccurrence.spriteReferenceDirective.spriteRef,</span>
+                    spriteReferenceOccurrence);
+<span class="fc" id="L278">        }</span>
+<span class="fc" id="L279">        return spriteReferenceOccurrencesBySpriteId;</span>
+    }
+
+    /**
+     * Extract the sprite image directive string to be parsed.
+     *
+     * @param cssLine
+     *            the css line
+     *
+     * @return the string
+     */
+    static String extractSpriteImageDirectiveString(String cssLine) {
+<span class="fc" id="L291">        final Matcher matcher = SPRITE_IMAGE_DIRECTIVE.matcher(cssLine);</span>
+
+<span class="fc bfc" id="L293" title="All 2 branches covered.">        if (matcher.find()) {</span>
+<span class="fc" id="L294">            return matcher.group(1).trim();</span>
+        }
+<span class="fc" id="L296">        return null;</span>
+    }
+
+    /**
+     * Extract the sprite reference directive string to be parsed.
+     *
+     * @param css
+     *            the css
+     *
+     * @return the string
+     */
+    static String extractSpriteReferenceDirectiveString(String css) {
+<span class="fc" id="L308">        final Matcher matcher = SPRITE_REFERENCE_DIRECTIVE.matcher(css);</span>
+
+<span class="fc bfc" id="L310" title="All 2 branches covered.">        if (matcher.find()) {</span>
+<span class="fc" id="L311">            return matcher.group(1).trim();</span>
+        }
+<span class="fc" id="L313">        return null;</span>
+    }
+
+    /**
+     * Extract the url to the image to be added to a sprite.
+     *
+     * @param css
+     *            the css
+     *
+     * @return the css property
+     */
+    CssProperty extractSpriteReferenceCssProperty(String css) {
+<span class="fc" id="L325">        final Matcher matcher = SPRITE_REFERENCE_DIRECTIVE.matcher(css);</span>
+
+        // Remove the directive
+<span class="fc" id="L328">        final String noDirective = matcher.replaceAll(&quot;&quot;).trim();</span>
+
+<span class="fc" id="L330">        final Collection&lt;CssProperty&gt; rules = CssSyntaxUtils.extractProperties(noDirective);</span>
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">        if (rules.isEmpty()) {</span>
+<span class="nc" id="L332">            messageLog.warning(MessageType.NO_BACKGROUND_IMAGE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE, css);</span>
+<span class="nc" id="L333">            return null;</span>
+        }
+
+<span class="fc bfc" id="L336" title="All 2 branches covered.">        if (rules.size() &gt; 1) {</span>
+<span class="fc" id="L337">            messageLog.warning(MessageType.MORE_THAN_ONE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE, css);</span>
+<span class="fc" id="L338">            return null;</span>
+        }
+
+<span class="fc" id="L341">        final CssProperty backgroundImageRule = rules.iterator().next();</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">        if (!backgroundImageRule.rule.equals(&quot;background-image&quot;)) {</span>
+<span class="fc" id="L343">            messageLog.warning(MessageType.NO_BACKGROUND_IMAGE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE, css);</span>
+<span class="fc" id="L344">            return null;</span>
+        }
+
+<span class="fc" id="L347">        return backgroundImageRule;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

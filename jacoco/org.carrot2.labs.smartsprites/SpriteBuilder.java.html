@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteBuilder.java</span></div><h1>SpriteBuilder.java</h1><pre class="source lang-java linenums">/*
+ * SmartSprites Project
+ *
+ * Copyright (C) 2007-2009, Stanisław Osiński.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of  source code must  retain the above  copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following  disclaimer in  the documentation  and/or
+ *   other materials provided with the distribution.
+ *
+ * - Neither the name of the SmartSprites Project nor the names of its contributors
+ *   may  be used  to endorse  or  promote  products derived   from  this  software
+ *   without specific prior written permission.
+ *
+ * - We kindly request that you include in the end-user documentation provided with
+ *   the redistribution and/or in the software itself an acknowledgement equivalent
+ *   to  the  following: &quot;This product includes software developed by the SmartSprites
+ *   Project.&quot;
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
+ * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
+ * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
+ * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
+ * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.carrot2.labs.smartsprites;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.carrot2.labs.smartsprites.message.LevelCounterMessageSink;
+import org.carrot2.labs.smartsprites.message.Message.MessageType;
+import org.carrot2.labs.smartsprites.message.MessageLog;
+import org.carrot2.labs.smartsprites.resource.FileSystemResourceHandler;
+import org.carrot2.labs.smartsprites.resource.ResourceHandler;
+import org.carrot2.util.FileUtils;
+import org.carrot2.util.PathUtils;
+import org.carrot2.util.StringUtils;
+
+/**
+ * Performs all stages of sprite building. This class is not thread-safe.
+ */
+public class SpriteBuilder {
+    /** Properties we need to watch for in terms of overriding the generated ones. */
+<span class="fc" id="L73">    private static final HashSet&lt;String&gt; OVERRIDING_PROPERTIES = Sets.newHashSet(&quot;background-position&quot;,</span>
+            &quot;background-image&quot;);
+
+    /** This builder's configuration. */
+    public final SmartSpritesParameters parameters;
+
+    /** This builder's message log. */
+    private final MessageLog messageLog;
+
+    /** Directive occurrence collector for this builder. */
+    private final SpriteDirectiveOccurrenceCollector spriteDirectiveOccurrenceCollector;
+
+    /** SpriteImageBuilder for this builder. */
+    private final SpriteImageBuilder spriteImageBuilder;
+
+    /** Resource handler. */
+    private ResourceHandler resourceHandler;
+
+    /**
+     * Creates a {@link SpriteBuilder} with the provided parameters and log.
+     *
+     * @param parameters
+     *            the parameters
+     * @param messageLog
+     *            the message log
+     */
+    public SpriteBuilder(SmartSpritesParameters parameters, MessageLog messageLog) {
+<span class="fc" id="L100">        this(parameters, messageLog, new FileSystemResourceHandler(parameters.getDocumentRootDir(),</span>
+<span class="fc" id="L101">                parameters.getCssFileEncoding(), messageLog));</span>
+<span class="fc" id="L102">    }</span>
+
+    /**
+     * Creates a {@link SpriteBuilder} with the provided parameters and log.
+     *
+     * @param parameters
+     *            the parameters
+     * @param messageLog
+     *            the message log
+     * @param resourceHandler
+     *            the resource handler
+     */
+<span class="fc" id="L114">    public SpriteBuilder(SmartSpritesParameters parameters, MessageLog messageLog, ResourceHandler resourceHandler) {</span>
+<span class="fc" id="L115">        this.messageLog = messageLog;</span>
+<span class="fc" id="L116">        this.parameters = parameters;</span>
+<span class="fc" id="L117">        this.resourceHandler = resourceHandler;</span>
+<span class="fc" id="L118">        spriteDirectiveOccurrenceCollector = new SpriteDirectiveOccurrenceCollector(messageLog, resourceHandler);</span>
+<span class="fc" id="L119">        spriteImageBuilder = new SpriteImageBuilder(parameters, messageLog, resourceHandler);</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * Performs processing for this builder's parameters. This method resolves all paths against the local file system.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    public void buildSprites() throws IOException {
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (!parameters.validate(messageLog)) {</span>
+<span class="nc" id="L130">            return;</span>
+        }
+
+        final Collection&lt;String&gt; filePaths;
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">        if (parameters.getCssFiles() != null &amp;&amp; !parameters.getCssFiles().isEmpty()) {</span>
+            // Take directly provided css fle paths
+<span class="fc" id="L136">            filePaths = parameters.getCssFiles();</span>
+
+            // If root dir is provided, filter out those files that are outside root dir
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            if (StringUtils.isNotBlank(parameters.getOutputDir())) {</span>
+<span class="fc" id="L140">                filterFilesOutsideRootDir(filePaths);</span>
+            }
+
+            // Make sure the files exist and are really files
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            for (Iterator&lt;String&gt; it = filePaths.iterator(); it.hasNext();) {</span>
+<span class="fc" id="L145">                final String path = it.next();</span>
+<span class="fc" id="L146">                final File file = new File(path);</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">                if (file.exists()) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">                    if (!file.isFile()) {</span>
+<span class="fc" id="L149">                        messageLog.warning(MessageType.CSS_PATH_IS_NOT_A_FILE, path);</span>
+<span class="fc" id="L150">                        it.remove();</span>
+                    }
+                } else {
+<span class="fc" id="L153">                    messageLog.warning(MessageType.CSS_FILE_DOES_NOT_EXIST, path);</span>
+<span class="fc" id="L154">                    it.remove();</span>
+                }
+<span class="fc" id="L156">            }</span>
+        } else {
+            // Take all css files from the root dir
+<span class="fc" id="L159">            final List&lt;File&gt; files = Lists.newArrayList(org.apache.commons.io.FileUtils</span>
+<span class="fc" id="L160">                    .listFiles(parameters.getRootDirFile(), new String[] { &quot;css&quot; }, true));</span>
+<span class="fc" id="L161">            Collections.sort(files, Comparator.comparing(File::getAbsolutePath));</span>
+
+<span class="fc" id="L163">            filePaths = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">            for (File file : files) {</span>
+<span class="fc" id="L165">                filePaths.add(file.getPath());</span>
+<span class="fc" id="L166">            }</span>
+        }
+
+<span class="fc" id="L169">        buildSprites(filePaths);</span>
+<span class="fc" id="L170">    }</span>
+
+    /**
+     * Filter files outside root dir.
+     *
+     * @param filePaths
+     *            the file paths
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    private void filterFilesOutsideRootDir(Collection&lt;String&gt; filePaths) throws IOException {
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        for (Iterator&lt;String&gt; it = filePaths.iterator(); it.hasNext();) {</span>
+<span class="fc" id="L183">            final String filePath = it.next();</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">            if (!FileUtils.isFileInParent(new File(filePath), parameters.getRootDirFile())) {</span>
+<span class="fc" id="L185">                it.remove();</span>
+<span class="fc" id="L186">                messageLog.warning(MessageType.IGNORING_CSS_FILE_OUTSIDE_OF_ROOT_DIR, filePath);</span>
+            }
+<span class="fc" id="L188">        }</span>
+<span class="fc" id="L189">    }</span>
+
+    /**
+     * Performs processing from the list of file paths for this builder's parameters.
+     *
+     * @param filePaths
+     *            paths of CSS files to process. Non-absolute paths will be taken relative to the current working
+     *            directory. Both platform-specific and '/' as the file separator are supported.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    public void buildSprites(Collection&lt;String&gt; filePaths) throws IOException {
+<span class="fc" id="L202">        final long start = System.currentTimeMillis();</span>
+
+<span class="fc" id="L204">        final LevelCounterMessageSink levelCounter = new LevelCounterMessageSink();</span>
+<span class="fc" id="L205">        messageLog.addMessageSink(levelCounter);</span>
+
+        // Collect sprite declarations from all css files
+<span class="fc" id="L208">        final Multimap&lt;String, SpriteImageOccurrence&gt; spriteImageOccurrencesByFile = spriteDirectiveOccurrenceCollector</span>
+<span class="fc" id="L209">                .collectSpriteImageOccurrences(filePaths);</span>
+
+        // Merge them, checking for duplicates
+<span class="fc" id="L212">        final Map&lt;String, SpriteImageOccurrence&gt; spriteImageOccurrencesBySpriteId = spriteDirectiveOccurrenceCollector</span>
+<span class="fc" id="L213">                .mergeSpriteImageOccurrences(spriteImageOccurrencesByFile);</span>
+<span class="fc" id="L214">        final Map&lt;String, SpriteImageDirective&gt; spriteImageDirectivesBySpriteId = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        for (Map.Entry&lt;String, SpriteImageOccurrence&gt; entry : spriteImageOccurrencesBySpriteId.entrySet()) {</span>
+<span class="fc" id="L216">            spriteImageDirectivesBySpriteId.put(entry.getKey(), entry.getValue().spriteImageDirective);</span>
+<span class="fc" id="L217">        }</span>
+
+        // Collect sprite references from all css files
+<span class="fc" id="L220">        final Multimap&lt;String, SpriteReferenceOccurrence&gt; spriteEntriesByFile = spriteDirectiveOccurrenceCollector</span>
+<span class="fc" id="L221">                .collectSpriteReferenceOccurrences(filePaths, spriteImageDirectivesBySpriteId);</span>
+
+        // Now merge and regroup all files by sprite-id
+<span class="fc" id="L224">        final Multimap&lt;String, SpriteReferenceOccurrence&gt; spriteReferenceOccurrencesBySpriteId = SpriteDirectiveOccurrenceCollector</span>
+<span class="fc" id="L225">                .mergeSpriteReferenceOccurrences(spriteEntriesByFile);</span>
+
+        // Build the sprite images
+<span class="fc" id="L228">        messageLog.setCssFile(null);</span>
+<span class="fc" id="L229">        final Multimap&lt;String, SpriteReferenceReplacement&gt; spriteReplacementsByFile = spriteImageBuilder</span>
+<span class="fc" id="L230">                .buildSpriteImages(spriteImageOccurrencesBySpriteId, spriteReferenceOccurrencesBySpriteId);</span>
+
+        // Rewrite the CSS
+<span class="fc" id="L233">        rewriteCssFiles(spriteImageOccurrencesByFile, spriteReplacementsByFile);</span>
+
+<span class="fc" id="L235">        final long stop = System.currentTimeMillis();</span>
+
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (levelCounter.getWarnCount() &gt; 0) {</span>
+<span class="fc" id="L238">            messageLog.status(MessageType.PROCESSING_COMPLETED_WITH_WARNINGS, stop - start,</span>
+<span class="fc" id="L239">                    levelCounter.getWarnCount());</span>
+        } else {
+<span class="fc" id="L241">            messageLog.status(MessageType.PROCESSING_COMPLETED, stop - start);</span>
+        }
+<span class="fc" id="L243">    }</span>
+
+    /**
+     * Rewrites the original files to refer to the generated sprite images.
+     *
+     * @param spriteImageOccurrencesByFile
+     *            the sprite image occurrences by file
+     * @param spriteReplacementsByFile
+     *            the sprite replacements by file
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    private void rewriteCssFiles(final Multimap&lt;String, SpriteImageOccurrence&gt; spriteImageOccurrencesByFile,
+            final Multimap&lt;String, SpriteReferenceReplacement&gt; spriteReplacementsByFile) throws IOException {
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (spriteReplacementsByFile.isEmpty()) {</span>
+            // If nothing to replace, still, copy the original file, so that there
+            // is some output file.
+<span class="fc bfc" id="L261" title="All 2 branches covered.">            for (final Map.Entry&lt;String, Collection&lt;SpriteImageOccurrence&gt;&gt; entry : spriteImageOccurrencesByFile.asMap()</span>
+<span class="fc" id="L262">                    .entrySet()) {</span>
+<span class="fc" id="L263">                final String cssFile = entry.getKey();</span>
+
+<span class="fc" id="L265">                createProcessedCss(cssFile, SpriteImageBuilder.getSpriteImageOccurrencesByLineNumber(</span>
+<span class="fc" id="L266">                        spriteImageOccurrencesByFile.get(cssFile)), new HashMap&lt;&gt;());</span>
+<span class="fc" id="L267">            }</span>
+        } else {
+<span class="fc bfc" id="L269" title="All 2 branches covered.">            for (final Map.Entry&lt;String, Collection&lt;SpriteReferenceReplacement&gt;&gt; entry : spriteReplacementsByFile</span>
+<span class="fc" id="L270">                    .asMap().entrySet()) {</span>
+<span class="fc" id="L271">                final String cssFile = entry.getKey();</span>
+<span class="fc" id="L272">                final Map&lt;Integer, SpriteReferenceReplacement&gt; spriteReplacementsByLineNumber = SpriteImageBuilder</span>
+<span class="fc" id="L273">                        .getSpriteReplacementsByLineNumber(entry.getValue());</span>
+
+<span class="fc" id="L275">                createProcessedCss(cssFile, SpriteImageBuilder.getSpriteImageOccurrencesByLineNumber(</span>
+<span class="fc" id="L276">                        spriteImageOccurrencesByFile.get(cssFile)), spriteReplacementsByLineNumber);</span>
+<span class="fc" id="L277">            }</span>
+        }
+<span class="fc" id="L279">    }</span>
+
+    /**
+     * Rewrites one CSS file to refer to the generated sprite images.
+     *
+     * @param originalCssFile
+     *            the original css file
+     * @param spriteImageOccurrencesByLineNumber
+     *            the sprite image occurrences by line number
+     * @param spriteReplacementsByLineNumber
+     *            the sprite replacements by line number
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    private void createProcessedCss(String originalCssFile,
+            Map&lt;Integer, SpriteImageOccurrence&gt; spriteImageOccurrencesByLineNumber,
+            Map&lt;Integer, SpriteReferenceReplacement&gt; spriteReplacementsByLineNumber) throws IOException {
+<span class="fc" id="L297">        final String processedCssFile = getProcessedCssFile(originalCssFile);</span>
+<span class="fc" id="L298">        messageLog.setCssFile(null);</span>
+<span class="fc" id="L299">        messageLog.info(MessageType.CREATING_CSS_STYLE_SHEET, processedCssFile);</span>
+<span class="fc" id="L300">        messageLog.info(MessageType.READING_CSS, originalCssFile);</span>
+<span class="fc" id="L301">        messageLog.info(MessageType.WRITING_CSS, processedCssFile);</span>
+
+        String originalCssLine;
+<span class="fc" id="L304">        int originalCssLineNumber = -1;</span>
+<span class="fc" id="L305">        int lastReferenceReplacementLine = -1;</span>
+
+<span class="fc" id="L307">        boolean markSpriteImages = parameters.isMarkSpriteImages();</span>
+
+        // Generate UID for sprite file
+<span class="fc" id="L310">        try (BufferedReader originalCssReader = new BufferedReader(</span>
+<span class="fc" id="L311">                resourceHandler.getResourceAsReader(originalCssFile));</span>
+<span class="fc" id="L312">                BufferedWriter processedCssWriter = new BufferedWriter(</span>
+<span class="fc" id="L313">                        resourceHandler.getResourceAsWriter(processedCssFile))) {</span>
+<span class="fc" id="L314">            messageLog.setCssFile(originalCssFile);</span>
+
+<span class="fc" id="L316">            originalCssFile = originalCssFile.replace(File.separatorChar, '/');</span>
+
+<span class="fc bfc" id="L318" title="All 2 branches covered.">            while ((originalCssLine = originalCssReader.readLine()) != null) {</span>
+<span class="fc" id="L319">                originalCssLineNumber++;</span>
+<span class="fc" id="L320">                messageLog.setLine(originalCssLineNumber);</span>
+
+<span class="fc bfc" id="L322" title="All 2 branches covered.">                if (originalCssLine.contains(&quot;}&quot;)) {</span>
+<span class="fc" id="L323">                    lastReferenceReplacementLine = -1;</span>
+                }
+
+<span class="fc" id="L326">                final SpriteImageOccurrence spriteImageOccurrence = spriteImageOccurrencesByLineNumber</span>
+<span class="fc" id="L327">                        .get(originalCssLineNumber);</span>
+<span class="fc" id="L328">                final SpriteReferenceReplacement spriteReferenceReplacement = spriteReplacementsByLineNumber</span>
+<span class="fc" id="L329">                        .get(originalCssLineNumber);</span>
+
+<span class="fc bfc" id="L331" title="All 2 branches covered.">                if (spriteImageOccurrence != null) {</span>
+                    // Ignore line with directive
+<span class="fc" id="L333">                    continue;</span>
+                }
+
+<span class="fc bfc" id="L336" title="All 2 branches covered.">                if (spriteReferenceReplacement != null) {</span>
+<span class="fc" id="L337">                    final boolean important = spriteReferenceReplacement.spriteReferenceOccurrence.important;</span>
+<span class="fc" id="L338">                    lastReferenceReplacementLine = originalCssLineNumber;</span>
+
+<span class="fc" id="L340">                    processedCssWriter.write(&quot;  background-image: url('&quot;</span>
+<span class="fc" id="L341">                            + getRelativeToReplacementLocation(spriteReferenceReplacement.spriteImage.resolvedPath,</span>
+                                    originalCssFile, spriteReferenceReplacement)
+<span class="fc bfc" id="L343" title="All 2 branches covered.">                            + &quot;')&quot; + (important ? &quot; !important&quot; : &quot;&quot;) + &quot;;&quot;</span>
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">                            + (markSpriteImages ? &quot; /** sprite:sprite */&quot; : &quot;&quot;) + &quot;\n&quot;);</span>
+
+<span class="fc" id="L346">                    processedCssWriter</span>
+<span class="fc" id="L347">                            .write(&quot;  background-position: &quot; + spriteReferenceReplacement.horizontalPositionString + &quot; &quot;</span>
+                                    + spriteReferenceReplacement.verticalPositionString
+<span class="fc bfc" id="L349" title="All 2 branches covered.">                                    + (important ? &quot; !important&quot; : &quot;&quot;) + &quot;;\n&quot;);</span>
+
+                    // If the sprite scale is not 1, write out a background-size directive
+<span class="fc" id="L352">                    final float scale = spriteReferenceReplacement.spriteImage.scaleRatio;</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">                    if (scale != 1.0f) {</span>
+<span class="fc" id="L354">                        processedCssWriter.write(&quot;  background-size: &quot;</span>
+<span class="fc" id="L355">                                + Math.round(spriteReferenceReplacement.spriteImage.spriteWidth / scale) + &quot;px &quot;</span>
+<span class="fc" id="L356">                                + Math.round(spriteReferenceReplacement.spriteImage.spriteHeight / scale) + &quot;px;\n&quot;);</span>
+                    }
+
+                    continue;
+                }
+
+<span class="fc bfc" id="L362" title="All 2 branches covered.">                if (lastReferenceReplacementLine &gt;= 0) {</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">                    for (final String property : OVERRIDING_PROPERTIES) {</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">                        if (originalCssLine.contains(property)) {</span>
+<span class="fc" id="L365">                            messageLog.warning(MessageType.OVERRIDING_PROPERTY_FOUND, property,</span>
+<span class="fc" id="L366">                                    lastReferenceReplacementLine);</span>
+                        }
+<span class="fc" id="L368">                    }</span>
+                }
+
+                // Just write the original line
+<span class="fc" id="L372">                processedCssWriter.write(originalCssLine + &quot;\n&quot;);</span>
+<span class="fc" id="L373">            }</span>
+
+<span class="fc" id="L375">            messageLog.setCssFile(null);</span>
+        }
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Returns the sprite image's imagePath relative to the CSS in which we're making replacements. The imagePath is
+     * relative to the CSS which declared the sprite image. As it may happen that the image is referenced in another CSS
+     * file, we must make sure the paths are correctly translated.
+     *
+     * @param imagePath
+     *            the image path
+     * @param originalCssFile
+     *            the original css file
+     * @param spriteReferenceReplacement
+     *            the sprite reference replacement
+     *
+     * @return the relative to replacement location
+     */
+    private String getRelativeToReplacementLocation(String imagePath, String originalCssFile,
+            final SpriteReferenceReplacement spriteReferenceReplacement) {
+<span class="fc" id="L395">        final String declaringCssPath = spriteReferenceReplacement.spriteImage.spriteImageOccurrence.cssFile</span>
+<span class="fc" id="L396">                .replace(File.separatorChar, '/');</span>
+<span class="fc" id="L397">        final String declarationReplacementRelativePath = PathUtils</span>
+<span class="fc" id="L398">                .getRelativeFilePath(originalCssFile.substring(0, originalCssFile.lastIndexOf('/')),</span>
+<span class="fc" id="L399">                        declaringCssPath.substring(0, declaringCssPath.lastIndexOf('/')))</span>
+<span class="fc" id="L400">                .replace(File.separatorChar, '/');</span>
+<span class="fc" id="L401">        return FileUtils.canonicalize(</span>
+<span class="pc bpc" id="L402" title="1 of 4 branches missed.">                (Strings.isNullOrEmpty(declarationReplacementRelativePath) || originalCssFile.equals(declaringCssPath)</span>
+<span class="fc" id="L403">                        ? &quot;&quot; : declarationReplacementRelativePath + '/') + imagePath,</span>
+                &quot;/&quot;);
+    }
+
+    /**
+     * Gets the name of the processed CSS file.
+     *
+     * @param originalCssFile
+     *            the original css file
+     *
+     * @return the processed css file
+     */
+    String getProcessedCssFile(String originalCssFile) {
+<span class="fc" id="L416">        final int lastDotIndex = originalCssFile.lastIndexOf('.');</span>
+        final String processedCssFile;
+<span class="pc bpc" id="L418" title="1 of 2 branches missed.">        if (lastDotIndex &gt;= 0) {</span>
+<span class="fc" id="L419">            processedCssFile = originalCssFile.substring(0, lastDotIndex) + parameters.getCssFileSuffix()</span>
+<span class="fc" id="L420">                    + originalCssFile.substring(lastDotIndex);</span>
+        } else {
+<span class="nc" id="L422">            processedCssFile = originalCssFile + parameters.getCssFileSuffix();</span>
+        }
+
+<span class="fc bfc" id="L425" title="All 2 branches covered.">        if (parameters.hasOutputDir()) {</span>
+<span class="fc" id="L426">            return FileUtils.changeRoot(processedCssFile, parameters.getRootDir(), parameters.getOutputDir());</span>
+        }
+<span class="fc" id="L428">        return processedCssFile;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileSystemResourceHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites.resource</a> &gt; <span class="el_source">FileSystemResourceHandler.java</span></div><h1>FileSystemResourceHandler.java</h1><pre class="source lang-java linenums">/*
+ * SmartSprites Project
+ *
+ * Copyright (C) 2007-2009, Stanisław Osiński.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of  source code must  retain the above  copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following  disclaimer in  the documentation  and/or
+ *   other materials provided with the distribution.
+ *
+ * - Neither the name of the SmartSprites Project nor the names of its contributors
+ *   may  be used  to endorse  or  promote  products derived   from  this  software
+ *   without specific prior written permission.
+ *
+ * - We kindly request that you include in the end-user documentation provided with
+ *   the redistribution and/or in the software itself an acknowledgement equivalent
+ *   to  the  following: &quot;This product includes software developed by the SmartSprites
+ *   Project.&quot;
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
+ * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
+ * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
+ * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
+ * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.carrot2.labs.smartsprites.resource;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.nio.charset.Charset;
+
+import org.apache.commons.io.FilenameUtils;
+import org.carrot2.labs.smartsprites.SmartSpritesParameters;
+import org.carrot2.labs.smartsprites.message.Message;
+import org.carrot2.labs.smartsprites.message.Message.MessageType;
+import org.carrot2.labs.smartsprites.message.MessageLog;
+import org.carrot2.util.FileUtils;
+import org.carrot2.util.StringUtils;
+
+/**
+ * This class defines the resource handler which manage resources from the file system.
+ *
+ * @author Ibrahim Chaehoi
+ * @author Stanislaw Osinski
+ */
+public class FileSystemResourceHandler implements ResourceHandler {
+
+    /** The message log. */
+    private final MessageLog messageLog;
+
+    /** The root directory. */
+    private final String documentRootDir;
+
+    /** The charset to assume in the {@link #getResourceAsReader(String)} method. */
+    private final Charset charset;
+
+    /**
+     * Creates a new {@link FileSystemResourceHandler}.
+     *
+     * @param documentRootDirPath
+     *            the document root directory path, can be &lt;code&gt;null&lt;/code&gt;
+     * @param charset
+     *            the charset to assume in the {@link #getResourceAsReader(String)} method
+     * @param messageLog
+     *            the message log
+     */
+<span class="fc" id="L87">    public FileSystemResourceHandler(String documentRootDirPath, String charset, MessageLog messageLog) {</span>
+<span class="fc" id="L88">        this.documentRootDir = documentRootDirPath;</span>
+<span class="fc" id="L89">        this.messageLog = messageLog;</span>
+<span class="fc" id="L90">        this.charset = Charset.forName(charset);</span>
+<span class="fc" id="L91">    }</span>
+
+    @Override
+    public InputStream getResourceAsInputStream(String path) throws IOException {
+<span class="fc" id="L95">        return new FileInputStream(FileUtils.getCanonicalOrAbsoluteFile(path));</span>
+    }
+
+    @Override
+    public Reader getResourceAsReader(String path) throws IOException {
+        try {
+<span class="fc" id="L101">            return new InputStreamReader(getResourceAsInputStream(path), charset);</span>
+<span class="nc" id="L102">        } catch (UnsupportedEncodingException e) {</span>
+            // Should not happen as we're checking the charset in constructor
+<span class="nc" id="L104">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    @Override
+    public OutputStream getResourceAsOutputStream(String path) throws IOException {
+        // Create directories if needed
+<span class="fc" id="L111">        final File parentFile = new File(path).getParentFile();</span>
+<span class="pc bpc" id="L112" title="1 of 4 branches missed.">        if (!parentFile.exists() &amp;&amp; !parentFile.mkdirs()) {</span>
+<span class="nc" id="L113">            messageLog.warning(Message.MessageType.CANNOT_CREATE_DIRECTORIES, parentFile.getPath());</span>
+        }
+<span class="fc" id="L115">        return new FileOutputStream(FileUtils.getCanonicalOrAbsoluteFile(path));</span>
+    }
+
+    @Override
+    public Writer getResourceAsWriter(String path) throws IOException {
+        try {
+<span class="fc" id="L121">            return new OutputStreamWriter(getResourceAsOutputStream(path), charset);</span>
+<span class="nc" id="L122">        } catch (UnsupportedEncodingException e) {</span>
+            // Should not happen as we're checking the charset in constructor
+<span class="nc" id="L124">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    /**
+     * This implementation detects if the resource path starts with a &quot;/&quot; and resolves such resources against the
+     * provided {@link SmartSpritesParameters#getDocumentRootDir()} directory.
+     */
+    @Override
+    public String getResourcePath(String baseFile, String filePath) {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (!filePath.startsWith(&quot;/&quot;)) {</span>
+<span class="fc" id="L135">            return FilenameUtils.concat(FilenameUtils.getFullPath(baseFile), filePath);</span>
+        }
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (StringUtils.isNotBlank(documentRootDir)) {</span>
+<span class="fc" id="L138">            return FilenameUtils.concat(documentRootDir, filePath.substring(1));</span>
+        }
+<span class="nc" id="L140">        messageLog.warning(MessageType.ABSOLUTE_PATH_AND_NO_DOCUMENT_ROOT, filePath);</span>
+<span class="nc" id="L141">        return &quot;&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

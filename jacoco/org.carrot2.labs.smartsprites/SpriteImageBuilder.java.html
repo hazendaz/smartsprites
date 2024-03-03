@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteImageBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteImageBuilder.java</span></div><h1>SpriteImageBuilder.java</h1><pre class="source lang-java linenums">/*
+ * SmartSprites Project
+ *
+ * Copyright (C) 2007-2009, Stanisław Osiński.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of  source code must  retain the above  copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following  disclaimer in  the documentation  and/or
+ *   other materials provided with the distribution.
+ *
+ * - Neither the name of the SmartSprites Project nor the names of its contributors
+ *   may  be used  to endorse  or  promote  products derived   from  this  software
+ *   without specific prior written permission.
+ *
+ * - We kindly request that you include in the end-user documentation provided with
+ *   the redistribution and/or in the software itself an acknowledgement equivalent
+ *   to  the  following: &quot;This product includes software developed by the SmartSprites
+ *   Project.&quot;
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
+ * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
+ * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
+ * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
+ * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.carrot2.labs.smartsprites;
+
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.math3.util.ArithmeticUtils;
+import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageFormat;
+import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageLayout;
+import org.carrot2.labs.smartsprites.SpriteLayoutProperties.SpriteAlignment;
+import org.carrot2.labs.smartsprites.message.Message.MessageType;
+import org.carrot2.labs.smartsprites.message.MessageLog;
+import org.carrot2.labs.smartsprites.resource.ResourceHandler;
+import org.carrot2.util.BufferedImageUtils;
+import org.carrot2.util.FileUtils;
+
+/**
+ * Lays out and builds sprite images based on the collected SmartSprites directives.
+ */
+public class SpriteImageBuilder {
+
+    /** This builder's configuration. */
+    public final SmartSpritesParameters parameters;
+
+    /** This builder's message log. */
+    private final MessageLog messageLog;
+
+    /** Image merger for this builder. */
+    private SpriteImageRenderer spriteImageRenderer;
+
+    /** The resource handler. */
+    private ResourceHandler resourceHandler;
+
+    /**
+     * A timestamp to use for timestamp-based sprite image UIDs. We need this time stamp as a field to make sure the
+     * timestamp is the same for all sprite image replacements.
+     */
+    private Instant timestamp;
+
+    /**
+     * Creates a {@link SpriteImageBuilder} with the provided parameters and log.
+     *
+     * @param parameters
+     *            the parameters
+     * @param messageLog
+     *            the message log
+     * @param resourceHandler
+     *            the resource handler
+     */
+<span class="fc" id="L99">    SpriteImageBuilder(SmartSpritesParameters parameters, MessageLog messageLog, ResourceHandler resourceHandler) {</span>
+<span class="fc" id="L100">        this.messageLog = messageLog;</span>
+<span class="fc" id="L101">        this.parameters = parameters;</span>
+<span class="fc" id="L102">        this.resourceHandler = resourceHandler;</span>
+<span class="fc" id="L103">        spriteImageRenderer = new SpriteImageRenderer(parameters, messageLog);</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Builds all sprite images based on the collected directives.
+     *
+     * @param spriteImageOccurrencesBySpriteId
+     *            the sprite image occurrences by sprite id
+     * @param spriteReferenceOccurrencesBySpriteId
+     *            the sprite reference occurrences by sprite id
+     *
+     * @return the multimap
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    Multimap&lt;String, SpriteReferenceReplacement&gt; buildSpriteImages(
+            Map&lt;String, SpriteImageOccurrence&gt; spriteImageOccurrencesBySpriteId,
+            Multimap&lt;String, SpriteReferenceOccurrence&gt; spriteReferenceOccurrencesBySpriteId) throws IOException {
+<span class="fc" id="L122">        timestamp = Instant.now();</span>
+
+<span class="fc" id="L124">        final Multimap&lt;String, SpriteReferenceReplacement&gt; spriteReplacementsByFile = LinkedListMultimap.create();</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        for (final Map.Entry&lt;String, Collection&lt;SpriteReferenceOccurrence&gt;&gt; spriteReferenceOccurrences : spriteReferenceOccurrencesBySpriteId</span>
+<span class="fc" id="L126">                .asMap().entrySet()) {</span>
+<span class="fc" id="L127">            final Map&lt;SpriteReferenceOccurrence, SpriteReferenceReplacement&gt; spriteReferenceReplacements = buildSpriteReplacements(</span>
+<span class="fc" id="L128">                    spriteImageOccurrencesBySpriteId.get(spriteReferenceOccurrences.getKey()),</span>
+<span class="fc" id="L129">                    spriteReferenceOccurrences.getValue());</span>
+
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            for (final SpriteReferenceReplacement spriteReferenceReplacement : spriteReferenceReplacements.values()) {</span>
+<span class="fc" id="L132">                spriteReplacementsByFile.put(spriteReferenceReplacement.spriteReferenceOccurrence.cssFile,</span>
+                        spriteReferenceReplacement);
+<span class="fc" id="L134">            }</span>
+<span class="fc" id="L135">        }</span>
+
+<span class="fc" id="L137">        return spriteReplacementsByFile;</span>
+    }
+
+    /**
+     * Builds sprite image for a single sprite image directive.
+     *
+     * @param spriteImageOccurrence
+     *            the sprite image occurrence
+     * @param spriteReferenceOccurrences
+     *            the sprite reference occurrences
+     *
+     * @return the map
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    Map&lt;SpriteReferenceOccurrence, SpriteReferenceReplacement&gt; buildSpriteReplacements(
+            SpriteImageOccurrence spriteImageOccurrence,
+            Collection&lt;SpriteReferenceOccurrence&gt; spriteReferenceOccurrences) throws IOException {
+        // Load images into memory. TODO: impose some limit here?
+<span class="fc" id="L157">        final Map&lt;SpriteReferenceOccurrence, BufferedImage&gt; images = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        for (final SpriteReferenceOccurrence spriteReferenceOccurrence : spriteReferenceOccurrences) {</span>
+<span class="fc" id="L159">            messageLog.setCssFile(spriteReferenceOccurrence.cssFile);</span>
+<span class="fc" id="L160">            messageLog.setLine(spriteReferenceOccurrence.line);</span>
+
+<span class="fc" id="L162">            final String realImagePath = resourceHandler.getResourcePath(spriteReferenceOccurrence.cssFile,</span>
+                    spriteReferenceOccurrence.imagePath);
+
+<span class="fc" id="L165">            try (InputStream is = resourceHandler.getResourceAsInputStream(realImagePath)) {</span>
+
+                // Load image
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">                if (is == null) {</span>
+<span class="nc" id="L169">                    messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, &quot;Can't read input file!&quot;);</span>
+<span class="nc" id="L170">                    continue;</span>
+                }
+<span class="fc" id="L172">                messageLog.info(MessageType.READING_IMAGE, realImagePath);</span>
+<span class="fc" id="L173">                final BufferedImage image = ImageIO.read(is);</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">                if (image != null) {</span>
+<span class="fc" id="L175">                    images.put(spriteReferenceOccurrence, image);</span>
+                } else {
+<span class="fc" id="L177">                    messageLog.warning(MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT, realImagePath);</span>
+                }
+<span class="pc bnc" id="L179" title="All 2 branches missed.">            } catch (final IOException e) {</span>
+<span class="fc" id="L180">                messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, &quot;Can't read input file!&quot;);</span>
+<span class="fc" id="L181">                continue;</span>
+<span class="fc" id="L182">            }</span>
+
+<span class="fc" id="L184">            messageLog.setCssFile(null);</span>
+<span class="fc" id="L185">        }</span>
+
+        // Build the sprite image bitmap
+<span class="fc" id="L188">        final SpriteImage spriteImage = SpriteImageBuilder.buildSpriteImage(spriteImageOccurrence, images, messageLog);</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (spriteImage == null) {</span>
+<span class="fc" id="L190">            return Collections.&lt;SpriteReferenceOccurrence, SpriteReferenceReplacement&gt;emptyMap();</span>
+        }
+
+        // Render the sprite into the required formats, perform quantization if needed
+<span class="fc" id="L194">        final BufferedImage[] mergedImages = spriteImageRenderer.render(spriteImage);</span>
+
+<span class="fc" id="L196">        writeSprite(spriteImage, mergedImages[0]);</span>
+
+<span class="fc" id="L198">        return spriteImage.spriteReferenceReplacements;</span>
+    }
+
+    /**
+     * Writes sprite image to the disk.
+     *
+     * @param spriteImage
+     *            the sprite image
+     * @param mergedImage
+     *            the merged image
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    private void writeSprite(SpriteImage spriteImage, final BufferedImage mergedImage) throws IOException {
+<span class="fc" id="L213">        final SpriteImageOccurrence spriteImageOccurrence = spriteImage.spriteImageOccurrence;</span>
+<span class="fc" id="L214">        final SpriteImageDirective spriteImageDirective = spriteImageOccurrence.spriteImageDirective;</span>
+
+        // Write the image to a byte array first. We need the data to compute an sha512 hash.
+<span class="fc" id="L217">        final ByteArrayOutputStream spriteImageByteArrayOutputStream = new ByteArrayOutputStream();</span>
+
+        // If writing to a JPEG, we need to make a 3-byte-encoded image
+        final BufferedImage imageToWrite;
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">        if (SpriteImageFormat.JPG.equals(spriteImageDirective.format)) {</span>
+<span class="nc" id="L222">            imageToWrite = new BufferedImage(mergedImage.getWidth(), mergedImage.getHeight(),</span>
+                    BufferedImage.TYPE_3BYTE_BGR);
+<span class="nc" id="L224">            BufferedImageUtils.drawImage(mergedImage, imageToWrite, 0, 0);</span>
+        } else {
+<span class="fc" id="L226">            imageToWrite = mergedImage;</span>
+        }
+
+        try {
+<span class="fc" id="L230">            ImageIO.write(imageToWrite, spriteImageDirective.format.toString(), spriteImageByteArrayOutputStream);</span>
+<span class="nc" id="L231">        } catch (IOException e) {</span>
+            // Unlikely to happen.
+<span class="nc" id="L233">            messageLog.warning(MessageType.CANNOT_WRITE_SPRITE_IMAGE, spriteImageDirective.imagePath, e.getMessage());</span>
+<span class="fc" id="L234">        }</span>
+
+        // Build file name
+<span class="fc" id="L237">        byte[] spriteImageBytes = spriteImageByteArrayOutputStream.toByteArray();</span>
+<span class="fc" id="L238">        String resolvedImagePath = spriteImage.resolveImagePath(spriteImageBytes, timestamp.toString());</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (resolvedImagePath.indexOf('?') &gt;= 0) {</span>
+<span class="fc" id="L240">            resolvedImagePath = resolvedImagePath.substring(0, resolvedImagePath.indexOf('?'));</span>
+        }
+
+        // Save the image to the disk
+<span class="fc" id="L244">        final String mergedImageFile = getImageFile(spriteImageOccurrence.cssFile, resolvedImagePath);</span>
+
+<span class="fc" id="L246">        try (OutputStream spriteImageOutputStream = resourceHandler.getResourceAsOutputStream(mergedImageFile)) {</span>
+<span class="fc" id="L247">            messageLog.info(MessageType.WRITING_SPRITE_IMAGE, mergedImage.getWidth(), mergedImage.getHeight(),</span>
+                    spriteImageDirective.spriteId, mergedImageFile);
+
+<span class="fc" id="L250">            spriteImageOutputStream.write(spriteImageBytes);</span>
+<span class="nc" id="L251">        } catch (final IOException e) {</span>
+<span class="nc" id="L252">            messageLog.warning(MessageType.CANNOT_WRITE_SPRITE_IMAGE, mergedImageFile, e.getMessage());</span>
+<span class="fc" id="L253">        }</span>
+<span class="fc" id="L254">    }</span>
+
+    /**
+     * Computes the image path. If the imagePath is relative, it's taken relative to the cssFile. If imagePath is
+     * absolute (starts with '/') and documentRootDir is not null, it's taken relative to documentRootDir.
+     *
+     * @param cssFile
+     *            the css file
+     * @param imagePath
+     *            the image path
+     *
+     * @return the image file
+     */
+    String getImageFile(String cssFile, String imagePath) {
+        // Absolute path resolution is done by resourceHandler
+<span class="fc" id="L269">        final String path = resourceHandler.getResourcePath(cssFile, imagePath);</span>
+
+        // Just handle the root directory changing
+<span class="fc bfc" id="L272" title="All 4 branches covered.">        if (!imagePath.startsWith(&quot;/&quot;) &amp;&amp; parameters.hasOutputDir()) {</span>
+<span class="fc" id="L273">            return FileUtils.changeRoot(path, parameters.getRootDir(), parameters.getOutputDir());</span>
+        }
+<span class="fc" id="L275">        return path;</span>
+    }
+
+    /**
+     * Calculates total dimensions and lays out a single sprite image.
+     *
+     * @param spriteImageOccurrence
+     *            the sprite image occurrence
+     * @param images
+     *            the images
+     * @param messageLog
+     *            the message log
+     *
+     * @return the sprite image
+     */
+    static SpriteImage buildSpriteImage(SpriteImageOccurrence spriteImageOccurrence,
+            Map&lt;SpriteReferenceOccurrence, BufferedImage&gt; images, MessageLog messageLog) {
+        // First find the least common multiple of the images with 'repeat' alignment
+<span class="fc" id="L293">        final SpriteImageLayout layout = spriteImageOccurrence.spriteImageDirective.layout;</span>
+<span class="fc" id="L294">        final float spriteScale = spriteImageOccurrence.spriteImageDirective.scaleRatio;</span>
+<span class="fc" id="L295">        final int leastCommonMultiple = SpriteImageBuilder.calculateLeastCommonMultiple(images, layout);</span>
+
+        // Compute sprite dimension (width for vertical, height for horizontal sprites)
+<span class="fc" id="L298">        final boolean vertical = layout.equals(SpriteImageLayout.VERTICAL);</span>
+<span class="fc" id="L299">        int dimension = leastCommonMultiple;</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        for (final Map.Entry&lt;SpriteReferenceOccurrence, BufferedImage&gt; entry : images.entrySet()) {</span>
+<span class="fc" id="L301">            final BufferedImage image = entry.getValue();</span>
+<span class="fc" id="L302">            final SpriteReferenceOccurrence spriteReferenceOccurrence = entry.getKey();</span>
+
+            // Compute dimensions
+<span class="fc bfc" id="L305" title="All 2 branches covered.">            dimension = Math.max(dimension, vertical ? spriteReferenceOccurrence.getRequiredWidth(image, layout)</span>
+<span class="fc" id="L306">                    : spriteReferenceOccurrence.getRequiredHeight(image, layout));</span>
+<span class="fc" id="L307">        }</span>
+
+        // Correct for least common multiple
+<span class="fc bfc" id="L310" title="All 2 branches covered.">        if (dimension % leastCommonMultiple != 0) {</span>
+<span class="fc" id="L311">            dimension += leastCommonMultiple - dimension % leastCommonMultiple;</span>
+        }
+
+        // Compute the other sprite dimension.
+<span class="fc" id="L315">        int currentOffset = 0;</span>
+<span class="fc" id="L316">        final Map&lt;SpriteReferenceOccurrence, SpriteReferenceReplacement&gt; spriteReplacements = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L317">        final Map&lt;BufferedImageEqualsWrapper, Integer&gt; renderedImageToOffset = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L318" title="All 2 branches covered.">        for (final Map.Entry&lt;SpriteReferenceOccurrence, BufferedImage&gt; entry : images.entrySet()) {</span>
+<span class="fc" id="L319">            final SpriteReferenceOccurrence spriteReferenceOccurrence = entry.getKey();</span>
+<span class="fc" id="L320">            final BufferedImage image = entry.getValue();</span>
+
+<span class="fc" id="L322">            final BufferedImage rendered = spriteReferenceOccurrence.render(image, layout, dimension);</span>
+<span class="fc" id="L323">            final BufferedImageEqualsWrapper imageWrapper = new BufferedImageEqualsWrapper(rendered);</span>
+<span class="fc" id="L324">            Integer imageOffset = renderedImageToOffset.get(imageWrapper);</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">            if (imageOffset == null) {</span>
+                // Draw a new image
+<span class="fc" id="L327">                imageOffset = currentOffset;</span>
+<span class="fc" id="L328">                renderedImageToOffset.put(imageWrapper, imageOffset);</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">                currentOffset += vertical ? rendered.getHeight() : rendered.getWidth();</span>
+            }
+
+<span class="fc" id="L332">            final float scaledImageWidth = spriteReferenceOccurrence.getRequiredWidth(image, layout) / spriteScale;</span>
+<span class="fc" id="L333">            final float scaledImageHeight = spriteReferenceOccurrence.getRequiredHeight(image, layout) / spriteScale;</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">            if (Math.round(scaledImageWidth) != scaledImageWidth</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">                    || Math.round(scaledImageHeight) != scaledImageHeight) {</span>
+<span class="fc" id="L336">                messageLog.warning(MessageType.IMAGE_FRACTIONAL_SCALE_VALUE, spriteReferenceOccurrence.imagePath,</span>
+<span class="fc" id="L337">                        scaledImageWidth, scaledImageHeight);</span>
+            }
+
+<span class="fc" id="L340">            final int adjustedImageOffset = Math.round(imageOffset / spriteScale);</span>
+<span class="fc" id="L341">            spriteReplacements.put(spriteReferenceOccurrence,</span>
+<span class="fc" id="L342">                    spriteReferenceOccurrence.buildReplacement(layout, adjustedImageOffset));</span>
+<span class="fc" id="L343">        }</span>
+
+        // Render the sprite image and build sprite reference replacements
+<span class="fc bfc" id="L346" title="All 2 branches covered.">        final int spriteWidth = vertical ? dimension : currentOffset;</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">        final int spriteHeight = vertical ? currentOffset : dimension;</span>
+<span class="pc bpc" id="L348" title="1 of 4 branches missed.">        if (spriteWidth == 0 || spriteHeight == 0) {</span>
+<span class="fc" id="L349">            return null;</span>
+        }
+
+<span class="fc" id="L352">        final float scaledWidth = spriteWidth / spriteScale;</span>
+<span class="fc" id="L353">        final float scaledHeight = spriteHeight / spriteScale;</span>
+<span class="pc bpc" id="L354" title="1 of 4 branches missed.">        if (Math.round(scaledWidth) != scaledWidth || Math.round(scaledHeight) != scaledHeight) {</span>
+<span class="fc" id="L355">            messageLog.warning(MessageType.FRACTIONAL_SCALE_VALUE, spriteImageOccurrence.spriteImageDirective.spriteId,</span>
+<span class="fc" id="L356">                    scaledWidth, scaledHeight);</span>
+        }
+
+<span class="fc" id="L359">        final BufferedImage sprite = new BufferedImage(spriteWidth, spriteHeight, BufferedImage.TYPE_4BYTE_ABGR);</span>
+
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        for (final Map.Entry&lt;BufferedImageEqualsWrapper, Integer&gt; entry : renderedImageToOffset.entrySet()) {</span>
+
+<span class="fc bfc" id="L363" title="All 2 branches covered.">            BufferedImageUtils.drawImage(entry.getKey().image, sprite, vertical ? 0 : entry.getValue(),</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">                    vertical ? entry.getValue() : 0);</span>
+<span class="fc" id="L365">        }</span>
+
+<span class="fc" id="L367">        return new SpriteImage(sprite, spriteImageOccurrence, spriteReplacements, spriteWidth, spriteHeight,</span>
+                spriteScale);
+    }
+
+    /**
+     * Calculates the width/ height of &quot;repeated&quot; sprites.
+     *
+     * @param images
+     *            the images
+     * @param layout
+     *            the layout
+     *
+     * @return the int
+     */
+    static int calculateLeastCommonMultiple(Map&lt;SpriteReferenceOccurrence, BufferedImage&gt; images,
+            SpriteImageLayout layout) {
+<span class="fc" id="L383">        int leastCommonMultiple = 1;</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">        for (final Map.Entry&lt;SpriteReferenceOccurrence, BufferedImage&gt; entry : images.entrySet()) {</span>
+<span class="fc" id="L385">            final BufferedImage image = entry.getValue();</span>
+<span class="fc" id="L386">            final SpriteReferenceOccurrence spriteReferenceOccurrence = entry.getKey();</span>
+<span class="pc bpc" id="L387" title="1 of 2 branches missed.">            if (image != null &amp;&amp; SpriteAlignment.REPEAT</span>
+<span class="fc bfc" id="L388" title="All 2 branches covered.">                    .equals(spriteReferenceOccurrence.spriteReferenceDirective.spriteLayoutProperties.alignment)) {</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">                if (SpriteImageLayout.VERTICAL.equals(layout)) {</span>
+<span class="fc" id="L390">                    leastCommonMultiple = ArithmeticUtils.lcm(leastCommonMultiple,</span>
+<span class="fc" id="L391">                            spriteReferenceOccurrence.getRequiredWidth(image, layout));</span>
+                } else {
+<span class="fc" id="L393">                    leastCommonMultiple = ArithmeticUtils.lcm(leastCommonMultiple,</span>
+<span class="fc" id="L394">                            spriteReferenceOccurrence.getRequiredHeight(image, layout));</span>
+                }
+            }
+<span class="fc" id="L397">        }</span>
+<span class="fc" id="L398">        return leastCommonMultiple;</span>
+    }
+
+    /**
+     * Groups {@link SpriteReferenceReplacement}s by the line number of their corresponding directives.
+     *
+     * @param spriteReferenceReplacements
+     *            the sprite reference replacements
+     *
+     * @return the sprite replacements by line number
+     */
+    static Map&lt;Integer, SpriteReferenceReplacement&gt; getSpriteReplacementsByLineNumber(
+            Collection&lt;SpriteReferenceReplacement&gt; spriteReferenceReplacements) {
+<span class="fc" id="L411">        final Map&lt;Integer, SpriteReferenceReplacement&gt; result = new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        for (final SpriteReferenceReplacement spriteReferenceReplacement : spriteReferenceReplacements) {</span>
+<span class="fc" id="L414">            result.put(spriteReferenceReplacement.spriteReferenceOccurrence.line, spriteReferenceReplacement);</span>
+<span class="fc" id="L415">        }</span>
+
+<span class="fc" id="L417">        return result;</span>
+    }
+
+    /**
+     * Groups {@link SpriteImageOccurrence}s by the line number of their corresponding directives.
+     *
+     * @param spriteImageOccurrences
+     *            the sprite image occurrences
+     *
+     * @return the sprite image occurrences by line number
+     */
+    static Map&lt;Integer, SpriteImageOccurrence&gt; getSpriteImageOccurrencesByLineNumber(
+            Collection&lt;SpriteImageOccurrence&gt; spriteImageOccurrences) {
+<span class="fc" id="L430">        final Map&lt;Integer, SpriteImageOccurrence&gt; result = new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L432" title="All 2 branches covered.">        for (final SpriteImageOccurrence spriteImageOccurrence : spriteImageOccurrences) {</span>
+<span class="fc" id="L433">            result.put(spriteImageOccurrence.line, spriteImageOccurrence);</span>
+<span class="fc" id="L434">        }</span>
+
+<span class="fc" id="L436">        return result;</span>
+    }
+
+    /**
+     * A wrapper that implements content-aware {@link Object#equals(Object)} and {@link Object#hashCode()} on
+     * {@link BufferedImage}s.
+     */
+    static final class BufferedImageEqualsWrapper {
+
+        /** The image. */
+        BufferedImage image;
+
+        /**
+         * Instantiates a new buffered image equals wrapper.
+         *
+         * @param image
+         *            the image
+         */
+<span class="fc" id="L454">        BufferedImageEqualsWrapper(BufferedImage image) {</span>
+<span class="fc" id="L455">            this.image = image;</span>
+<span class="fc" id="L456">        }</span>
+
+        @Override
+        public boolean equals(Object obj) {
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">            if (!(obj instanceof BufferedImageEqualsWrapper)) {</span>
+<span class="nc" id="L461">                return false;</span>
+            }
+
+<span class="pc bpc" id="L464" title="1 of 2 branches missed.">            if (obj == this) {</span>
+<span class="nc" id="L465">                return true;</span>
+            }
+
+<span class="fc" id="L468">            final BufferedImage other = ((BufferedImageEqualsWrapper) obj).image;</span>
+
+<span class="pc bpc" id="L470" title="2 of 4 branches missed.">            boolean equal = other.getWidth() == image.getWidth() &amp;&amp; other.getHeight() == image.getHeight()</span>
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">                    &amp;&amp; other.getType() == image.getType();</span>
+
+<span class="pc bpc" id="L473" title="1 of 2 branches missed.">            if (equal) {</span>
+<span class="fc bfc" id="L474" title="All 2 branches covered.">                for (int y = 0; y &lt; image.getHeight(); y++) {</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">                    for (int x = 0; x &lt; image.getWidth(); x++) {</span>
+<span class="fc bfc" id="L476" title="All 2 branches covered.">                        if (ignoreFullTransparency(image.getRGB(x, y)) != ignoreFullTransparency(other.getRGB(x, y))) {</span>
+<span class="fc" id="L477">                            return false;</span>
+                        }
+                    }
+                }
+            }
+
+<span class="fc" id="L483">            return equal;</span>
+        }
+
+        @Override
+        public int hashCode() {
+<span class="pc bpc" id="L488" title="1 of 2 branches missed.">            if (image == null) {</span>
+<span class="nc" id="L489">                return 0;</span>
+            }
+
+<span class="fc" id="L492">            int hash = image.getWidth() ^ image.getHeight() &lt;&lt; 16;</span>
+
+            // Computes the hashCode based on an 4 x 4 to 7 x 7 grid of image's pixels
+<span class="pc bpc" id="L495" title="1 of 2 branches missed.">            final int xIncrement = image.getWidth() &gt; 7 ? image.getWidth() &gt;&gt; 2 : 1;</span>
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">            final int yIncrement = image.getHeight() &gt; 7 ? image.getHeight() &gt;&gt; 2 : 1;</span>
+
+<span class="fc bfc" id="L498" title="All 2 branches covered.">            for (int y = 0; y &lt; image.getHeight(); y += yIncrement) {</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">                for (int x = 0; x &lt; image.getWidth(); x += xIncrement) {</span>
+<span class="fc" id="L500">                    hash ^= ignoreFullTransparency(image.getRGB(x, y));</span>
+                }
+            }
+
+<span class="fc" id="L504">            return hash;</span>
+        }
+
+        /**
+         * If the pixel is fully transparent, returns 0. Otherwise, returns the pixel. This is useful in
+         * {@link #equals(Object)} and {@link #hashCode()} to ignore pixels that have different colors but are invisible
+         * anyway because of full transparency.
+         *
+         * @param pixel
+         *            the pixel
+         *
+         * @return the int
+         */
+        private static int ignoreFullTransparency(int pixel) {
+<span class="fc bfc" id="L518" title="All 2 branches covered.">            if ((pixel &amp; 0xff000000) == 0x00000000) {</span>
+<span class="fc" id="L519">                return 0;</span>
+            }
+<span class="fc" id="L521">            return pixel;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BufferedImageUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.util</a> &gt; <span class="el_source">BufferedImageUtils.java</span></div><h1>BufferedImageUtils.java</h1><pre class="source lang-java linenums">/*
+ * SmartSprites Project
+ *
+ * Copyright (C) 2007-2009, Stanisław Osiński.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of  source code must  retain the above  copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following  disclaimer in  the documentation  and/or
+ *   other materials provided with the distribution.
+ *
+ * - Neither the name of the SmartSprites Project nor the names of its contributors
+ *   may  be used  to endorse  or  promote  products derived   from  this  software
+ *   without specific prior written permission.
+ *
+ * - We kindly request that you include in the end-user documentation provided with
+ *   the redistribution and/or in the software itself an acknowledgement equivalent
+ *   to  the  following: &quot;This product includes software developed by the SmartSprites
+ *   Project.&quot;
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
+ * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
+ * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
+ * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
+ * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.carrot2.util;
+
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.CompositeContext;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Various utility methods for working with {@link BufferedImage}s.
+ */
+public class BufferedImageUtils {
+
+    /**
+     * Returns &lt;code&gt;true&lt;/code&gt; if the provided image has partially transparent areas (alpha channel).
+     *
+     * @param image
+     *            the image
+     *
+     * @return true, if successful
+     */
+    public static boolean hasPartialTransparency(BufferedImage image) {
+<span class="fc" id="L62">        final Raster alphaRaster = image.getAlphaRaster();</span>
+<span class="pc bpc" id="L63" title="1 of 4 branches missed.">        if (image.getTransparency() != Transparency.TRANSLUCENT || alphaRaster == null) {</span>
+<span class="fc" id="L64">            return false;</span>
+        }
+
+<span class="fc" id="L67">        int[] pixels = alphaRaster.getPixels(0, 0, alphaRaster.getWidth(), alphaRaster.getHeight(), (int[]) null);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (int i : pixels) {</span>
+<span class="fc bfc" id="L69" title="All 4 branches covered.">            if (i != 0 &amp;&amp; i != 255) {</span>
+<span class="fc" id="L70">                return true;</span>
+            }
+        }
+
+<span class="fc" id="L74">        return false;</span>
+    }
+
+    /**
+     * Returns &lt;code&gt;true&lt;/code&gt; if the provided image has any kind of transparent areas.
+     *
+     * @param image
+     *            the image
+     *
+     * @return true, if successful
+     */
+    public static boolean hasTransparency(BufferedImage image) {
+<span class="fc" id="L86">        final Raster alphaRaster = image.getAlphaRaster();</span>
+<span class="pc bpc" id="L87" title="1 of 4 branches missed.">        if (image.getTransparency() != Transparency.TRANSLUCENT || alphaRaster == null) {</span>
+<span class="fc" id="L88">            return false;</span>
+        }
+
+<span class="fc" id="L91">        int[] pixels = alphaRaster.getPixels(0, 0, alphaRaster.getWidth(), alphaRaster.getHeight(), (int[]) null);</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        for (int i : pixels) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            if (i != 255) {</span>
+<span class="fc" id="L94">                return true;</span>
+            }
+        }
+
+<span class="nc" id="L98">        return false;</span>
+    }
+
+    /**
+     * Returns the number of distinct colors (excluding transparency) in the &lt;code&gt;image&lt;/code&gt;.
+     *
+     * @param image
+     *            the image
+     *
+     * @return the int
+     */
+    public static int countDistinctColors(BufferedImage image) {
+<span class="fc" id="L110">        return getDistinctColors(image).length;</span>
+    }
+
+    /**
+     * Returns the &lt;code&gt;image&lt;/code&gt;'s distinct colors in an RGB format, discarding transparency information.
+     *
+     * @param image
+     *            the image
+     *
+     * @return the distinct colors
+     */
+    public static int[] getDistinctColors(BufferedImage image) {
+<span class="fc" id="L122">        return getDistinctColors(image, 0);</span>
+    }
+
+    /**
+     * Returns the &lt;code&gt;image&lt;/code&gt;'s distinct colors in an RGB format, discarding transparency information. Adds
+     * &lt;code&gt;padding&lt;/code&gt; empty slots at the beginning of the returned array.
+     *
+     * @param image
+     *            the image
+     * @param padding
+     *            the padding
+     *
+     * @return the distinct colors
+     */
+    public static int[] getDistinctColors(BufferedImage image, int padding) {
+<span class="fc" id="L137">        final int width = image.getWidth();</span>
+<span class="fc" id="L138">        final int height = image.getHeight();</span>
+
+<span class="fc" id="L140">        final Set&lt;Integer&gt; colors = new HashSet&lt;&gt;();</span>
+
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        for (int x = 0; x &lt; width; x++) {</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">            for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc" id="L144">                final int pixel = image.getRGB(x, y);</span>
+
+                // Count only colors for which alpha is not fully transparent
+<span class="fc bfc" id="L147" title="All 2 branches covered.">                if ((pixel &amp; 0xff000000) != 0x00000000) {</span>
+<span class="fc" id="L148">                    colors.add(Integer.valueOf(pixel &amp; 0x00ffffff));</span>
+                }
+            }
+        }
+
+<span class="fc" id="L153">        final int[] colorMap = new int[colors.size() + padding];</span>
+<span class="fc" id="L154">        int index = padding;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        for (Integer color : colors) {</span>
+<span class="fc" id="L156">            colorMap[index] = color;</span>
+<span class="fc" id="L157">            index++;</span>
+<span class="fc" id="L158">        }</span>
+
+<span class="fc" id="L160">        return colorMap;</span>
+    }
+
+    /**
+     * Returns a two dimensional array of the &lt;code&gt;image&lt;/code&gt;'s RGB values, including transparency.
+     *
+     * @param image
+     *            the image
+     *
+     * @return the rgb
+     */
+    public static int[][] getRgb(BufferedImage image) {
+<span class="fc" id="L172">        final int width = image.getWidth();</span>
+<span class="fc" id="L173">        final int height = image.getHeight();</span>
+
+<span class="fc" id="L175">        final int[][] rgb = new int[width][height];</span>
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        for (int x = 0; x &lt; width; x++) {</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">            for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc" id="L179">                rgb[x][y] = image.getRGB(x, y);</span>
+            }
+        }
+
+<span class="fc" id="L183">        return rgb;</span>
+    }
+
+    /**
+     * Performs matting of the &lt;code&gt;source&lt;/code&gt; image using &lt;code&gt;matteColor&lt;/code&gt;. Matting is rendering partial
+     * transparencies using solid color as if the original image was put on top of a bitmap filled with
+     * &lt;code&gt;matteColor&lt;/code&gt;.
+     *
+     * @param source
+     *            the source
+     * @param matteColor
+     *            the matte color
+     *
+     * @return the buffered image
+     */
+    public static BufferedImage matte(BufferedImage source, Color matteColor) {
+<span class="fc" id="L199">        final int width = source.getWidth();</span>
+<span class="fc" id="L200">        final int height = source.getHeight();</span>
+
+        // A workaround for possibly different custom image types we can get:
+        // draw a copy of the image
+<span class="fc" id="L204">        final BufferedImage sourceConverted = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);</span>
+<span class="fc" id="L205">        sourceConverted.getGraphics().drawImage(source, 0, 0, null);</span>
+
+<span class="fc" id="L207">        final BufferedImage matted = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);</span>
+
+<span class="fc" id="L209">        final BufferedImage matte = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);</span>
+<span class="fc" id="L210">        final int matteRgb = matteColor.getRGB();</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        for (int x = 0; x &lt; width; x++) {</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">            for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc" id="L213">                matte.setRGB(x, y, matteRgb);</span>
+            }
+        }
+
+<span class="fc" id="L217">        CompositeContext context = AlphaComposite.DstOver.createContext(matte.getColorModel(),</span>
+<span class="fc" id="L218">                sourceConverted.getColorModel(), null);</span>
+<span class="fc" id="L219">        context.compose(matte.getRaster(), sourceConverted.getRaster(), matted.getRaster());</span>
+
+<span class="fc" id="L221">        return matted;</span>
+    }
+
+    /**
+     * Draws &lt;code&gt;image&lt;/code&gt; on the &lt;code&gt;canvas&lt;/code&gt; placing the top left corner of &lt;code&gt;image&lt;/code&gt; at
+     * &lt;code&gt;x&lt;/code&gt; / &lt;code&gt;y&lt;/code&gt; offset from the top left corner of &lt;code&gt;canvas&lt;/code&gt;.
+     *
+     * @param image
+     *            the image
+     * @param canvas
+     *            the canvas
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
+    public static void drawImage(BufferedImage image, BufferedImage canvas, int x, int y) {
+<span class="fc" id="L238">        final int[] imgRGB = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());</span>
+<span class="fc" id="L239">        canvas.setRGB(x, y, image.getWidth(), image.getHeight(), imgRGB, 0, image.getWidth());</span>
+<span class="fc" id="L240">    }</span>
+
+    /**
+     * Instantiates a new buffered image utils.
+     */
+    private BufferedImageUtils() {
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

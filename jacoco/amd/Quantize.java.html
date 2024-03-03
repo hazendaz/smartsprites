@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Quantize.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">amd</a> &gt; <span class="el_source">Quantize.java</span></div><h1>Quantize.java</h1><pre class="source lang-java linenums">/*
+ * SmartSprites Project
+ *
+ * Copyright (C) 2007-2009, Stanisław Osiński.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of  source code must  retain the above  copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following  disclaimer in  the documentation  and/or
+ *   other materials provided with the distribution.
+ *
+ * - Neither the name of the SmartSprites Project nor the names of its contributors
+ *   may  be used  to endorse  or  promote  products derived   from  this  software
+ *   without specific prior written permission.
+ *
+ * - We kindly request that you include in the end-user documentation provided with
+ *   the redistribution and/or in the software itself an acknowledgement equivalent
+ *   to  the  following: &quot;This product includes software developed by the SmartSprites
+ *   Project.&quot;
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
+ * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
+ * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
+ * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
+ * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package amd;
+
+/**
+ * (#)Quantize.java 0.90 9/19/00 Adam Doppelt
+ * &lt;p&gt;
+ * An efficient color quantization algorithm, adapted from the C++ implementation quantize.c in
+ * &lt;a href=&quot;http://www.imagemagick.org/&quot;&gt;ImageMagick&lt;/a&gt;. The pixels for an image are placed into an oct tree. The oct
+ * tree is reduced in size, and the pixels from the original image are reassigned to the nodes in the reduced tree.
+ * &lt;p&gt;
+ * Here is the copyright notice from ImageMagick:
+ *
+ * &lt;pre&gt;
+ * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ * %  Permission is hereby granted, free of charge, to any person obtaining a    %
+ * %  copy of this software and associated documentation files (&quot;ImageMagick&quot;),  %
+ * %  to deal in ImageMagick without restriction, including without limitation   %
+ * %  the rights to use, copy, modify, merge, publish, distribute, sublicense,   %
+ * %  and/or sell copies of ImageMagick, and to permit persons to whom the       %
+ * %  ImageMagick is furnished to do so, subject to the following conditions:    %
+ * %                                                                             %
+ * %  The above copyright notice and this permission notice shall be included in %
+ * %  all copies or substantial portions of ImageMagick.                         %
+ * %                                                                             %
+ * %  The software is provided &quot;as is&quot;, without warranty of any kind, express or %
+ * %  implied, including but not limited to the warranties of merchantability,   %
+ * %  fitness for a particular purpose and noninfringement.  In no event shall   %
+ * %  E. I. du Pont de Nemours and Company be liable for any claim, damages or   %
+ * %  other liability, whether in an action of contract, tort or otherwise,      %
+ * %  arising from, out of or in connection with ImageMagick or the use or other %
+ * %  dealings in ImageMagick.                                                   %
+ * %                                                                             %
+ * %  Except as contained in this notice, the name of the E. I. du Pont de       %
+ * %  Nemours and Company shall not be used in advertising or otherwise to       %
+ * %  promote the sale, use or other dealings in ImageMagick without prior       %
+ * %  written authorization from the E. I. du Pont de Nemours and Company.       %
+ * %                                                                             %
+ * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ * &lt;/pre&gt;
+ *
+ * @author &lt;a href=&quot;http://www.gurge.com/amd/&quot;&gt;Adam Doppelt&lt;/a&gt;
+ *
+ * @version 0.90 19 Sep 2000
+ */
+public class Quantize {
+
+    /**
+     * &lt;pre&gt;
+     * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     * %                                                                             %
+     * %                                                                             %
+     * %                                                                             %
+     * %           QQQ   U   U   AAA   N   N  TTTTT  IIIII   ZZZZZ  EEEEE            %
+     * %          Q   Q  U   U  A   A  NN  N    T      I        ZZ  E                %
+     * %          Q   Q  U   U  AAAAA  N N N    T      I      ZZZ   EEEEE            %
+     * %          Q  QQ  U   U  A   A  N  NN    T      I     ZZ     E                %
+     * %           QQQQ   UUU   A   A  N   N    T    IIIII   ZZZZZ  EEEEE            %
+     * %                                                                             %
+     * %                                                                             %
+     * %              Reduce the Number of Unique Colors in an Image                 %
+     * %                                                                             %
+     * %                                                                             %
+     * %                           Software Design                                   %
+     * %                             John Cristy                                     %
+     * %                              July 1992                                      %
+     * %                                                                             %
+     * %                                                                             %
+     * %  Copyright 1998 E. I. du Pont de Nemours and Company                        %
+     * %                                                                             %
+     * %  Permission is hereby granted, free of charge, to any person obtaining a    %
+     * %  copy of this software and associated documentation files (&quot;ImageMagick&quot;),  %
+     * %  to deal in ImageMagick without restriction, including without limitation   %
+     * %  the rights to use, copy, modify, merge, publish, distribute, sublicense,   %
+     * %  and/or sell copies of ImageMagick, and to permit persons to whom the       %
+     * %  ImageMagick is furnished to do so, subject to the following conditions:    %
+     * %                                                                             %
+     * %  The above copyright notice and this permission notice shall be included in %
+     * %  all copies or substantial portions of ImageMagick.                         %
+     * %                                                                             %
+     * %  The software is provided &quot;as is&quot;, without warranty of any kind, express or %
+     * %  implied, including but not limited to the warranties of merchantability,   %
+     * %  fitness for a particular purpose and noninfringement.  In no event shall   %
+     * %  E. I. du Pont de Nemours and Company be liable for any claim, damages or   %
+     * %  other liability, whether in an action of contract, tort or otherwise,      %
+     * %  arising from, out of or in connection with ImageMagick or the use or other %
+     * %  dealings in ImageMagick.                                                   %
+     * %                                                                             %
+     * %  Except as contained in this notice, the name of the E. I. du Pont de       %
+     * %  Nemours and Company shall not be used in advertising or otherwise to       %
+     * %  promote the sale, use or other dealings in ImageMagick without prior       %
+     * %  written authorization from the E. I. du Pont de Nemours and Company.       %
+     * %                                                                             %
+     * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     * %
+     * %  Realism in computer graphics typically requires using 24 bits/pixel to
+     * %  generate an image. Yet many graphic display devices do not contain
+     * %  the amount of memory necessary to match the spatial and color
+     * %  resolution of the human eye. The QUANTIZE program takes a 24 bit
+     * %  image and reduces the number of colors so it can be displayed on
+     * %  raster device with less bits per pixel. In most instances, the
+     * %  quantized image closely resembles the original reference image.
+     * %
+     * %  A reduction of colors in an image is also desirable for image
+     * %  transmission and real-time animation.
+     * %
+     * %  Function Quantize takes a standard RGB or monochrome images and quantizes
+     * %  them down to some fixed number of colors.
+     * %
+     * %  For purposes of color allocation, an image is a set of n pixels, where
+     * %  each pixel is a point in RGB space. RGB space is a 3-dimensional
+     * %  vector space, and each pixel, pi, is defined by an ordered triple of
+     * %  red, green, and blue coordinates, (ri, gi, bi).
+     * %
+     * %  Each primary color component (red, green, or blue) represents an
+     * %  intensity which varies linearly from 0 to a maximum value, cmax, which
+     * %  corresponds to full saturation of that color. Color allocation is
+     * %  defined over a domain consisting of the cube in RGB space with
+     * %  opposite vertices at (0,0,0) and (cmax,cmax,cmax). QUANTIZE requires
+     * %  cmax = 255.
+     * %
+     * %  The algorithm maps this domain onto a tree in which each node
+     * %  represents a cube within that domain. In the following discussion
+     * %  these cubes are defined by the coordinate of two opposite vertices:
+     * %  The vertex nearest the origin in RGB space and the vertex farthest
+     * %  from the origin.
+     * %
+     * %  The tree's root node represents the the entire domain, (0,0,0) through
+     * %  (cmax,cmax,cmax). Each lower level in the tree is generated by
+     * %  subdividing one node's cube into eight smaller cubes of equal size.
+     * %  This corresponds to bisecting the parent cube with planes passing
+     * %  through the midpoints of each edge.
+     * %
+     * %  The basic algorithm operates in three phases: Classification,
+     * %  Reduction, and Assignment. Classification builds a color
+     * %  description tree for the image. Reduction collapses the tree until
+     * %  the number it represents, at most, the number of colors desired in the
+     * %  output image. Assignment defines the output image's color map and
+     * %  sets each pixel's color by reclassification in the reduced tree.
+     * %  Our goal is to minimize the numerical discrepancies between the original
+     * %  colors and quantized colors (quantization error).
+     * %
+     * %  Classification begins by initializing a color description tree of
+     * %  sufficient depth to represent each possible input color in a leaf.
+     * %  However, it is impractical to generate a fully-formed color
+     * %  description tree in the classification phase for realistic values of
+     * %  cmax. If colors components in the input image are quantized to k-bit
+     * %  precision, so that cmax= 2k-1, the tree would need k levels below the
+     * %  root node to allow representing each possible input color in a leaf.
+     * %  This becomes prohibitive because the tree's total number of nodes is
+     * %  1 + sum(i=1,k,8k).
+     * %
+     * %  A complete tree would require 19,173,961 nodes for k = 8, cmax = 255.
+     * %  Therefore, to avoid building a fully populated tree, QUANTIZE: (1)
+     * %  Initializes data structures for nodes only as they are needed;  (2)
+     * %  Chooses a maximum depth for the tree as a function of the desired
+     * %  number of colors in the output image (currently log2(colormap size)).
+     * %
+     * %  For each pixel in the input image, classification scans downward from
+     * %  the root of the color description tree. At each level of the tree it
+     * %  identifies the single node which represents a cube in RGB space
+     * %  containing the pixel's color. It updates the following data for each
+     * %  such node:
+     * %
+     * %    n1: Number of pixels whose color is contained in the RGB cube
+     * %    which this node represents;
+     * %
+     * %    n2: Number of pixels whose color is not represented in a node at
+     * %    lower depth in the tree;  initially,  n2 = 0 for all nodes except
+     * %    leaves of the tree.
+     * %
+     * %    Sr, Sg, Sb: Sums of the red, green, and blue component values for
+     * %    all pixels not classified at a lower depth. The combination of
+     * %    these sums and n2  will ultimately characterize the mean color of a
+     * %    set of pixels represented by this node.
+     * %
+     * %    E: The distance squared in RGB space between each pixel contained
+     * %    within a node and the nodes' center. This represents the quantization
+     * %    error for a node.
+     * %
+     * %  Reduction repeatedly prunes the tree until the number of nodes with
+     * %  n2 &gt; 0 is less than or equal to the maximum number of colors allowed
+     * %  in the output image. On any given iteration over the tree, it selects
+     * %  those nodes whose E count is minimal for pruning and merges their
+     * %  color statistics upward. It uses a pruning threshold, Ep, to govern
+     * %  node selection as follows:
+     * %
+     * %    Ep = 0
+     * %    while number of nodes with (n2 &gt; 0) &gt; required maximum number of colors
+     * %      prune all nodes such that E &lt;= Ep
+     * %      Set Ep to minimum E in remaining nodes
+     * %
+     * %  This has the effect of minimizing any quantization error when merging
+     * %  two nodes together.
+     * %
+     * %  When a node to be pruned has offspring, the pruning procedure invokes
+     * %  itself recursively in order to prune the tree from the leaves upward.
+     * %  n2,  Sr, Sg,  and  Sb in a node being pruned are always added to the
+     * %  corresponding data in that node's parent. This retains the pruned
+     * %  node's color characteristics for later averaging.
+     * %
+     * %  For each node, n2 pixels exist for which that node represents the
+     * %  smallest volume in RGB space containing those pixel's colors. When n2
+     * %  &gt; 0 the node will uniquely define a color in the output image. At the
+     * %  beginning of reduction,  n2 = 0  for all nodes except a the leaves of
+     * %  the tree which represent colors present in the input image.
+     * %
+     * %  The other pixel count, n1, indicates the total number of colors
+     * %  within the cubic volume which the node represents. This includes n1 -
+     * %  n2  pixels whose colors should be defined by nodes at a lower level in
+     * %  the tree.
+     * %
+     * %  Assignment generates the output image from the pruned tree. The
+     * %  output image consists of two parts: (1)  A color map, which is an
+     * %  array of color descriptions (RGB triples) for each color present in
+     * %  the output image;  (2)  A pixel array, which represents each pixel as
+     * %  an index into the color map array.
+     * %
+     * %  First, the assignment phase makes one pass over the pruned color
+     * %  description tree to establish the image's color map. For each node
+     * %  with n2  &gt; 0, it divides Sr, Sg, and Sb by n2 . This produces the
+     * %  mean color of all pixels that classify no lower than this node. Each
+     * %  of these colors becomes an entry in the color map.
+     * %
+     * %  Finally,  the assignment phase reclassifies each pixel in the pruned
+     * %  tree to identify the deepest node containing the pixel's color. The
+     * %  pixel's value in the pixel array becomes the index of this node's mean
+     * %  color in the color map.
+     * %
+     * %  With the permission of USC Information Sciences Institute, 4676 Admiralty
+     * %  Way, Marina del Rey, California  90292, this code was adapted from module
+     * %  ALCOLS written by Paul Raveling.
+     * %
+     * %  The names of ISI and USC are not used in advertising or publicity
+     * %  pertaining to distribution of the software without prior specific
+     * %  written permission from ISI.
+     * %
+     * &lt;/pre&gt;
+     */
+
+    /** The Constant QUICK. */
+    static final boolean QUICK = false;
+
+    /** The Constant MAX_RGB. */
+    static final int MAX_RGB = 255;
+
+    /** The Constant MAX_NODES. */
+    static final int MAX_NODES = 266817;
+
+    /** The Constant MAX_TREE_DEPTH. */
+    static final int MAX_TREE_DEPTH = 8;
+
+    /** The squares. These are precomputed in advance. */
+    static int[] SQUARES;
+
+    /** The shift. */
+    static int[] SHIFT;
+
+    static {
+<span class="fc" id="L294">        SQUARES = new int[MAX_RGB + MAX_RGB + 1];</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">        for (int i = -MAX_RGB; i &lt;= MAX_RGB; i++) {</span>
+<span class="fc" id="L296">            SQUARES[i + MAX_RGB] = i * i;</span>
+        }
+
+<span class="fc" id="L299">        SHIFT = new int[MAX_TREE_DEPTH + 1];</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        for (int i = 0; i &lt; MAX_TREE_DEPTH + 1; ++i) {</span>
+<span class="fc" id="L301">            SHIFT[i] = 1 &lt;&lt; (15 - i);</span>
+        }
+<span class="fc" id="L303">    }</span>
+
+    /**
+     * Instantiates a new quantize.
+     */
+    private Quantize() {
+        // Prevent Instantiation
+    }
+
+    /**
+     * Reduce the image to the given number of colors. The pixels are reduced in place.
+     *
+     * @param pixels
+     *            the pixels
+     * @param maxColors
+     *            the max colors
+     *
+     * @return The new color palette.
+     */
+    public static int[] quantizeImage(int[][] pixels, int maxColors) {
+<span class="fc" id="L323">        Cube cube = new Cube(pixels, maxColors);</span>
+<span class="fc" id="L324">        cube.classification();</span>
+<span class="fc" id="L325">        cube.reduction();</span>
+<span class="fc" id="L326">        cube.assignment();</span>
+<span class="fc" id="L327">        return cube.colormap;</span>
+    }
+
+    /**
+     * The Class Cube.
+     */
+    static class Cube {
+
+        /** The pixels. */
+        int[][] pixels;
+
+        /** The max colors. */
+        int maxColors;
+
+        /** The colormap. */
+        int[] colormap;
+
+        /** The root. */
+        Node root;
+
+        /** The depth. */
+        int depth;
+
+        // counter for the number of colors in the cube. this gets
+        /** The colors. */
+        // recalculated often.
+        int colors;
+
+        /** The nodes. */
+        // counter for the number of nodes in the tree
+        int nodes;
+
+        /**
+         * Instantiates a new cube.
+         *
+         * @param pixels
+         *            the pixels
+         * @param maxColors
+         *            the max colors
+         */
+<span class="fc" id="L367">        Cube(int[][] pixels, int maxColors) {</span>
+<span class="fc" id="L368">            this.pixels = pixels;</span>
+<span class="fc" id="L369">            this.maxColors = maxColors;</span>
+
+<span class="fc" id="L371">            int i = maxColors;</span>
+            // tree_depth = log max_colors
+            // 4
+<span class="fc bfc" id="L374" title="All 2 branches covered.">            for (depth = 1; i != 0; depth++) {</span>
+<span class="fc" id="L375">                i /= 4;</span>
+            }
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">            if (depth &gt; 1) {</span>
+<span class="fc" id="L378">                --depth;</span>
+            }
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">            if (depth &gt; MAX_TREE_DEPTH) {</span>
+<span class="nc" id="L381">                depth = MAX_TREE_DEPTH;</span>
+<span class="pc bpc" id="L382" title="1 of 2 branches missed.">            } else if (depth &lt; 2) {</span>
+<span class="nc" id="L383">                depth = 2;</span>
+            }
+
+<span class="fc" id="L386">            root = new Node(this);</span>
+<span class="fc" id="L387">        }</span>
+
+        /**
+         * Procedure Classification begins by initializing a color description tree of sufficient depth to represent
+         * each possible input color in a leaf. However, it is impractical to generate a fully-formed color description
+         * tree in the classification phase for realistic values of cmax. If colors components in the input image are
+         * quantized to k-bit precision, so that cmax= 2k-1, the tree would need k levels below the root node to allow
+         * representing each possible input color in a leaf. This becomes prohibitive because the tree's total number of
+         * nodes is 1 + sum(i=1,k,8k).
+         * &lt;p&gt;
+         * A complete tree would require 19,173,961 nodes for k = 8, cmax = 255. Therefore, to avoid building a fully
+         * populated tree, QUANTIZE: (1) Initializes data structures for nodes only as they are needed; (2) Chooses a
+         * maximum depth for the tree as a function of the desired number of colors in the output image (currently
+         * log2(colormap size)).
+         * &lt;p&gt;
+         * For each pixel in the input image, classification scans downward from the root of the color description tree.
+         * At each level of the tree it identifies the single node which represents a cube in RGB space containing It
+         * updates the following data for each such node:
+         * &lt;p&gt;
+         * number_pixels : Number of pixels whose color is contained in the RGB cube which this node represents;
+         * &lt;p&gt;
+         * unique : Number of pixels whose color is not represented in a node at lower depth in the tree; initially, n2
+         * = 0 for all nodes except leaves of the tree.
+         * &lt;p&gt;
+         * total_red/green/blue : Sums of the red, green, and blue component values for all pixels not classified at a
+         * lower depth. The combination of these sums and n2 will ultimately characterize the mean color of a set of
+         * pixels represented by this node.
+         */
+        void classification() {
+<span class="fc" id="L416">            int[][] pixels = this.pixels;</span>
+
+<span class="fc" id="L418">            int width = pixels.length;</span>
+<span class="fc" id="L419">            int height = pixels[0].length;</span>
+
+            // convert to indexed color
+<span class="fc bfc" id="L422" title="All 2 branches covered.">            for (int x = width; x-- &gt; 0;) {</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">                for (int y = height; y-- &gt; 0;) {</span>
+<span class="fc" id="L424">                    int pixel = pixels[x][y];</span>
+<span class="fc" id="L425">                    int red = pixel &gt;&gt; 16 &amp; 0xFF;</span>
+<span class="fc" id="L426">                    int green = pixel &gt;&gt; 8 &amp; 0xFF;</span>
+<span class="fc" id="L427">                    int blue = pixel &gt;&gt; 0 &amp; 0xFF;</span>
+
+                    // a hard limit on the number of nodes in the tree
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">                    if (nodes &gt; MAX_NODES) {</span>
+<span class="nc" id="L431">                        System.out.println(&quot;pruning&quot;);</span>
+<span class="nc" id="L432">                        root.pruneLevel();</span>
+<span class="nc" id="L433">                        --depth;</span>
+                    }
+
+                    // walk the tree to depth, increasing the
+                    // number_pixels count for each node
+<span class="fc" id="L438">                    Node node = root;</span>
+<span class="fc bfc" id="L439" title="All 2 branches covered.">                    for (int level = 1; level &lt;= depth; ++level) {</span>
+<span class="fc bfc" id="L440" title="All 4 branches covered.">                        int id = (red &gt; node.midRed ? 1 : 0) &lt;&lt; 0 | (green &gt; node.midGreen ? 1 : 0) &lt;&lt; 1</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">                                | (blue &gt; node.midBlue ? 1 : 0) &lt;&lt; 2;</span>
+<span class="fc bfc" id="L442" title="All 2 branches covered.">                        if (node.child[id] == null) {</span>
+<span class="fc" id="L443">                            new Node(node, id, level);</span>
+                        }
+<span class="fc" id="L445">                        node = node.child[id];</span>
+<span class="fc" id="L446">                        node.numberPixels += SHIFT[level];</span>
+                    }
+
+<span class="fc" id="L449">                    ++node.unique;</span>
+<span class="fc" id="L450">                    node.totalRed += red;</span>
+<span class="fc" id="L451">                    node.totalGreen += green;</span>
+<span class="fc" id="L452">                    node.totalBlue += blue;</span>
+<span class="fc" id="L453">                }</span>
+            }
+<span class="fc" id="L455">        }</span>
+
+        /**
+         * Reduction.
+         * &lt;p&gt;
+         * reduction repeatedly prunes the tree until the number of nodes with unique &gt; 0 is less than or equal to the
+         * maximum number of colors allowed in the output image.
+         * &lt;p&gt;
+         * When a node to be pruned has offspring, the pruning procedure invokes itself recursively in order to prune
+         * the tree from the leaves upward. The statistics of the node being pruned are always added to the
+         * corresponding data in that node's parent. This retains the pruned node's color characteristics for later
+         * averaging.
+         */
+        void reduction() {
+<span class="fc" id="L469">            int threshold = 1;</span>
+<span class="pc bpc" id="L470" title="1 of 2 branches missed.">            while (colors &gt; maxColors) {</span>
+<span class="nc" id="L471">                colors = 0;</span>
+<span class="nc" id="L472">                threshold = root.reduce(threshold, Integer.MAX_VALUE);</span>
+            }
+<span class="fc" id="L474">        }</span>
+
+        /**
+         * The result of a closest color search.
+         */
+<span class="fc" id="L479">        static class Search {</span>
+
+            /** The distance. */
+            int distance;
+
+            /** The color number. */
+            int colorNumber;
+        }
+
+        /**
+         * Assignment.
+         * &lt;p&gt;
+         * Procedure assignment generates the output image from the pruned tree. The output image consists of two parts:
+         * (1) A color map, which is an array of color descriptions (RGB triples) for each color present in the output
+         * image; (2) A pixel array, which represents each pixel as an index into the color map array.
+         * &lt;p&gt;
+         * First, the assignment phase makes one pass over the pruned color description tree to establish the image's
+         * color map. For each node with n2 &gt; 0, it divides Sr, Sg, and Sb by n2. This produces the mean color of all
+         * pixels that classify no lower than this node. Each of these colors becomes an entry in the color map.
+         * &lt;p&gt;
+         * Finally, the assignment phase reclassifies each pixel in the pruned tree to identify the deepest node
+         * containing the pixel's color. The pixel's value in the pixel array becomes the index of this node's mean
+         * color in the color map.
+         */
+        void assignment() {
+<span class="fc" id="L504">            colormap = new int[colors];</span>
+
+<span class="fc" id="L506">            colors = 0;</span>
+<span class="fc" id="L507">            root.colormap();</span>
+
+<span class="fc" id="L509">            int[][] pixels = this.pixels;</span>
+
+<span class="fc" id="L511">            int width = pixels.length;</span>
+<span class="fc" id="L512">            int height = pixels[0].length;</span>
+
+<span class="fc" id="L514">            Search search = new Search();</span>
+
+            // convert to indexed color
+<span class="fc bfc" id="L517" title="All 2 branches covered.">            for (int x = width; x-- &gt; 0;) {</span>
+<span class="fc bfc" id="L518" title="All 2 branches covered.">                for (int y = height; y-- &gt; 0;) {</span>
+<span class="fc" id="L519">                    int pixel = pixels[x][y];</span>
+<span class="fc" id="L520">                    int red = pixel &gt;&gt; 16 &amp; 0xFF;</span>
+<span class="fc" id="L521">                    int green = pixel &gt;&gt; 8 &amp; 0xFF;</span>
+<span class="fc" id="L522">                    int blue = pixel &gt;&gt; 0 &amp; 0xFF;</span>
+
+                    // walk the tree to find the cube containing that color
+<span class="fc" id="L525">                    Node node = root;</span>
+                    for (;;) {
+<span class="fc bfc" id="L527" title="All 4 branches covered.">                        int id = (red &gt; node.midRed ? 1 : 0) &lt;&lt; 0 | (green &gt; node.midGreen ? 1 : 0) &lt;&lt; 1</span>
+<span class="fc bfc" id="L528" title="All 2 branches covered.">                                | (blue &gt; node.midBlue ? 1 : 0) &lt;&lt; 2;</span>
+<span class="fc bfc" id="L529" title="All 2 branches covered.">                        if (node.child[id] == null) {</span>
+<span class="fc" id="L530">                            break;</span>
+                        }
+<span class="fc" id="L532">                        node = node.child[id];</span>
+<span class="fc" id="L533">                    }</span>
+
+                    if (QUICK) {
+                        // if QUICK is set, just use that
+                        // node. Strictly speaking, this isn't
+                        // necessarily best match.
+                        pixels[x][y] = node.colorNumber;
+                    } else {
+                        // Find the closest color.
+<span class="fc" id="L542">                        search.distance = Integer.MAX_VALUE;</span>
+<span class="fc" id="L543">                        node.parent.closestColor(red, green, blue, search);</span>
+<span class="fc" id="L544">                        pixels[x][y] = search.colorNumber;</span>
+                    }
+<span class="fc" id="L546">                }</span>
+            }
+<span class="fc" id="L548">        }</span>
+
+        /**
+         * A single Node in the tree.
+         */
+        static class Node {
+
+            /** The cube. */
+            Cube cube;
+
+            /** The parent. */
+            // parent node
+            Node parent;
+
+            /** The child. */
+            // child nodes
+            Node[] child;
+
+            /** The nchild. */
+            int nchild;
+
+            /** The id. */
+            // our index within our parent
+            int id;
+
+            /** The level. */
+            // our level within the tree
+            int level;
+
+            /** The mid red. */
+            // our color midpoint
+            int midRed;
+
+            /** The mid green. */
+            int midGreen;
+
+            /** The mid blue. */
+            int midBlue;
+
+            /** The number pixels. */
+            // the pixel count for this node and all children
+            int numberPixels;
+
+            /** The unique. */
+            // the pixel count for this node
+            int unique;
+
+            /** The total red. */
+            // the sum of all pixels contained in this node
+            int totalRed;
+
+            /** The total green. */
+            int totalGreen;
+
+            /** The total blue. */
+            int totalBlue;
+
+            /** The color number. */
+            // used to build the colormap
+            int colorNumber;
+
+            /**
+             * Instantiates a new node.
+             *
+             * @param cube
+             *            the cube
+             */
+<span class="fc" id="L615">            Node(Cube cube) {</span>
+<span class="fc" id="L616">                this.cube = cube;</span>
+<span class="fc" id="L617">                this.parent = this;</span>
+<span class="fc" id="L618">                this.child = new Node[8];</span>
+<span class="fc" id="L619">                this.id = 0;</span>
+<span class="fc" id="L620">                this.level = 0;</span>
+
+<span class="fc" id="L622">                this.numberPixels = Integer.MAX_VALUE;</span>
+
+<span class="fc" id="L624">                this.midRed = (MAX_RGB + 1) &gt;&gt; 1;</span>
+<span class="fc" id="L625">                this.midGreen = (MAX_RGB + 1) &gt;&gt; 1;</span>
+<span class="fc" id="L626">                this.midBlue = (MAX_RGB + 1) &gt;&gt; 1;</span>
+<span class="fc" id="L627">            }</span>
+
+            /**
+             * Instantiates a new node.
+             *
+             * @param parent
+             *            the parent
+             * @param id
+             *            the id
+             * @param level
+             *            the level
+             */
+<span class="fc" id="L639">            Node(Node parent, int id, int level) {</span>
+<span class="fc" id="L640">                this.cube = parent.cube;</span>
+<span class="fc" id="L641">                this.parent = parent;</span>
+<span class="fc" id="L642">                this.child = new Node[8];</span>
+<span class="fc" id="L643">                this.id = id;</span>
+<span class="fc" id="L644">                this.level = level;</span>
+
+                // add to the cube
+<span class="fc" id="L647">                ++cube.nodes;</span>
+<span class="fc bfc" id="L648" title="All 2 branches covered.">                if (level == cube.depth) {</span>
+<span class="fc" id="L649">                    ++cube.colors;</span>
+                }
+
+                // add to the parent
+<span class="fc" id="L653">                ++parent.nchild;</span>
+<span class="fc" id="L654">                parent.child[id] = this;</span>
+
+                // figure out our midpoint
+<span class="fc" id="L657">                int bi = 1 &lt;&lt; (MAX_TREE_DEPTH - level) &gt;&gt; 1;</span>
+<span class="fc bfc" id="L658" title="All 2 branches covered.">                midRed = parent.midRed + ((id &amp; 1) &gt; 0 ? bi : -bi);</span>
+<span class="fc bfc" id="L659" title="All 2 branches covered.">                midGreen = parent.midGreen + ((id &amp; 2) &gt; 0 ? bi : -bi);</span>
+<span class="fc bfc" id="L660" title="All 2 branches covered.">                midBlue = parent.midBlue + ((id &amp; 4) &gt; 0 ? bi : -bi);</span>
+<span class="fc" id="L661">            }</span>
+
+            /**
+             * Remove this child node, and make sure our parent absorbs our pixel statistics.
+             */
+            void pruneChild() {
+<span class="nc" id="L667">                --parent.nchild;</span>
+<span class="nc" id="L668">                parent.unique += unique;</span>
+<span class="nc" id="L669">                parent.totalRed += totalRed;</span>
+<span class="nc" id="L670">                parent.totalGreen += totalGreen;</span>
+<span class="nc" id="L671">                parent.totalBlue += totalBlue;</span>
+<span class="nc" id="L672">                parent.child[id] = null;</span>
+<span class="nc" id="L673">                --cube.nodes;</span>
+<span class="nc" id="L674">                cube = null;</span>
+<span class="nc" id="L675">                parent = null;</span>
+<span class="nc" id="L676">            }</span>
+
+            /**
+             * Prune the lowest layer of the tree.
+             */
+            void pruneLevel() {
+<span class="nc bnc" id="L682" title="All 2 branches missed.">                if (nchild != 0) {</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="nc bnc" id="L684" title="All 2 branches missed.">                        if (child[i] != null) {</span>
+<span class="nc" id="L685">                            child[i].pruneLevel();</span>
+                        }
+                    }
+                }
+<span class="nc bnc" id="L689" title="All 2 branches missed.">                if (level == cube.depth) {</span>
+<span class="nc" id="L690">                    pruneChild();</span>
+                }
+<span class="nc" id="L692">            }</span>
+
+            /**
+             * Remove any nodes that have fewer than threshold pixels. Also, as long as we're walking the tree:
+             *
+             * &lt;pre&gt;
+             *  - figure out the color with the fewest pixels
+             *  - recalculate the total number of colors in the tree
+             * &lt;/pre&gt;
+             *
+             * @param threshold
+             *            the threshold
+             * @param nextThreshold
+             *            the next threshold
+             *
+             * @return the int
+             */
+            int reduce(int threshold, int nextThreshold) {
+<span class="nc bnc" id="L710" title="All 2 branches missed.">                if (nchild != 0) {</span>
+<span class="nc bnc" id="L711" title="All 2 branches missed.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="nc bnc" id="L712" title="All 2 branches missed.">                        if (child[i] != null) {</span>
+<span class="nc" id="L713">                            nextThreshold = child[i].reduce(threshold, nextThreshold);</span>
+                        }
+                    }
+                }
+<span class="nc bnc" id="L717" title="All 2 branches missed.">                if (numberPixels &lt;= threshold) {</span>
+<span class="nc" id="L718">                    pruneChild();</span>
+                } else {
+<span class="nc bnc" id="L720" title="All 2 branches missed.">                    if (unique != 0) {</span>
+<span class="nc" id="L721">                        cube.colors++;</span>
+                    }
+<span class="nc bnc" id="L723" title="All 2 branches missed.">                    if (numberPixels &lt; nextThreshold) {</span>
+<span class="nc" id="L724">                        nextThreshold = numberPixels;</span>
+                    }
+                }
+<span class="nc" id="L727">                return nextThreshold;</span>
+            }
+
+            /**
+             * Colormap.
+             * &lt;p&gt;
+             * colormap traverses the color cube tree and notes each colormap entry. A colormap entry is any node in the
+             * color cube tree where the number of unique colors is not zero.
+             */
+            void colormap() {
+<span class="fc bfc" id="L737" title="All 2 branches covered.">                if (nchild != 0) {</span>
+<span class="fc bfc" id="L738" title="All 2 branches covered.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="fc bfc" id="L739" title="All 2 branches covered.">                        if (child[i] != null) {</span>
+<span class="fc" id="L740">                            child[i].colormap();</span>
+                        }
+                    }
+                }
+<span class="fc bfc" id="L744" title="All 2 branches covered.">                if (unique != 0) {</span>
+<span class="fc" id="L745">                    int r = (totalRed + (unique &gt;&gt; 1)) / unique;</span>
+<span class="fc" id="L746">                    int g = (totalGreen + (unique &gt;&gt; 1)) / unique;</span>
+<span class="fc" id="L747">                    int b = (totalBlue + (unique &gt;&gt; 1)) / unique;</span>
+<span class="fc" id="L748">                    cube.colormap[cube.colors] = 0xFF &lt;&lt; 24 | (r &amp; 0xFF) &lt;&lt; 16 | (g &amp; 0xFF) &lt;&lt; 8 | (b &amp; 0xFF) &lt;&lt; 0;</span>
+<span class="fc" id="L749">                    colorNumber = cube.colors++;</span>
+                }
+<span class="fc" id="L751">            }</span>
+
+            /**
+             * Closest color.
+             * &lt;p&gt;
+             * ClosestColor traverses the color cube tree at a particular node and determines which colormap entry best
+             * represents the input color.
+             *
+             * @param red
+             *            the red
+             * @param green
+             *            the green
+             * @param blue
+             *            the blue
+             * @param search
+             *            the search
+             */
+            void closestColor(int red, int green, int blue, Search search) {
+<span class="fc bfc" id="L769" title="All 2 branches covered.">                if (nchild != 0) {</span>
+<span class="fc bfc" id="L770" title="All 2 branches covered.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="fc bfc" id="L771" title="All 2 branches covered.">                        if (child[i] != null) {</span>
+<span class="fc" id="L772">                            child[i].closestColor(red, green, blue, search);</span>
+                        }
+                    }
+                }
+
+<span class="fc bfc" id="L777" title="All 2 branches covered.">                if (unique != 0) {</span>
+<span class="fc" id="L778">                    int color = cube.colormap[colorNumber];</span>
+<span class="fc" id="L779">                    int distance = distance(color, red, green, blue);</span>
+<span class="fc bfc" id="L780" title="All 2 branches covered.">                    if (distance &lt; search.distance) {</span>
+<span class="fc" id="L781">                        search.distance = distance;</span>
+<span class="fc" id="L782">                        search.colorNumber = colorNumber;</span>
+                    }
+                }
+<span class="fc" id="L785">            }</span>
+
+            /**
+             * Figure out the distance between this node and som color.
+             *
+             * @param color
+             *            the color
+             * @param r
+             *            the r
+             * @param g
+             *            the g
+             * @param b
+             *            the b
+             *
+             * @return the int
+             */
+            static final int distance(int color, int r, int g, int b) {
+<span class="fc" id="L802">                return SQUARES[(color &gt;&gt; 16 &amp; 0xFF) - r + MAX_RGB] + SQUARES[(color &gt;&gt; 8 &amp; 0xFF) - g + MAX_RGB]</span>
+                        + SQUARES[(color &gt;&gt; 0 &amp; 0xFF) - b + MAX_RGB];
+            }
+
+            @Override
+            public String toString() {
+<span class="nc" id="L808">                StringBuilder buf = new StringBuilder();</span>
+<span class="nc bnc" id="L809" title="All 2 branches missed.">                if (parent == this) {</span>
+<span class="nc" id="L810">                    buf.append(&quot;root&quot;);</span>
+                } else {
+<span class="nc" id="L812">                    buf.append(&quot;node&quot;);</span>
+                }
+<span class="nc" id="L814">                buf.append(' ');</span>
+<span class="nc" id="L815">                buf.append(level);</span>
+<span class="nc" id="L816">                buf.append(&quot; [&quot;);</span>
+<span class="nc" id="L817">                buf.append(midRed);</span>
+<span class="nc" id="L818">                buf.append(',');</span>
+<span class="nc" id="L819">                buf.append(midGreen);</span>
+<span class="nc" id="L820">                buf.append(',');</span>
+<span class="nc" id="L821">                buf.append(midBlue);</span>
+<span class="nc" id="L822">                buf.append(']');</span>
+<span class="nc" id="L823">                return new String(buf);</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

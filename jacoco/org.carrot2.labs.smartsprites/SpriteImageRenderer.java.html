@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteImageRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteImageRenderer.java</span></div><h1>SpriteImageRenderer.java</h1><pre class="source lang-java linenums">/*
+ * SmartSprites Project
+ *
+ * Copyright (C) 2007-2009, Stanisław Osiński.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of  source code must  retain the above  copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following  disclaimer in  the documentation  and/or
+ *   other materials provided with the distribution.
+ *
+ * - Neither the name of the SmartSprites Project nor the names of its contributors
+ *   may  be used  to endorse  or  promote  products derived   from  this  software
+ *   without specific prior written permission.
+ *
+ * - We kindly request that you include in the end-user documentation provided with
+ *   the redistribution and/or in the software itself an acknowledgement equivalent
+ *   to  the  following: &quot;This product includes software developed by the SmartSprites
+ *   Project.&quot;
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
+ * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
+ * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
+ * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
+ * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.carrot2.labs.smartsprites;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+
+import org.carrot2.labs.smartsprites.SmartSpritesParameters.PngDepth;
+import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageFormat;
+import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
+import org.carrot2.labs.smartsprites.message.Message.MessageType;
+import org.carrot2.labs.smartsprites.message.MessageLog;
+import org.carrot2.util.ColorQuantizer;
+import org.carrot2.util.ColorQuantizer.ColorReductionInfo;
+
+/**
+ * Applies color quantization to the merged sprite image if required.
+ */
+public class SpriteImageRenderer {
+
+    /** This builder's configuration. */
+    public final SmartSpritesParameters parameters;
+
+    /** This builder's message log. */
+    private final MessageLog messageLog;
+
+    /**
+     * Instantiates a new sprite image renderer.
+     *
+     * @param parameters
+     *            the parameters
+     * @param messageLog
+     *            the message log
+     */
+<span class="fc" id="L69">    SpriteImageRenderer(SmartSpritesParameters parameters, MessageLog messageLog) {</span>
+<span class="fc" id="L70">        this.parameters = parameters;</span>
+<span class="fc" id="L71">        this.messageLog = messageLog;</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * If needed, quantizes the image.
+     *
+     * @param spriteImage
+     *            the sprite image
+     *
+     * @return the buffered image[]
+     */
+    BufferedImage[] render(SpriteImage spriteImage) {
+<span class="fc" id="L83">        final BufferedImage sprite = spriteImage.sprite;</span>
+<span class="fc" id="L84">        final SpriteImageDirective spriteImageDirective = spriteImage.spriteImageOccurrence.spriteImageDirective;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        final boolean isPng = spriteImageDirective.format == SpriteImageFormat.PNG;</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        final boolean isJpg = spriteImageDirective.format == SpriteImageFormat.JPG;</span>
+
+<span class="fc bfc" id="L88" title="All 4 branches covered.">        final boolean isPngAuto = isPng &amp;&amp; parameters.getSpritePngDepth() == PngDepth.AUTO;</span>
+<span class="fc bfc" id="L89" title="All 4 branches covered.">        final boolean isPngDirect = isPng &amp;&amp; parameters.getSpritePngDepth() == PngDepth.DIRECT;</span>
+
+<span class="fc" id="L91">        final ColorReductionInfo colorReductionInfo = ColorQuantizer.getColorReductionInfo(sprite);</span>
+<span class="fc" id="L92">        final boolean canReduceWithoutQualityLoss = colorReductionInfo.canReduceWithoutQualityLoss();</span>
+
+<span class="fc" id="L94">        final BufferedImage[] result = new BufferedImage[2];</span>
+
+<span class="pc bpc" id="L96" title="1 of 8 branches missed.">        if (isPngDirect || (isPngAuto &amp;&amp; !canReduceWithoutQualityLoss) || isJpg) {</span>
+<span class="fc" id="L97">            result[0] = sprite;</span>
+
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            if (spriteImageDirective.matteColor != null) {</span>
+                // Can't or no need to handle indexed color
+<span class="fc" id="L101">                messageLog.warning(MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, spriteImageDirective.spriteId);</span>
+            }
+
+<span class="fc" id="L104">            return result;</span>
+        }
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (canReduceWithoutQualityLoss) {</span>
+            // Can perform reduction to indexed color without data loss
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if (spriteImageDirective.matteColor != null) {</span>
+<span class="fc" id="L109">                messageLog.warning(MessageType.IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY,</span>
+                        spriteImageDirective.spriteId);
+            }
+<span class="fc" id="L112">            result[0] = ColorQuantizer.reduce(sprite);</span>
+        } else {
+<span class="fc" id="L114">            result[0] = quantize(sprite, spriteImage, colorReductionInfo, MessageLevel.WARN);</span>
+        }
+<span class="fc" id="L116">        return result;</span>
+    }
+
+    /**
+     * Performs quantization, logs the appropriate messages if needed.
+     *
+     * @param sprite
+     *            the sprite
+     * @param spriteImage
+     *            the sprite image
+     * @param colorReductionInfo
+     *            the color reduction info
+     * @param logLevel
+     *            the log level
+     *
+     * @return the buffered image
+     */
+    private BufferedImage quantize(BufferedImage sprite, SpriteImage spriteImage,
+            final ColorReductionInfo colorReductionInfo, MessageLevel logLevel) {
+<span class="fc" id="L135">        final SpriteImageDirective spriteImageDirective = spriteImage.spriteImageOccurrence.spriteImageDirective;</span>
+
+        // Need to quantize
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (colorReductionInfo.hasPartialTransparency) {</span>
+<span class="fc" id="L139">            messageLog.log(logLevel, MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, spriteImageDirective.spriteId);</span>
+        } else {
+<span class="fc" id="L141">            messageLog.log(logLevel, MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, spriteImageDirective.spriteId,</span>
+<span class="fc" id="L142">                    colorReductionInfo.distinctColors, ColorQuantizer.MAX_INDEXED_COLORS);</span>
+        }
+
+        final Color matte;
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (spriteImageDirective.matteColor != null) {</span>
+<span class="fc" id="L147">            matte = spriteImageDirective.matteColor;</span>
+        } else {
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            if (colorReductionInfo.hasPartialTransparency) {</span>
+<span class="fc" id="L150">                messageLog.log(logLevel, MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT, spriteImageDirective.spriteId);</span>
+            }
+<span class="fc" id="L152">            matte = Color.WHITE;</span>
+        }
+
+<span class="fc" id="L155">        return ColorQuantizer.quantize(sprite, matte);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
