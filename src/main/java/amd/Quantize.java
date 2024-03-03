@@ -298,7 +298,7 @@ public class Quantize {
 
         SHIFT = new int[MAX_TREE_DEPTH + 1];
         for (int i = 0; i < MAX_TREE_DEPTH + 1; ++i) {
-            SHIFT[i] = 1 << 15 - i;
+            SHIFT[i] = 1 << (15 - i);
         }
     }
 
@@ -621,9 +621,9 @@ public class Quantize {
 
                 this.numberPixels = Integer.MAX_VALUE;
 
-                this.midRed = MAX_RGB + 1 >> 1;
-                this.midGreen = MAX_RGB + 1 >> 1;
-                this.midBlue = MAX_RGB + 1 >> 1;
+                this.midRed = (MAX_RGB + 1) >> 1;
+                this.midGreen = (MAX_RGB + 1) >> 1;
+                this.midBlue = (MAX_RGB + 1) >> 1;
             }
 
             /**
@@ -654,7 +654,7 @@ public class Quantize {
                 parent.child[id] = this;
 
                 // figure out our midpoint
-                int bi = 1 << MAX_TREE_DEPTH - level >> 1;
+                int bi = 1 << (MAX_TREE_DEPTH - level) >> 1;
                 midRed = parent.midRed + ((id & 1) > 0 ? bi : -bi);
                 midGreen = parent.midGreen + ((id & 2) > 0 ? bi : -bi);
                 midBlue = parent.midBlue + ((id & 4) > 0 ? bi : -bi);
