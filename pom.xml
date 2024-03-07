@@ -50,7 +50,7 @@
 
     <groupId>com.github.hazendaz</groupId>
     <artifactId>smartsprites</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
 
     <name>SmartSprites</name>
     <description>CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your designs,
@@ -127,6 +127,10 @@
 
         <!-- Reproducible Builds -->
         <project.build.outputTimestamp>1709437755</project.build.outputTimestamp>
+
+        <!-- Require java 11 for project -->
+        <java.version>11</java.version>
+        <java.release.version>11</java.release.version>
     </properties>
 
     <!-- Dependencies. -->
@@ -140,7 +144,7 @@
         <dependency>
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
-            <version>2.33</version>
+            <version>2.37</version>
         </dependency>
 
         <!-- Only used in SpriteImageBuilder -->
