@@ -52,7 +52,7 @@
     <artifactId>smartsprites</artifactId>
     <version>0.4.0-SNAPSHOT</version>
 
-    <name>SmartSprites</name>
+    <name>smartsprites</name>
     <description>CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your designs,
     fully automatically. No tedious copying and pasting to your CSS when adding or changing
     sprited images.</description>
