@@ -821,7 +821,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      *             Signals that an I/O exception has occurred.
      */
     @AfterEach
-    public void cleanUp() throws IOException {
+    void cleanUp() throws IOException {
         if (spriteBuilder == null) {
             return;
         }
