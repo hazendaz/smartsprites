@@ -45,6 +45,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -143,7 +144,7 @@ public class SpriteBuilder {
             // Make sure the files exist and are really files
             for (Iterator<String> it = filePaths.iterator(); it.hasNext();) {
                 final String path = it.next();
-                final File file = new File(path);
+                final File file = Path.of(path).toFile();
                 if (file.exists()) {
                     if (!file.isFile()) {
                         messageLog.warning(MessageType.CSS_PATH_IS_NOT_A_FILE, path);
@@ -181,7 +182,7 @@ public class SpriteBuilder {
     private void filterFilesOutsideRootDir(Collection<String> filePaths) throws IOException {
         for (Iterator<String> it = filePaths.iterator(); it.hasNext();) {
             final String filePath = it.next();
-            if (!FileUtils.isFileInParent(new File(filePath), parameters.getRootDirFile())) {
+            if (!FileUtils.isFileInParent(Path.of(filePath).toFile(), parameters.getRootDirFile())) {
                 it.remove();
                 messageLog.warning(MessageType.IGNORING_CSS_FILE_OUTSIDE_OF_ROOT_DIR, filePath);
             }

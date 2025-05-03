@@ -39,6 +39,7 @@ package org.carrot2.util;
 import com.google.common.base.Strings;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.StringTokenizer;
 
 /**
@@ -90,9 +91,9 @@ public class PathUtils {
             return "";
         }
 
-        // normalise the path delimiters
-        String fromPath = new File(oldPath).getPath();
-        String toPath = new File(newPath).getPath();
+        // Normalize the path delimiters
+        String fromPath = Path.of(oldPath).toString();
+        String toPath = Path.of(newPath).toString();
 
         // strip any leading slashes if its a windows path
         if (toPath.matches("^\\[a-zA-Z]:")) {

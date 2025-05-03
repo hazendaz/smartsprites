@@ -108,7 +108,7 @@ public class FileSystemResourceHandler implements ResourceHandler {
     @Override
     public OutputStream getResourceAsOutputStream(String path) throws IOException {
         // Create directories if needed
-        final File parentFile = new File(path).getParentFile();
+        final File parentFile = Path.of(path).toFile().getParentFile();
         if (!parentFile.exists() && !parentFile.mkdirs()) {
             messageLog.warning(Message.MessageType.CANNOT_CREATE_DIRECTORIES, parentFile.getPath());
         }

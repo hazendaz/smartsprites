@@ -39,6 +39,7 @@ package org.carrot2.labs.smartsprites;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
@@ -337,7 +338,7 @@ public final class SmartSpritesParameters {
      *             Signals that an I/O exception has occurred.
      */
     public File getRootDirFile() throws IOException {
-        return rootDir.startsWith("..") ? new File(rootDir).getCanonicalFile() : new File(rootDir);
+        return rootDir.startsWith("..") ? Path.of(rootDir).toFile().getCanonicalFile() : Path.of(rootDir).toFile();
     }
 
     /**

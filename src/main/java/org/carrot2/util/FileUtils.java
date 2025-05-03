@@ -38,6 +38,7 @@ package org.carrot2.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -65,7 +66,7 @@ public class FileUtils {
      * @return the canonical or absolute file
      */
     public static File getCanonicalOrAbsoluteFile(String path) {
-        File file = new File(path);
+        File file = Path.of(path).toFile();
         try {
             return file.getCanonicalFile();
         } catch (final IOException e) {
