@@ -118,8 +118,7 @@ public class Message implements Serializable {
         CANNOT_NOT_LOAD_IMAGE("Cannot load image: %s due to: %s"),
 
         /** The cannot parse margin value. */
-        CANNOT_PARSE_MARGIN_VALUE(
-                "Cannot parse margin value: %s. Only 'px' units are supported."),
+        CANNOT_PARSE_MARGIN_VALUE("Cannot parse margin value: %s. Only 'px' units are supported."),
 
         /** The cannot write sprite image. */
         CANNOT_WRITE_SPRITE_IMAGE("Cannot write sprite image: %s due to %s"),
@@ -152,8 +151,7 @@ public class Message implements Serializable {
         MALFORMED_SPRITE_IMAGE_PATH("Malformed sprite-image path: %s"),
 
         /** The unsupported variable in sprite image path. */
-        UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH(
-                "Unsupported variable in sprite-image path: %s"),
+        UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH("Unsupported variable in sprite-image path: %s"),
 
         /** The more than one rule next to sprite reference directive. */
         MORE_THAN_ONE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE(
@@ -172,12 +170,10 @@ public class Message implements Serializable {
                 "Root directory and individual CSS files cannot be both specified, unless output dir is also specified"),
 
         /** The root dir is required for output dir. */
-        ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR(
-                "If output directory is specified, root directory must also be provided"),
+        ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR("If output directory is specified, root directory must also be provided"),
 
         /** The root dir does not exist or is not directory. */
-        ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY(
-                "Root directory must exist and be a directory: %s"),
+        ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY("Root directory must exist and be a directory: %s"),
 
         /** The css file does not exist. */
         CSS_FILE_DOES_NOT_EXIST("Ignoring CSS file %s, it does not exist"),
@@ -193,8 +189,7 @@ public class Message implements Serializable {
                 "Document root directory must exist and be a directory: %s"),
 
         /** The ignoring css file outside of root dir. */
-        IGNORING_CSS_FILE_OUTSIDE_OF_ROOT_DIR(
-                "Ignoring a CSS file outside of root directory: %s"),
+        IGNORING_CSS_FILE_OUTSIDE_OF_ROOT_DIR("Ignoring a CSS file outside of root directory: %s"),
 
         /** The css file suffix is required if no output dir. */
         CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR(
@@ -240,9 +235,8 @@ public class Message implements Serializable {
         UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT("Unsupported format of image loaded from: %s"),
 
         /** The unsupported sprite image format. */
-        UNSUPPORTED_SPRITE_IMAGE_FORMAT(
-                "Format of image: %s is not supported. Supported formats are: " + SpriteImageFormat.valuesAsString()
-                        + "."),
+        UNSUPPORTED_SPRITE_IMAGE_FORMAT("Format of image: %s is not supported. Supported formats are: "
+                + SpriteImageFormat.valuesAsString() + "."),
 
         /** The unsupported layout. */
         UNSUPPORTED_LAYOUT(
@@ -282,8 +276,7 @@ public class Message implements Serializable {
         PROCESSING_COMPLETED("SmartSprites processing completed in %d ms"),
 
         /** The processing completed with warnings. */
-        PROCESSING_COMPLETED_WITH_WARNINGS(
-                "SmartSprites processing completed in %d ms with %d warning(s)"),
+        PROCESSING_COMPLETED_WITH_WARNINGS("SmartSprites processing completed in %d ms with %d warning(s)"),
 
         /** The unsupported properties found. */
         UNSUPPORTED_PROPERTIES_FOUND("Unsupported properties found: %s"),

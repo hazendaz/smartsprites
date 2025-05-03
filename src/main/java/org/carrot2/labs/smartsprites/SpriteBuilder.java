@@ -400,7 +400,8 @@ public class SpriteBuilder {
                 .replace(File.separatorChar, '/');
         return FileUtils.canonicalize(
                 (Strings.isNullOrEmpty(declarationReplacementRelativePath) || originalCssFile.equals(declaringCssPath)
-                        ? "" : declarationReplacementRelativePath + '/') + imagePath,
+                        ? ""
+                        : declarationReplacementRelativePath + '/') + imagePath,
                 "/");
     }
 

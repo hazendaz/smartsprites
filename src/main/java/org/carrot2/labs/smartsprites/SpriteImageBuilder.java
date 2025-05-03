@@ -187,7 +187,7 @@ public class SpriteImageBuilder {
         // Build the sprite image bitmap
         final SpriteImage spriteImage = SpriteImageBuilder.buildSpriteImage(spriteImageOccurrence, images, messageLog);
         if (spriteImage == null) {
-            return Collections.<SpriteReferenceOccurrence, SpriteReferenceReplacement>emptyMap();
+            return Collections.<SpriteReferenceOccurrence, SpriteReferenceReplacement> emptyMap();
         }
 
         // Render the sprite into the required formats, perform quantization if needed
