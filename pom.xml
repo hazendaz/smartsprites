@@ -50,7 +50,7 @@
 
     <groupId>com.github.hazendaz</groupId>
     <artifactId>smartsprites</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1-SNAPSHOT</version>
 
     <name>smartsprites</name>
     <description>CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your designs,
@@ -97,7 +97,7 @@
     <scm>
         <connection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/hazendaz/smartsprites.git</developerConnection>
-        <tag>smartsprites-0.4.0</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/hazendaz/smartsprites</url>
     </scm>
 
@@ -126,7 +126,7 @@
         <module.name>org.carrot2.labs.smartsprites</module.name>
 
         <!-- Reproducible Builds -->
-        <project.build.outputTimestamp>1746300543</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1746300594</project.build.outputTimestamp>
 
         <!-- Require java 11 for project -->
         <java.version>11</java.version>
