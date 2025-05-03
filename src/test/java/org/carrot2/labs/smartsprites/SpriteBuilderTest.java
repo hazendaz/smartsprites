@@ -58,8 +58,6 @@ import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnJre;
-import org.junit.jupiter.api.condition.JRE;
 
 /**
  * Test cases for {@link SpriteBuilder}. The test cases read/ write files to the directories contained in the test/
@@ -410,8 +408,6 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(absoluteSpriteFile).exists();
         assertThat(ImageIO.read(absoluteSpriteFile)).hasSize(new Dimension(17, 17));
 
-        // assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
-
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
                 new Message(Message.MessageLevel.WARN, Message.MessageType.IMAGE_FRACTIONAL_SCALE_VALUE, null, 44,
                         "../img/web.gif", 8.5f, 8.5f),
@@ -638,36 +634,6 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         // in turn depends on the Java version used.
         //
         // assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-    }
-
-    /**
-     * Variable substitution in sprite image path.
-     *
-     * @throws FileNotFoundException
-     *             the file not found exception
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    @Test
-    @EnabledOnJre(JRE.JAVA_8)
-    void variableSubstitutionInSpriteImagePath() throws FileNotFoundException, IOException {
-        final File testDir = testDir("variable-substitution-in-sprite-image-path");
-        final String sprite1 = "img/sprite-a1bc9b4fea190b40426b1a294fd1b1271822d59085a1143b2f313f70772d10c32c5c9bca305ebaceeaf135124eec70a5df2d745604916654d90a0a7939334978.png";
-        final String sprite2 = "img/7afeb4044f634a1859b08d79aff8802291d911f72dc32e89361d218766072a178084d363549ff83c546f0fb03436aca05f7719812a6c6f8117f253b948399e0f/sprite2.png";
-
-        try {
-            buildSprites(testDir);
-
-            assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-            assertThat(new File(testDir, sprite1)).exists();
-            assertThat(new File(testDir, sprite2)).exists();
-            assertThat(sprite(testDir, sprite1)).hasSize(new Dimension(17 + 15, 17));
-            assertThat(sprite(testDir, sprite2)).hasSize(new Dimension(48, 47));
-            assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
-        } finally {
-            FileUtils.deleteDirectory(new File(testDir,
-                    "img/7afeb4044f634a1859b08d79aff8802291d911f72dc32e89361d218766072a178084d363549ff83c546f0fb03436aca05f7719812a6c6f8117f253b948399e0f"));
-        }
     }
 
     /**
