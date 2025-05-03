@@ -261,8 +261,8 @@ public final class SmartSpritesParameters {
 
         // Check root dir if provided
         if (hasRootDir()) {
-            final File rootDir = FileUtils.getCanonicalOrAbsoluteFile(this.rootDir);
-            if (!rootDir.exists() || !rootDir.isDirectory()) {
+            final File directory = FileUtils.getCanonicalOrAbsoluteFile(this.rootDir);
+            if (!directory.exists() || !directory.isDirectory()) {
                 log.error(MessageType.ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY, this.rootDir);
                 valid = false;
             }
@@ -276,8 +276,8 @@ public final class SmartSpritesParameters {
                 return false;
             }
 
-            final File outputDir = FileUtils.getCanonicalOrAbsoluteFile(this.outputDir);
-            if (outputDir.exists() && !outputDir.isDirectory()) {
+            final File directory = FileUtils.getCanonicalOrAbsoluteFile(this.outputDir);
+            if (directory.exists() && !directory.isDirectory()) {
                 log.error(MessageType.OUTPUT_DIR_IS_NOT_DIRECTORY, this.outputDir);
                 valid = false;
             }
@@ -289,8 +289,8 @@ public final class SmartSpritesParameters {
         }
 
         if (hasDocumentRootDir()) {
-            final File documentRootDir = FileUtils.getCanonicalOrAbsoluteFile(this.documentRootDir);
-            if (!documentRootDir.exists() || !documentRootDir.isDirectory()) {
+            final File directory = FileUtils.getCanonicalOrAbsoluteFile(this.documentRootDir);
+            if (!directory.exists() || !directory.isDirectory()) {
                 log.error(MessageType.DOCUMENT_ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY, this.documentRootDir);
                 valid = false;
             }
