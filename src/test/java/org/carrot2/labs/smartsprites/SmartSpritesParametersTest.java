@@ -44,6 +44,7 @@ import com.google.common.collect.Lists;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.carrot2.labs.smartsprites.message.Message;
@@ -275,7 +276,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      *             Signals that an I/O exception has occurred.
      */
     private File mkdirInTemp(final String name) throws IOException {
-        final File file = new File(existingFile.getParent(), existingFile.getName() + name);
+        final File file = Path.of(existingFile.getParent(), existingFile.getName() + name).toFile();
         FileUtils.mkdirsThrowingExceptions(file);
         return file;
     }

@@ -46,6 +46,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -119,10 +120,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img-sprite/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img-sprite/sprite.png")).exists();
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
 
-        FileUtils.deleteDirectory(new File(testDir, "img-sprite"));
+        FileUtils.deleteDirectory(testDir.toPath().resolve("img-sprite").toFile());
     }
 
     /**
@@ -137,7 +138,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15 + 48, 47));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
@@ -155,7 +156,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15 + 48 + 20, 47));
     }
 
@@ -171,7 +172,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15 + 48 + 3 * (2 + 3), 47 + 5 + 7));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
@@ -189,7 +190,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(css("css/style2-sprite.css")).hasSameTextualContentAs(css("css/style2-expected.css"));
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15 + 48, 47));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
@@ -209,8 +210,8 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final String spriteVerticalPath = "img/sprite-vertical.png";
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, spriteHorizontalPath)).exists();
-        assertThat(new File(testDir, spriteVerticalPath)).exists();
+        assertThat(testDir.toPath().resolve(spriteHorizontalPath)).exists();
+        assertThat(testDir.toPath().resolve(spriteVerticalPath)).exists();
         assertThat(sprite(testDir, spriteHorizontalPath)).hasSize(new Dimension(17 + 15, 16 * 17 /* lcm(16, 17) */));
         assertThat(sprite(testDir, spriteVerticalPath)).hasSize(new Dimension(15 * 17 /* lcm(15, 17) */, 17 + 16));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -228,18 +229,18 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(18, 17 + 6 + 5));
 
         // The unsatisfied sprite references are not removed from the output
         // file, hence we have two warnings
         assertThat(messages).contains(
                 new Message(Message.MessageLevel.WARN, Message.MessageType.CANNOT_NOT_LOAD_IMAGE,
-                        new File(testDir, "css/style.css").getPath(), 51, new File(testDir, "img/logo.png").getPath(),
-                        "Can't read input file!"),
+                        testDir.toPath().resolve("css/style.css").toString(), 51,
+                        testDir.toPath().resolve("img/logo.png").toString(), "Can't read input file!"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.CANNOT_NOT_LOAD_IMAGE,
-                        new File(testDir, "css/style-expected.css").getPath(), 51,
-                        new File(testDir, "img/logo.png").getPath(), "Can't read input file!"));
+                        testDir.toPath().resolve("css/style-expected.css").toString(), 51,
+                        testDir.toPath().resolve("img/logo.png").toString(), "Can't read input file!"));
     }
 
     /**
@@ -254,11 +255,12 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).doesNotExist();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).doesNotExist();
 
         assertThat(messages).contains(
                 new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT,
-                        new File(testDir, "css/style.css").getPath(), 44, new File(testDir, "img/web.iff").getPath()));
+                        testDir.toPath().resolve("css/style.css").toString(), 44,
+                        testDir.toPath().resolve("img/web.iff").toString()));
     }
 
     /**
@@ -273,10 +275,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(48, 16 + 17 + 47));
 
-        final String styleCssPath = new File(testDir, "css/style.css").getPath();
+        final String styleCssPath = testDir.toPath().resolve("css/style.css").toString();
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
                 new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath,
                         40, "sprites-layout"),
@@ -298,10 +300,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15 + 48, 47));
 
-        final String styleCssPath = new File(testDir, "css/style.css").getPath();
+        final String styleCssPath = testDir.toPath().resolve("css/style.css").toString();
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
                 new Message(Message.MessageLevel.WARN, Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 46,
                         "background-image", 45),
@@ -324,7 +326,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                 SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        final File spriteFile = new File(documentRootDir, "img/sprite.png");
+        final File spriteFile = documentRootDir.toPath().resolve("img/sprite.png").toFile();
         assertThat(spriteFile).exists();
         assertThat(ImageIO.read(spriteFile)).hasSize(new Dimension(17, 17));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -350,11 +352,11 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
-        final File absoluteSpriteFile = new File(documentRootDir, "img/absolute.png");
+        final File absoluteSpriteFile = documentRootDir.toPath().resolve("img/absolute.png").toFile();
         assertThat(absoluteSpriteFile).exists();
         assertThat(ImageIO.read(absoluteSpriteFile)).hasSize(new Dimension(17, 17));
 
-        final File relativeSpriteFile = new File(outputDir, "img/relative.png");
+        final File relativeSpriteFile = outputDir.toPath().resolve("img/relative.png").toFile();
         assertThat(relativeSpriteFile).exists();
         assertThat(ImageIO.read(relativeSpriteFile)).hasSize(new Dimension(15, 16));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -379,7 +381,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
-        final File absoluteSpriteFile = new File(documentRootDir, "img/absolute.png");
+        final File absoluteSpriteFile = documentRootDir.toPath().resolve("img/absolute.png").toFile();
         assertThat(absoluteSpriteFile).exists();
         assertThat(ImageIO.read(absoluteSpriteFile)).hasSize(new Dimension(17, 17));
 
@@ -404,7 +406,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
 
-        final File absoluteSpriteFile = new File(documentRootDir, "img/absolute.png");
+        final File absoluteSpriteFile = documentRootDir.toPath().resolve("img/absolute.png").toFile();
         assertThat(absoluteSpriteFile).exists();
         assertThat(ImageIO.read(absoluteSpriteFile)).hasSize(new Dimension(17, 17));
 
@@ -426,17 +428,17 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     @Test
     void testCssOutputDir() throws IOException {
         final File testDir = testDir("css-output-dir");
-        final File rootDir = new File(testDir, "css/sprite").getCanonicalFile();
+        final File rootDir = testDir.toPath().resolve("css/sprite").toFile().getCanonicalFile();
         final File outputDir = testDir("css-output-dir/output-dir/css");
         org.carrot2.util.FileUtils.mkdirsThrowingExceptions(outputDir);
         buildSprites(filesystemSmartSpritesParameters(rootDir, outputDir, null, MessageLevel.INFO,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX, SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH,
                 SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING));
 
-        assertThat(processedCss(new File(rootDir, "style.css")))
-                .hasSameTextualContentAs(new File(rootDir, "style-expected.css"));
+        assertThat(processedCss(rootDir.toPath().resolve("style.css").toFile()))
+                .hasSameTextualContentAs(rootDir.toPath().resolve("style-expected.css").toFile());
 
-        final File relativeSpriteFile = new File(outputDir, "../img/relative.png");
+        final File relativeSpriteFile = outputDir.toPath().resolve("../img/relative.png").toFile();
         assertThat(relativeSpriteFile).exists();
         assertThat(ImageIO.read(relativeSpriteFile)).hasSize(new Dimension(17 + 15, 17));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -456,7 +458,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         buildSprites(testDir);
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 19, 19));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
     }
@@ -625,7 +627,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File testDir = testDir("sprite-image-uid-sha512");
         buildSprites(testDir);
 
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15, 17));
         assertThat(sprite(testDir, "img/sprite2.png")).hasSize(new Dimension(48, 47));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -671,18 +673,20 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     @Test
     void testIndividualCssFilesWithoutOutputDir() throws IOException {
         final File testDir = testDir("individual-css-files-without-output-dir");
-        final File css = new File(testDir, "css/style-sprite.css");
-        final File customCss = new File(testDir, "css/custom/style-sprite.css");
-        final File otherCss = new File(testDir, "css-other/style-sprite.css");
-        final File sprite = new File(testDir, "img/sprite.png");
+        final File css = testDir.toPath().resolve("css/style-sprite.css").toFile();
+        final File customCss = testDir.toPath().resolve("css/custom/style-sprite.css").toFile();
+        final File otherCss = testDir.toPath().resolve("css-other/style-sprite.css").toFile();
+        final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
         try {
-            buildSprites(Lists.newArrayList(new File(testDir, "/css/style.css").getPath(),
-                    new File(testDir, "css/custom/style.css").getPath(),
-                    new File(testDir, "css-other/style.css").getPath()));
+            buildSprites(Lists.newArrayList(testDir.toPath().resolve("css/style.css").toString(),
+                    testDir.toPath().resolve("css/custom/style.css").toString(),
+                    testDir.toPath().resolve("css-other/style.css").toString()));
             assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
-            assertThat(css).hasSameTextualContentAs(new File(testDir, "css/style-expected.css"));
-            assertThat(customCss).hasSameTextualContentAs(new File(testDir, "css/custom/style-expected.css"));
-            assertThat(otherCss).hasSameTextualContentAs(new File(testDir, "css-other/style-expected.css"));
+            assertThat(css).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
+            assertThat(customCss)
+                    .hasSameTextualContentAs(testDir.toPath().resolve("css/custom/style-expected.css").toFile());
+            assertThat(otherCss)
+                    .hasSameTextualContentAs(testDir.toPath().resolve("css-other/style-expected.css").toFile());
             assertThat(sprite).exists();
             assertThat(sprite(testDir)).hasSize(new Dimension(17, 17));
         } finally {
@@ -699,19 +703,20 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     @Test
     void testIndividualCssFilesWithOutputDir() throws IOException {
         final File testDir = testDir("individual-css-files-with-output-dir");
-        final File outputDir = new File(testDir, "output");
-        final File css = new File(outputDir, "style-sprite.css");
-        final File customCss = new File(outputDir, "custom/style-sprite.css");
-        final File otherCss = new File(testDir, "css-other/style-sprite.css");
-        final File sprite = new File(testDir, "img/sprite.png");
+        final File outputDir = testDir.toPath().resolve("output").toFile();
+        final File css = outputDir.toPath().resolve("style-sprite.css").toFile();
+        final File customCss = outputDir.toPath().resolve("custom/style-sprite.css").toFile();
+        final File otherCss = testDir.toPath().resolve("css-other/style-sprite.css").toFile();
+        final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
         try {
-            final String otherCssPath = new File(testDir, "css-other/style.css").getPath();
+            final String otherCssPath = testDir.toPath().resolve("css-other/style.css").toString();
             buildSprites(
-                    Lists.newArrayList(new File(testDir, "css/style.css").getPath(),
-                            new File(testDir, "css/custom/style.css").getPath(), otherCssPath),
-                    new File(testDir, "css").getPath(), outputDir.getPath());
-            assertThat(css).hasSameTextualContentAs(new File(testDir, "css/style-expected.css"));
-            assertThat(customCss).hasSameTextualContentAs(new File(testDir, "css/custom/style-expected.css"));
+                    Lists.newArrayList(testDir.toPath().resolve("css/style.css").toString(),
+                            testDir.toPath().resolve("css/custom/style.css").toString(), otherCssPath),
+                    testDir.toPath().resolve("css").toString(), outputDir.getPath());
+            assertThat(css).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
+            assertThat(customCss)
+                    .hasSameTextualContentAs(testDir.toPath().resolve("css/custom/style-expected.css").toFile());
             assertThat(otherCss).doesNotExist();
             assertThat(sprite).exists();
             assertThat(sprite(testDir)).hasSize(new Dimension(17, 17));
@@ -736,7 +741,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         final String horizontalSpritePath = "img/sprite-horizontal.png";
-        assertThat(new File(testDir, horizontalSpritePath)).exists();
+        assertThat(testDir.toPath().resolve(horizontalSpritePath)).exists();
         assertThat(sprite(testDir, horizontalSpritePath)).hasSize(new Dimension(48 + 100 + 100 + 48 + 48, 47 * 6));
 
         final String verticalSpritePath = "img/sprite-vertical.png";
@@ -758,7 +763,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         final String horizontalSpritePath = "img/sprite-horizontal.png";
-        assertThat(new File(testDir, horizontalSpritePath)).exists();
+        assertThat(testDir.toPath().resolve(horizontalSpritePath)).exists();
         assertThat(sprite(testDir, horizontalSpritePath)).hasSize(new Dimension(48, 47));
 
         final String verticalSpritePath = "img/sprite-vertical.png";
@@ -781,7 +786,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
         assertThat(css("css/library/common-sprite.css"))
                 .hasSameTextualContentAs(css("css/library/common-expected.css"));
-        assertThat(new File(testDir, "img/sprite.png")).exists();
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
         assertThat(sprite(testDir)).hasSize(new Dimension(17, 17 + 16));
         assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
 
@@ -798,14 +803,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     @Test
     void testCssFileApiInvocation() throws IOException {
         final File testDir = testDir("simple-horizontal-sprite");
-        final File outputCss = new File(testDir, "css/style-sprite.css");
-        final File sprite = new File(testDir, "img/sprite.png");
+        final File outputCss = testDir.toPath().resolve("css/style-sprite.css").toFile();
+        final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
 
         try {
-            buildSprites(
-                    Lists.newArrayList(new File(testDir, "css/style.css").getPath().replace(File.separatorChar, '/')));
+            buildSprites(Lists.newArrayList(
+                    testDir.toPath().resolve("css/style.css").toString().replace(File.separatorChar, '/')));
 
-            assertThat(outputCss).hasSameTextualContentAs(new File(testDir, "css/style-expected.css"));
+            assertThat(outputCss).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
             assertThat(sprite).exists();
             assertThat(sprite(testDir)).hasSize(new Dimension(17 + 15 + 48, 47));
             assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
@@ -833,11 +838,11 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         }
 
         org.carrot2.util.FileUtils.deleteThrowingExceptions(
-                new File(rootDir, "css").listFiles((FilenameFilter) (dir, name) -> name.contains("-sprite")));
+                Path.of(rootDir, "css").toFile().listFiles((FilenameFilter) (dir, name) -> name.contains("-sprite")));
 
         // Delete sprites
         org.carrot2.util.FileUtils.deleteThrowingExceptions(
-                new File(rootDir, "img").listFiles((FilenameFilter) (dir, name) -> name.startsWith("sprite")));
+                Path.of(rootDir, "img").toFile().listFiles((FilenameFilter) (dir, name) -> name.startsWith("sprite")));
     }
 
     /**
@@ -849,7 +854,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      * @return the file
      */
     private File testDir(String test) {
-        return new File("test/" + test);
+        return Path.of("test/" + test).toFile();
     }
 
     /**
@@ -881,7 +886,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      *             Signals that an I/O exception has occurred.
      */
     private BufferedImage sprite(final File testDir, String imagePath) throws IOException {
-        return ImageIO.read(new File(testDir, imagePath));
+        return ImageIO.read(testDir.toPath().resolve(imagePath).toFile());
     }
 
     /**
@@ -920,7 +925,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      * @return the file
      */
     private File css(String cssPath) {
-        return new File(spriteBuilder.parameters.getRootDir(), cssPath);
+        return Path.of(spriteBuilder.parameters.getRootDir(), cssPath).toFile();
     }
 
     /**
@@ -932,7 +937,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
      * @return the file
      */
     private File processedCss(File sourceCss) {
-        return new File(spriteBuilder.getProcessedCssFile(sourceCss.getPath()));
+        return Path.of(spriteBuilder.getProcessedCssFile(sourceCss.getPath())).toFile();
     }
 
     /**
