@@ -37,8 +37,6 @@
 package org.carrot2.labs.smartsprites.resource;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,6 +46,8 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.io.FilenameUtils;
 import org.carrot2.labs.smartsprites.SmartSpritesParameters;
@@ -92,7 +92,7 @@ public class FileSystemResourceHandler implements ResourceHandler {
 
     @Override
     public InputStream getResourceAsInputStream(String path) throws IOException {
-        return new FileInputStream(FileUtils.getCanonicalOrAbsoluteFile(path));
+        return Files.newInputStream(FileUtils.getCanonicalOrAbsoluteFile(path).toPath());
     }
 
     @Override
@@ -112,7 +112,7 @@ public class FileSystemResourceHandler implements ResourceHandler {
         if (!parentFile.exists() && !parentFile.mkdirs()) {
             messageLog.warning(Message.MessageType.CANNOT_CREATE_DIRECTORIES, parentFile.getPath());
         }
-        return new FileOutputStream(FileUtils.getCanonicalOrAbsoluteFile(path));
+        return Files.newOutputStream(FileUtils.getCanonicalOrAbsoluteFile(path).toPath());
     }
 
     @Override
