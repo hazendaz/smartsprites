@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileSystemResourceHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites.resource</a> &gt; <span class="el_source">FileSystemResourceHandler.java</span></div><h1>FileSystemResourceHandler.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileSystemResourceHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites.resource</a> &gt; <span class="el_source">FileSystemResourceHandler.java</span></div><h1>FileSystemResourceHandler.java</h1><pre class="source lang-java linenums">/*
  * SmartSprites Project
  *
  * Copyright (C) 2007-2009, Stanisław Osiński.
@@ -37,8 +37,6 @@
 package org.carrot2.labs.smartsprites.resource;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,6 +46,8 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.io.FilenameUtils;
 import org.carrot2.labs.smartsprites.SmartSpritesParameters;
@@ -92,7 +92,7 @@ public class FileSystemResourceHandler implements ResourceHandler {
 
     @Override
     public InputStream getResourceAsInputStream(String path) throws IOException {
-<span class="fc" id="L95">        return new FileInputStream(FileUtils.getCanonicalOrAbsoluteFile(path));</span>
+<span class="fc" id="L95">        return Files.newInputStream(FileUtils.getCanonicalOrAbsoluteFile(path).toPath());</span>
     }
 
     @Override
@@ -108,11 +108,11 @@ public class FileSystemResourceHandler implements ResourceHandler {
     @Override
     public OutputStream getResourceAsOutputStream(String path) throws IOException {
         // Create directories if needed
-<span class="fc" id="L111">        final File parentFile = new File(path).getParentFile();</span>
+<span class="fc" id="L111">        final File parentFile = Path.of(path).toFile().getParentFile();</span>
 <span class="pc bpc" id="L112" title="1 of 4 branches missed.">        if (!parentFile.exists() &amp;&amp; !parentFile.mkdirs()) {</span>
 <span class="nc" id="L113">            messageLog.warning(Message.MessageType.CANNOT_CREATE_DIRECTORIES, parentFile.getPath());</span>
         }
-<span class="fc" id="L115">        return new FileOutputStream(FileUtils.getCanonicalOrAbsoluteFile(path));</span>
+<span class="fc" id="L115">        return Files.newOutputStream(FileUtils.getCanonicalOrAbsoluteFile(path).toPath());</span>
     }
 
     @Override
@@ -141,4 +141,4 @@ public class FileSystemResourceHandler implements ResourceHandler {
 <span class="nc" id="L141">        return &quot;&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

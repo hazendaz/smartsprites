@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.carrot2.labs.smartsprites"},{"l":"org.carrot2.labs.smartsprites.css"},{"l":"org.carrot2.labs.test"},{"l":"org.carrot2.util"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"org.carrot2.labs.smartsprites"},{"l":"org.carrot2.labs.test"},{"l":"org.carrot2.util"}];updateSearchResults();

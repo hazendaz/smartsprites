@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SmartSpritesParameters.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SmartSpritesParameters.java</span></div><h1>SmartSpritesParameters.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SmartSpritesParameters.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SmartSpritesParameters.java</span></div><h1>SmartSpritesParameters.java</h1><pre class="source lang-java linenums">/*
  * SmartSprites Project
  *
  * Copyright (C) 2007-2009, Stanisław Osiński.
@@ -39,6 +39,7 @@ package org.carrot2.labs.smartsprites;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.carrot2.labs.smartsprites.message.Message.MessageLevel;
@@ -131,13 +132,13 @@ public final class SmartSpritesParameters {
     public static final String DEFAULT_CSS_FILE_SUFFIX = &quot;-sprite&quot;;
 
     /** By default, we use full color only when necessary. */
-<span class="fc" id="L134">    public static final PngDepth DEFAULT_SPRITE_PNG_DEPTH = PngDepth.AUTO;</span>
+<span class="fc" id="L135">    public static final PngDepth DEFAULT_SPRITE_PNG_DEPTH = PngDepth.AUTO;</span>
 
     /** By default, we'll assume CSS files are UTF-8 encoded. */
-<span class="fc" id="L137">    public static final String DEFAULT_CSS_FILE_ENCODING = StandardCharsets.UTF_8.name();</span>
+<span class="fc" id="L138">    public static final String DEFAULT_CSS_FILE_ENCODING = StandardCharsets.UTF_8.name();</span>
 
     /** The default logging level. */
-<span class="fc" id="L140">    public static final MessageLevel DEFAULT_LOGGING_LEVEL = MessageLevel.INFO;</span>
+<span class="fc" id="L141">    public static final MessageLevel DEFAULT_LOGGING_LEVEL = MessageLevel.INFO;</span>
 
     /** By default, we don't generate sprite directive in output css. */
     public static final boolean DEFAULT_MARK_SPRITE_IMAGES = false;
@@ -145,14 +146,14 @@ public final class SmartSpritesParameters {
     /**
      * The Enum PngDepth.
      */
-<span class="fc" id="L148">    public enum PngDepth {</span>
+<span class="fc" id="L149">    public enum PngDepth {</span>
 
         /** The auto. */
-<span class="fc" id="L151">        AUTO,</span>
+<span class="fc" id="L152">        AUTO,</span>
         /** The indexed. */
-<span class="fc" id="L153">        INDEXED,</span>
+<span class="fc" id="L154">        INDEXED,</span>
         /** The direct. */
-<span class="fc" id="L155">        DIRECT;</span>
+<span class="fc" id="L156">        DIRECT;</span>
     }
 
     /**
@@ -160,8 +161,8 @@ public final class SmartSpritesParameters {
      * invalid.
      */
     public SmartSpritesParameters() {
-<span class="nc" id="L163">        this(null);</span>
-<span class="nc" id="L164">    }</span>
+<span class="nc" id="L164">        this(null);</span>
+<span class="nc" id="L165">    }</span>
 
     /**
      * Creates the parameters with most default values.
@@ -170,9 +171,9 @@ public final class SmartSpritesParameters {
      *            the root dir
      */
     public SmartSpritesParameters(String rootDir) {
-<span class="nc" id="L173">        this(rootDir, null, null, null, MessageLevel.INFO, DEFAULT_CSS_FILE_SUFFIX, DEFAULT_SPRITE_PNG_DEPTH,</span>
+<span class="nc" id="L174">        this(rootDir, null, null, null, MessageLevel.INFO, DEFAULT_CSS_FILE_SUFFIX, DEFAULT_SPRITE_PNG_DEPTH,</span>
                 DEFAULT_CSS_FILE_ENCODING, DEFAULT_MARK_SPRITE_IMAGES);
-<span class="nc" id="L175">    }</span>
+<span class="nc" id="L176">    }</span>
 
     /**
      * Creates the parameters.
@@ -196,9 +197,9 @@ public final class SmartSpritesParameters {
      */
     public SmartSpritesParameters(String rootDir, List&lt;String&gt; cssFiles, String outputDir, String documentRootDir,
             MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth, String cssEncoding) {
-<span class="fc" id="L199">        this(rootDir, cssFiles, outputDir, documentRootDir, logLevel, cssFileSuffix, spritePngDepth, cssEncoding,</span>
+<span class="fc" id="L200">        this(rootDir, cssFiles, outputDir, documentRootDir, logLevel, cssFileSuffix, spritePngDepth, cssEncoding,</span>
                 DEFAULT_MARK_SPRITE_IMAGES);
-<span class="fc" id="L201">    }</span>
+<span class="fc" id="L202">    }</span>
 
     /**
      * Creates the parameters.
@@ -224,17 +225,17 @@ public final class SmartSpritesParameters {
      */
     public SmartSpritesParameters(String rootDir, List&lt;String&gt; cssFiles, String outputDir, String documentRootDir,
             MessageLevel logLevel, String cssFileSuffix, PngDepth spritePngDepth, String cssEncoding,
-<span class="fc" id="L227">            boolean markSpriteImages) {</span>
-<span class="fc" id="L228">        this.rootDir = rootDir;</span>
-<span class="fc" id="L229">        this.cssFiles = cssFiles;</span>
-<span class="fc" id="L230">        this.outputDir = outputDir;</span>
-<span class="fc" id="L231">        this.documentRootDir = documentRootDir;</span>
-<span class="fc" id="L232">        this.logLevel = logLevel;</span>
-<span class="fc" id="L233">        this.cssFileEncoding = cssEncoding;</span>
-<span class="fc" id="L234">        this.cssFileSuffix = getCssFileSuffix(cssFileSuffix);</span>
-<span class="fc" id="L235">        this.spritePngDepth = spritePngDepth;</span>
-<span class="fc" id="L236">        this.markSpriteImages = markSpriteImages;</span>
-<span class="fc" id="L237">    }</span>
+<span class="fc" id="L228">            boolean markSpriteImages) {</span>
+<span class="fc" id="L229">        this.rootDir = rootDir;</span>
+<span class="fc" id="L230">        this.cssFiles = cssFiles;</span>
+<span class="fc" id="L231">        this.outputDir = outputDir;</span>
+<span class="fc" id="L232">        this.documentRootDir = documentRootDir;</span>
+<span class="fc" id="L233">        this.logLevel = logLevel;</span>
+<span class="fc" id="L234">        this.cssFileEncoding = cssEncoding;</span>
+<span class="fc" id="L235">        this.cssFileSuffix = getCssFileSuffix(cssFileSuffix);</span>
+<span class="fc" id="L236">        this.spritePngDepth = spritePngDepth;</span>
+<span class="fc" id="L237">        this.markSpriteImages = markSpriteImages;</span>
+<span class="fc" id="L238">    }</span>
 
     /**
      * Validates the provided parameters. All resource paths are resolved against the local file system.
@@ -245,58 +246,58 @@ public final class SmartSpritesParameters {
      * @return &lt;code&gt;true&lt;/code&gt; if the parameters are valid
      */
     public boolean validate(MessageLog log) {
-<span class="fc" id="L248">        boolean valid = true;</span>
+<span class="fc" id="L249">        boolean valid = true;</span>
 
         // Either root dir or css files are required
-<span class="fc bfc" id="L251" title="All 4 branches covered.">        if (!hasRootDir() &amp;&amp; !hasCssFiles()) {</span>
-<span class="fc" id="L252">            log.error(MessageType.EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQUIRED);</span>
-<span class="fc" id="L253">            return false;</span>
+<span class="fc bfc" id="L252" title="All 4 branches covered.">        if (!hasRootDir() &amp;&amp; !hasCssFiles()) {</span>
+<span class="fc" id="L253">            log.error(MessageType.EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQUIRED);</span>
+<span class="fc" id="L254">            return false;</span>
         }
 
         // If there is no output dir, we can't have both root dir or css files
-<span class="fc bfc" id="L257" title="All 6 branches covered.">        if (!hasOutputDir() &amp;&amp; hasRootDir() &amp;&amp; hasCssFiles()) {</span>
-<span class="fc" id="L258">            log.error(MessageType.ROOT_DIR_AND_CSS_FILES_CANNOT_BE_BOTH_SPECIFIED_UNLESS_WITH_OUTPUT_DIR);</span>
-<span class="fc" id="L259">            return false;</span>
+<span class="fc bfc" id="L258" title="All 6 branches covered.">        if (!hasOutputDir() &amp;&amp; hasRootDir() &amp;&amp; hasCssFiles()) {</span>
+<span class="fc" id="L259">            log.error(MessageType.ROOT_DIR_AND_CSS_FILES_CANNOT_BE_BOTH_SPECIFIED_UNLESS_WITH_OUTPUT_DIR);</span>
+<span class="fc" id="L260">            return false;</span>
         }
 
         // Check root dir if provided
-<span class="fc bfc" id="L263" title="All 2 branches covered.">        if (hasRootDir()) {</span>
-<span class="fc" id="L264">            final File rootDir = FileUtils.getCanonicalOrAbsoluteFile(this.rootDir);</span>
-<span class="pc bpc" id="L265" title="1 of 4 branches missed.">            if (!rootDir.exists() || !rootDir.isDirectory()) {</span>
-<span class="fc" id="L266">                log.error(MessageType.ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY, this.rootDir);</span>
-<span class="fc" id="L267">                valid = false;</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (hasRootDir()) {</span>
+<span class="fc" id="L265">            final File directory = FileUtils.getCanonicalOrAbsoluteFile(this.rootDir);</span>
+<span class="pc bpc" id="L266" title="1 of 4 branches missed.">            if (!directory.exists() || !directory.isDirectory()) {</span>
+<span class="fc" id="L267">                log.error(MessageType.ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY, this.rootDir);</span>
+<span class="fc" id="L268">                valid = false;</span>
             }
         }
 
         // Check output dir if provided
-<span class="fc bfc" id="L272" title="All 2 branches covered.">        if (hasOutputDir()) {</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        if (hasOutputDir()) {</span>
             // For output dir, we need root dir
-<span class="fc bfc" id="L274" title="All 2 branches covered.">            if (!hasRootDir()) {</span>
-<span class="fc" id="L275">                log.error(MessageType.ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR);</span>
-<span class="fc" id="L276">                return false;</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">            if (!hasRootDir()) {</span>
+<span class="fc" id="L276">                log.error(MessageType.ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR);</span>
+<span class="fc" id="L277">                return false;</span>
             }
 
-<span class="fc" id="L279">            final File outputDir = FileUtils.getCanonicalOrAbsoluteFile(this.outputDir);</span>
-<span class="fc bfc" id="L280" title="All 4 branches covered.">            if (outputDir.exists() &amp;&amp; !outputDir.isDirectory()) {</span>
-<span class="fc" id="L281">                log.error(MessageType.OUTPUT_DIR_IS_NOT_DIRECTORY, this.outputDir);</span>
-<span class="fc" id="L282">                valid = false;</span>
-            }
-        }
-
-<span class="fc bfc" id="L286" title="All 4 branches covered.">        if (!hasOutputDir() &amp;&amp; StringUtils.isBlank(cssFileSuffix)) {</span>
-<span class="fc" id="L287">            log.error(MessageType.CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR);</span>
-<span class="fc" id="L288">            valid = false;</span>
-        }
-
-<span class="fc bfc" id="L291" title="All 2 branches covered.">        if (hasDocumentRootDir()) {</span>
-<span class="fc" id="L292">            final File documentRootDir = FileUtils.getCanonicalOrAbsoluteFile(this.documentRootDir);</span>
-<span class="fc bfc" id="L293" title="All 4 branches covered.">            if (!documentRootDir.exists() || !documentRootDir.isDirectory()) {</span>
-<span class="fc" id="L294">                log.error(MessageType.DOCUMENT_ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY, this.documentRootDir);</span>
-<span class="fc" id="L295">                valid = false;</span>
+<span class="fc" id="L280">            final File directory = FileUtils.getCanonicalOrAbsoluteFile(this.outputDir);</span>
+<span class="fc bfc" id="L281" title="All 4 branches covered.">            if (directory.exists() &amp;&amp; !directory.isDirectory()) {</span>
+<span class="fc" id="L282">                log.error(MessageType.OUTPUT_DIR_IS_NOT_DIRECTORY, this.outputDir);</span>
+<span class="fc" id="L283">                valid = false;</span>
             }
         }
 
-<span class="fc" id="L299">        return valid;</span>
+<span class="fc bfc" id="L287" title="All 4 branches covered.">        if (!hasOutputDir() &amp;&amp; StringUtils.isBlank(cssFileSuffix)) {</span>
+<span class="fc" id="L288">            log.error(MessageType.CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR);</span>
+<span class="fc" id="L289">            valid = false;</span>
+        }
+
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        if (hasDocumentRootDir()) {</span>
+<span class="fc" id="L293">            final File directory = FileUtils.getCanonicalOrAbsoluteFile(this.documentRootDir);</span>
+<span class="fc bfc" id="L294" title="All 4 branches covered.">            if (!directory.exists() || !directory.isDirectory()) {</span>
+<span class="fc" id="L295">                log.error(MessageType.DOCUMENT_ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY, this.documentRootDir);</span>
+<span class="fc" id="L296">                valid = false;</span>
+            }
+        }
+
+<span class="fc" id="L300">        return valid;</span>
     }
 
     /**
@@ -308,15 +309,15 @@ public final class SmartSpritesParameters {
      * @return the css file suffix
      */
     private String getCssFileSuffix(String suffix) {
-<span class="fc bfc" id="L311" title="All 2 branches covered.">        if (suffix != null) {</span>
-<span class="fc" id="L312">            return suffix;</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">        if (suffix != null) {</span>
+<span class="fc" id="L313">            return suffix;</span>
         }
-<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (!hasOutputDir()) {</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        if (!hasOutputDir()) {</span>
             // If there is no output dir, we must have some suffix
-<span class="fc" id="L316">            return DEFAULT_CSS_FILE_SUFFIX;</span>
+<span class="fc" id="L317">            return DEFAULT_CSS_FILE_SUFFIX;</span>
         }
         // If we have an output dir, we can have an empty suffix
-<span class="fc" id="L319">        return &quot;&quot;;</span>
+<span class="fc" id="L320">        return &quot;&quot;;</span>
     }
 
     /**
@@ -325,7 +326,7 @@ public final class SmartSpritesParameters {
      * @return the root dir
      */
     public String getRootDir() {
-<span class="fc" id="L328">        return rootDir;</span>
+<span class="fc" id="L329">        return rootDir;</span>
     }
 
     /**
@@ -337,7 +338,7 @@ public final class SmartSpritesParameters {
      *             Signals that an I/O exception has occurred.
      */
     public File getRootDirFile() throws IOException {
-<span class="pc bpc" id="L340" title="1 of 2 branches missed.">        return rootDir.startsWith(&quot;..&quot;) ? new File(rootDir).getCanonicalFile() : new File(rootDir);</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">        return rootDir.startsWith(&quot;..&quot;) ? Path.of(rootDir).toFile().getCanonicalFile() : Path.of(rootDir).toFile();</span>
     }
 
     /**
@@ -346,7 +347,7 @@ public final class SmartSpritesParameters {
      * @return true, if successful
      */
     public boolean hasRootDir() {
-<span class="fc" id="L349">        return StringUtils.isNotBlank(rootDir);</span>
+<span class="fc" id="L350">        return StringUtils.isNotBlank(rootDir);</span>
     }
 
     /**
@@ -355,7 +356,7 @@ public final class SmartSpritesParameters {
      * @return the css files
      */
     public List&lt;String&gt; getCssFiles() {
-<span class="fc" id="L358">        return cssFiles;</span>
+<span class="fc" id="L359">        return cssFiles;</span>
     }
 
     /**
@@ -364,7 +365,7 @@ public final class SmartSpritesParameters {
      * @return true, if successful
      */
     public boolean hasCssFiles() {
-<span class="pc bpc" id="L367" title="1 of 4 branches missed.">        return cssFiles != null &amp;&amp; !cssFiles.isEmpty();</span>
+<span class="pc bpc" id="L368" title="1 of 4 branches missed.">        return cssFiles != null &amp;&amp; !cssFiles.isEmpty();</span>
     }
 
     /**
@@ -373,7 +374,7 @@ public final class SmartSpritesParameters {
      * @return the output dir
      */
     public String getOutputDir() {
-<span class="fc" id="L376">        return outputDir;</span>
+<span class="fc" id="L377">        return outputDir;</span>
     }
 
     /**
@@ -382,7 +383,7 @@ public final class SmartSpritesParameters {
      * @return true, if successful
      */
     public boolean hasOutputDir() {
-<span class="fc" id="L385">        return StringUtils.isNotBlank(outputDir);</span>
+<span class="fc" id="L386">        return StringUtils.isNotBlank(outputDir);</span>
     }
 
     /**
@@ -391,7 +392,7 @@ public final class SmartSpritesParameters {
      * @return the document root dir
      */
     public String getDocumentRootDir() {
-<span class="fc" id="L394">        return documentRootDir;</span>
+<span class="fc" id="L395">        return documentRootDir;</span>
     }
 
     /**
@@ -400,7 +401,7 @@ public final class SmartSpritesParameters {
      * @return true, if successful
      */
     public boolean hasDocumentRootDir() {
-<span class="fc" id="L403">        return StringUtils.isNotBlank(documentRootDir);</span>
+<span class="fc" id="L404">        return StringUtils.isNotBlank(documentRootDir);</span>
     }
 
     /**
@@ -409,7 +410,7 @@ public final class SmartSpritesParameters {
      * @return the log level
      */
     public MessageLevel getLogLevel() {
-<span class="nc" id="L412">        return logLevel;</span>
+<span class="nc" id="L413">        return logLevel;</span>
     }
 
     /**
@@ -418,7 +419,7 @@ public final class SmartSpritesParameters {
      * @return the css file suffix
      */
     public String getCssFileSuffix() {
-<span class="fc" id="L421">        return cssFileSuffix;</span>
+<span class="fc" id="L422">        return cssFileSuffix;</span>
     }
 
     /**
@@ -427,7 +428,7 @@ public final class SmartSpritesParameters {
      * @return the sprite png depth
      */
     public PngDepth getSpritePngDepth() {
-<span class="fc" id="L430">        return spritePngDepth;</span>
+<span class="fc" id="L431">        return spritePngDepth;</span>
     }
 
     /**
@@ -436,7 +437,7 @@ public final class SmartSpritesParameters {
      * @return true, if is mark sprite images
      */
     public boolean isMarkSpriteImages() {
-<span class="fc" id="L439">        return markSpriteImages;</span>
+<span class="fc" id="L440">        return markSpriteImages;</span>
     }
 
     /**
@@ -445,7 +446,7 @@ public final class SmartSpritesParameters {
      * @return the css file encoding
      */
     public String getCssFileEncoding() {
-<span class="fc" id="L448">        return cssFileEncoding;</span>
+<span class="fc" id="L449">        return cssFileEncoding;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

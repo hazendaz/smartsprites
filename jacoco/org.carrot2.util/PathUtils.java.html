@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SmartSprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.util</a> &gt; <span class="el_source">PathUtils.java</span></div><h1>PathUtils.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.util</a> &gt; <span class="el_source">PathUtils.java</span></div><h1>PathUtils.java</h1><pre class="source lang-java linenums">/*
  * SmartSprites Project
  *
  * Copyright (C) 2007-2009, Stanisław Osiński.
@@ -39,6 +39,7 @@ package org.carrot2.util;
 import com.google.common.base.Strings;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.StringTokenizer;
 
 /**
@@ -86,51 +87,51 @@ public class PathUtils {
      * @return a relative file path from &lt;code&gt;oldPath&lt;/code&gt;.
      */
     public static final String getRelativeFilePath(final String oldPath, final String newPath) {
-<span class="pc bpc" id="L89" title="2 of 4 branches missed.">        if (Strings.isNullOrEmpty(oldPath) || Strings.isNullOrEmpty(newPath)) {</span>
-<span class="nc" id="L90">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L90" title="2 of 4 branches missed.">        if (Strings.isNullOrEmpty(oldPath) || Strings.isNullOrEmpty(newPath)) {</span>
+<span class="nc" id="L91">            return &quot;&quot;;</span>
         }
 
-        // normalise the path delimiters
-<span class="fc" id="L94">        String fromPath = new File(oldPath).getPath();</span>
-<span class="fc" id="L95">        String toPath = new File(newPath).getPath();</span>
+        // Normalize the path delimiters
+<span class="fc" id="L95">        String fromPath = Path.of(oldPath).toString();</span>
+<span class="fc" id="L96">        String toPath = Path.of(newPath).toString();</span>
 
         // strip any leading slashes if its a windows path
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (toPath.matches(&quot;^\\[a-zA-Z]:&quot;)) {</span>
-<span class="nc" id="L99">            toPath = toPath.substring(1);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (toPath.matches(&quot;^\\[a-zA-Z]:&quot;)) {</span>
+<span class="nc" id="L100">            toPath = toPath.substring(1);</span>
         }
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (fromPath.matches(&quot;^\\[a-zA-Z]:&quot;)) {</span>
-<span class="nc" id="L102">            fromPath = fromPath.substring(1);</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (fromPath.matches(&quot;^\\[a-zA-Z]:&quot;)) {</span>
+<span class="nc" id="L103">            fromPath = fromPath.substring(1);</span>
         }
 
         // lowercase windows drive letters.
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (fromPath.startsWith(&quot;:&quot;, 1)) {</span>
-<span class="fc" id="L107">            fromPath = Character.toLowerCase(fromPath.charAt(0)) + fromPath.substring(1);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (fromPath.startsWith(&quot;:&quot;, 1)) {</span>
+<span class="fc" id="L108">            fromPath = Character.toLowerCase(fromPath.charAt(0)) + fromPath.substring(1);</span>
         }
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (toPath.startsWith(&quot;:&quot;, 1)) {</span>
-<span class="fc" id="L110">            toPath = Character.toLowerCase(toPath.charAt(0)) + toPath.substring(1);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (toPath.startsWith(&quot;:&quot;, 1)) {</span>
+<span class="fc" id="L111">            toPath = Character.toLowerCase(toPath.charAt(0)) + toPath.substring(1);</span>
         }
 
         // check for the presence of windows drives. No relative way of
         // traversing from one to the other.
-<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if (toPath.startsWith(&quot;:&quot;, 1) &amp;&amp; fromPath.startsWith(&quot;:&quot;, 1)</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">                &amp;&amp; !toPath.substring(0, 1).equals(fromPath.substring(0, 1))) {</span>
+<span class="pc bpc" id="L116" title="1 of 4 branches missed.">        if (toPath.startsWith(&quot;:&quot;, 1) &amp;&amp; fromPath.startsWith(&quot;:&quot;, 1)</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">                &amp;&amp; !toPath.substring(0, 1).equals(fromPath.substring(0, 1))) {</span>
             // they both have drive path element but they dont match, no relative path
-<span class="nc" id="L118">            return null;</span>
+<span class="nc" id="L119">            return null;</span>
         }
 
-<span class="pc bpc" id="L121" title="1 of 4 branches missed.">        if ((toPath.startsWith(&quot;:&quot;, 1) &amp;&amp; !fromPath.startsWith(&quot;:&quot;, 1))</span>
-<span class="pc bpc" id="L122" title="1 of 4 branches missed.">                || (!toPath.startsWith(&quot;:&quot;, 1) &amp;&amp; fromPath.startsWith(&quot;:&quot;, 1))) {</span>
+<span class="pc bpc" id="L122" title="1 of 4 branches missed.">        if ((toPath.startsWith(&quot;:&quot;, 1) &amp;&amp; !fromPath.startsWith(&quot;:&quot;, 1))</span>
+<span class="pc bpc" id="L123" title="1 of 4 branches missed.">                || (!toPath.startsWith(&quot;:&quot;, 1) &amp;&amp; fromPath.startsWith(&quot;:&quot;, 1))) {</span>
             // one has a drive path element and the other doesn't, no relative path.
-<span class="nc" id="L124">            return null;</span>
+<span class="nc" id="L125">            return null;</span>
         }
 
-<span class="fc" id="L127">        String resultPath = buildRelativePath(toPath, fromPath, File.separatorChar);</span>
+<span class="fc" id="L128">        String resultPath = buildRelativePath(toPath, fromPath, File.separatorChar);</span>
 
-<span class="pc bpc" id="L129" title="3 of 4 branches missed.">        if (newPath.endsWith(File.separator) &amp;&amp; !resultPath.endsWith(File.separator)) {</span>
-<span class="nc" id="L130">            return resultPath + File.separator;</span>
+<span class="pc bpc" id="L130" title="3 of 4 branches missed.">        if (newPath.endsWith(File.separator) &amp;&amp; !resultPath.endsWith(File.separator)) {</span>
+<span class="nc" id="L131">            return resultPath + File.separator;</span>
         }
 
-<span class="fc" id="L133">        return resultPath;</span>
+<span class="fc" id="L134">        return resultPath;</span>
     }
 
     // ----------------------------------------------------------------------
@@ -151,61 +152,61 @@ public class PathUtils {
      */
     private static String buildRelativePath(String toPath, String fromPath, final char separatorChar) {
         // use tokenizer to traverse paths and for lazy checking
-<span class="fc" id="L154">        StringTokenizer toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));</span>
-<span class="fc" id="L155">        StringTokenizer fromTokenizer = new StringTokenizer(fromPath, String.valueOf(separatorChar));</span>
+<span class="fc" id="L155">        StringTokenizer toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));</span>
+<span class="fc" id="L156">        StringTokenizer fromTokenizer = new StringTokenizer(fromPath, String.valueOf(separatorChar));</span>
 
-<span class="fc" id="L157">        int count = 0;</span>
+<span class="fc" id="L158">        int count = 0;</span>
 
         // walk along the to path looking for divergence from the from path
-<span class="fc bfc" id="L160" title="All 4 branches covered.">        while (toTokenizer.hasMoreTokens() &amp;&amp; fromTokenizer.hasMoreTokens()) {</span>
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (separatorChar == '\\') {</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">                if (!fromTokenizer.nextToken().equalsIgnoreCase(toTokenizer.nextToken())) {</span>
-<span class="fc" id="L163">                    break;</span>
+<span class="fc bfc" id="L161" title="All 4 branches covered.">        while (toTokenizer.hasMoreTokens() &amp;&amp; fromTokenizer.hasMoreTokens()) {</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">            if (separatorChar == '\\') {</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">                if (!fromTokenizer.nextToken().equalsIgnoreCase(toTokenizer.nextToken())) {</span>
+<span class="fc" id="L164">                    break;</span>
                 }
-<span class="nc bnc" id="L165" title="All 2 branches missed.">            } else if (!fromTokenizer.nextToken().equals(toTokenizer.nextToken())) {</span>
-<span class="nc" id="L166">                break;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            } else if (!fromTokenizer.nextToken().equals(toTokenizer.nextToken())) {</span>
+<span class="nc" id="L167">                break;</span>
             }
 
-<span class="fc" id="L169">            count++;</span>
+<span class="fc" id="L170">            count++;</span>
         }
 
         // Reinitialize the tokenizers to count positions to retrieve the
         // gobbled token
 
-<span class="fc" id="L175">        toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));</span>
-<span class="fc" id="L176">        fromTokenizer = new StringTokenizer(fromPath, String.valueOf(separatorChar));</span>
+<span class="fc" id="L176">        toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));</span>
+<span class="fc" id="L177">        fromTokenizer = new StringTokenizer(fromPath, String.valueOf(separatorChar));</span>
 
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        while (count-- &gt; 0) {</span>
-<span class="fc" id="L179">            fromTokenizer.nextToken();</span>
-<span class="fc" id="L180">            toTokenizer.nextToken();</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        while (count-- &gt; 0) {</span>
+<span class="fc" id="L180">            fromTokenizer.nextToken();</span>
+<span class="fc" id="L181">            toTokenizer.nextToken();</span>
         }
 
-<span class="fc" id="L183">        StringBuilder relativePath = new StringBuilder();</span>
+<span class="fc" id="L184">        StringBuilder relativePath = new StringBuilder();</span>
 
         // add back refs for the rest of from location.
-<span class="fc bfc" id="L186" title="All 2 branches covered.">        while (fromTokenizer.hasMoreTokens()) {</span>
-<span class="fc" id="L187">            fromTokenizer.nextToken();</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        while (fromTokenizer.hasMoreTokens()) {</span>
+<span class="fc" id="L188">            fromTokenizer.nextToken();</span>
 
-<span class="fc" id="L189">            relativePath.append(&quot;..&quot;);</span>
+<span class="fc" id="L190">            relativePath.append(&quot;..&quot;);</span>
 
-<span class="pc bpc" id="L191" title="1 of 2 branches missed.">            if (fromTokenizer.hasMoreTokens()) {</span>
-<span class="nc" id="L192">                relativePath.append(separatorChar);</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">            if (fromTokenizer.hasMoreTokens()) {</span>
+<span class="nc" id="L193">                relativePath.append(separatorChar);</span>
             }
         }
 
-<span class="fc bfc" id="L196" title="All 4 branches covered.">        if (relativePath.length() != 0 &amp;&amp; toTokenizer.hasMoreTokens()) {</span>
-<span class="fc" id="L197">            relativePath.append(separatorChar);</span>
+<span class="fc bfc" id="L197" title="All 4 branches covered.">        if (relativePath.length() != 0 &amp;&amp; toTokenizer.hasMoreTokens()) {</span>
+<span class="fc" id="L198">            relativePath.append(separatorChar);</span>
         }
 
         // add fwd fills for whatevers left of newPath.
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        while (toTokenizer.hasMoreTokens()) {</span>
-<span class="fc" id="L202">            relativePath.append(toTokenizer.nextToken());</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        while (toTokenizer.hasMoreTokens()) {</span>
+<span class="fc" id="L203">            relativePath.append(toTokenizer.nextToken());</span>
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">            if (toTokenizer.hasMoreTokens()) {</span>
-<span class="fc" id="L205">                relativePath.append(separatorChar);</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">            if (toTokenizer.hasMoreTokens()) {</span>
+<span class="fc" id="L206">                relativePath.append(separatorChar);</span>
             }
         }
-<span class="fc" id="L208">        return relativePath.toString();</span>
+<span class="fc" id="L209">        return relativePath.toString();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
