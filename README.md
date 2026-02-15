@@ -1,9 +1,9 @@
 SmartSprites: CSS Sprite Generator Done Right
 =============================================
 
-[![Java CI](https://github.com/hazendaz/smartsprites/workflows/Java%20CI/badge.svg)](https://github.com/hazendaz/smartsprites/actions?query=workflow%3A%22Java+CI%22)
+[![Java CI](https://github.com/hazendaz/smartsprites/actions/workflows/ci.yaml/badge.svg)](https://github.com/hazendaz/smartsprites/actions/workflows/ci.yaml)
 [![Coverage Status](https://coveralls.io/repos/hazendaz/smartsprites/badge.svg?branch=master&service=github)](https://coveralls.io/github/hazendaz/smartsprites?branch=master)
-[![Maven central](https://maven-badges.herokuapp.com/maven-central/com.github.hazendaz/smartsprites/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.hazendaz/smartsprites)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.hazendaz/smartsprites.svg)](https://central.sonatype.com/artifact/com.github.hazendaz/smartsprites)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 ![hazendaz](src/site/resources/images/hazendaz-banner.jpg)
