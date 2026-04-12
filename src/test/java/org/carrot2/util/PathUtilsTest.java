@@ -38,6 +38,9 @@ package org.carrot2.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.File;
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -45,12 +48,15 @@ import org.junit.jupiter.api.Test;
  */
 class PathUtilsTest {
 
+    /** OS-specific path separator for expected result construction. */
+    private static final String SEP = File.separator;
+
     /**
      * Returns empty string when old path is null.
      */
     @Test
     void returnsEmptyWhenOldPathIsNull() {
-        assertEquals("", PathUtils.getRelativeFilePath(null, "/usr/local/java"));
+        assertEquals("", PathUtils.getRelativeFilePath(null, Path.of("/usr/local/java").toString()));
     }
 
     /**
@@ -58,7 +64,7 @@ class PathUtilsTest {
      */
     @Test
     void returnsEmptyWhenNewPathIsNull() {
-        assertEquals("", PathUtils.getRelativeFilePath("/usr/local", null));
+        assertEquals("", PathUtils.getRelativeFilePath(Path.of("/usr/local").toString(), null));
     }
 
     /**
@@ -74,7 +80,7 @@ class PathUtilsTest {
      */
     @Test
     void returnsEmptyWhenOldPathIsEmpty() {
-        assertEquals("", PathUtils.getRelativeFilePath("", "/usr/local"));
+        assertEquals("", PathUtils.getRelativeFilePath("", Path.of("/usr/local").toString()));
     }
 
     /**
@@ -82,7 +88,7 @@ class PathUtilsTest {
      */
     @Test
     void returnsEmptyWhenNewPathIsEmpty() {
-        assertEquals("", PathUtils.getRelativeFilePath("/usr/local", ""));
+        assertEquals("", PathUtils.getRelativeFilePath(Path.of("/usr/local").toString(), ""));
     }
 
     /**
@@ -90,16 +96,18 @@ class PathUtilsTest {
      */
     @Test
     void childPathRelativeToParent() {
-        assertEquals("java/bin", PathUtils.getRelativeFilePath("/usr/local", "/usr/local/java/bin"));
+        assertEquals("java" + SEP + "bin", PathUtils.getRelativeFilePath(Path.of("/usr/local").toString(),
+                Path.of("/usr/local/java/bin").toString()));
     }
 
     /**
-     * Child path with trailing slash relative to parent.
+     * Child path with trailing separator relative to parent.
      */
     @Test
     void childPathWithTrailingSlashRelativeToParent() {
-        // newPath ends with '/', so result also ends with separator
-        assertEquals("java/bin/", PathUtils.getRelativeFilePath("/usr/local", "/usr/local/java/bin/"));
+        // Append the OS separator manually since Path.of() strips trailing separators
+        assertEquals("java" + SEP + "bin" + SEP, PathUtils.getRelativeFilePath(Path.of("/usr/local").toString(),
+                Path.of("/usr/local/java/bin").toString() + File.separator));
     }
 
     /**
@@ -107,8 +115,8 @@ class PathUtilsTest {
      */
     @Test
     void parentRelativeToChildGoesUp() {
-        // newPath "/usr/local/" ends with separator, result also ends with separator
-        assertEquals("../../", PathUtils.getRelativeFilePath("/usr/local/java/bin", "/usr/local/"));
+        assertEquals(".." + SEP + ".." + SEP, PathUtils.getRelativeFilePath(Path.of("/usr/local/java/bin").toString(),
+                Path.of("/usr/local").toString() + File.separator));
     }
 
     /**
@@ -116,7 +124,8 @@ class PathUtilsTest {
      */
     @Test
     void siblingPathProducesCorrectRelativePath() {
-        assertEquals("../../bin", PathUtils.getRelativeFilePath("/usr/local/", "/bin"));
+        assertEquals(".." + SEP + ".." + SEP + "bin", PathUtils
+                .getRelativeFilePath(Path.of("/usr/local").toString() + File.separator, Path.of("/bin").toString()));
     }
 
     /**
@@ -124,8 +133,8 @@ class PathUtilsTest {
      */
     @Test
     void divergingPathFromOtherDirection() {
-        // newPath "/usr/local/" ends with separator, result also ends with separator
-        assertEquals("../usr/local/", PathUtils.getRelativeFilePath("/bin", "/usr/local/"));
+        assertEquals(".." + SEP + "usr" + SEP + "local" + SEP, PathUtils.getRelativeFilePath(Path.of("/bin").toString(),
+                Path.of("/usr/local").toString() + File.separator));
     }
 
     /**
@@ -133,7 +142,8 @@ class PathUtilsTest {
      */
     @Test
     void fileRelativeToParentDirectory() {
-        assertEquals("java/bin/java.sh", PathUtils.getRelativeFilePath("/usr/local/", "/usr/local/java/bin/java.sh"));
+        assertEquals("java" + SEP + "bin" + SEP + "java.sh", PathUtils.getRelativeFilePath(
+                Path.of("/usr/local").toString() + File.separator, Path.of("/usr/local/java/bin/java.sh").toString()));
     }
 
     /**
@@ -141,8 +151,8 @@ class PathUtilsTest {
      */
     @Test
     void fileToParentDirectoryWithParentReference() {
-        // newPath "/usr/local/" ends with separator, result also ends with separator
-        assertEquals("../../../", PathUtils.getRelativeFilePath("/usr/local/java/bin/java.sh", "/usr/local/"));
+        assertEquals(".." + SEP + ".." + SEP + ".." + SEP, PathUtils.getRelativeFilePath(
+                Path.of("/usr/local/java/bin/java.sh").toString(), Path.of("/usr/local").toString() + File.separator));
     }
 
     /**
@@ -150,7 +160,8 @@ class PathUtilsTest {
      */
     @Test
     void samePathReturnsEmptyString() {
-        assertEquals("", PathUtils.getRelativeFilePath("/usr/local", "/usr/local"));
+        String path = Path.of("/usr/local").toString();
+        assertEquals("", PathUtils.getRelativeFilePath(path, path));
     }
 
     /**
@@ -158,8 +169,9 @@ class PathUtilsTest {
      */
     @Test
     void newPathEndingWithSeparatorPreservesTrailingSeparator() {
-        // When newPath ends with separator, the result also ends with separator
-        String result = PathUtils.getRelativeFilePath("/usr/local", "/usr/local/java/bin/");
-        assertEquals("java/bin/", result, "Result should end with separator when newPath ends with separator");
+        String result = PathUtils.getRelativeFilePath(Path.of("/usr/local").toString(),
+                Path.of("/usr/local/java/bin").toString() + File.separator);
+        assertEquals("java" + SEP + "bin" + SEP, result,
+                "Result should end with separator when newPath ends with separator");
     }
 }

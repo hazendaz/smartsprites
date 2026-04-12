@@ -118,10 +118,13 @@ class FileUtilsTest {
 
     /**
      * Get canonical or absolute file returns a non-null file for a valid path.
+     *
+     * @param tempDir
+     *            the temp dir
      */
     @Test
-    void getCanonicalOrAbsoluteFileReturnsFile() {
-        File result = FileUtils.getCanonicalOrAbsoluteFile("/tmp/test.txt");
+    void getCanonicalOrAbsoluteFileReturnsFile(@TempDir File tempDir) {
+        File result = FileUtils.getCanonicalOrAbsoluteFile(new File(tempDir, "test.txt").getPath());
         assertNotNull(result);
     }
 
@@ -143,7 +146,7 @@ class FileUtilsTest {
 
         File file = new File(oldRoot, "subdir/file.css");
         file.getParentFile().mkdirs();
-        file.createNewFile();
+        assertTrue(file.createNewFile(), "File should have been created");
 
         String result = FileUtils.changeRoot(file.getPath(), oldRoot.getPath(), newRoot.getPath());
         assertNotNull(result);
@@ -185,7 +188,7 @@ class FileUtilsTest {
     @Test
     void deleteThrowingExceptionsDeletesExistingFile(@TempDir File tempDir) throws IOException {
         File file = new File(tempDir, "todelete.txt");
-        file.createNewFile();
+        assertTrue(file.createNewFile(), "File should have been created");
         assertTrue(file.exists());
 
         FileUtils.deleteThrowingExceptions(file);
@@ -239,7 +242,7 @@ class FileUtilsTest {
     @Test
     void isFileInParentReturnsTrueForDirectChild(@TempDir File tempDir) throws IOException {
         File child = new File(tempDir, "child.txt");
-        child.createNewFile();
+        assertTrue(child.createNewFile(), "File should have been created");
 
         assertTrue(FileUtils.isFileInParent(child, tempDir));
     }
@@ -258,7 +261,7 @@ class FileUtilsTest {
         File subdir = new File(tempDir, "sub");
         subdir.mkdirs();
         File child = new File(subdir, "child.txt");
-        child.createNewFile();
+        assertTrue(child.createNewFile(), "File should have been created");
 
         assertTrue(FileUtils.isFileInParent(child, tempDir));
     }
