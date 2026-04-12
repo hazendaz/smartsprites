@@ -37,8 +37,15 @@
 package org.carrot2.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test cases for {@link FileUtils}.
@@ -107,5 +114,181 @@ class FileUtilsTest {
     @Test
     void canonicalizeCanonicalStartingWithParent() {
         assertEquals("../../img/sprite.png", FileUtils.canonicalize("../../img/sprite.png", "/"));
+    }
+
+    /**
+     * Get canonical or absolute file returns a non-null file for a valid path.
+     */
+    @Test
+    void getCanonicalOrAbsoluteFileReturnsFile() {
+        File result = FileUtils.getCanonicalOrAbsoluteFile("/tmp/test.txt");
+        assertNotNull(result);
+    }
+
+    /**
+     * Change root swaps the root directory of a file path.
+     *
+     * @param tempDir
+     *            the temp dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void changeRootSwapsRootDirectory(@TempDir File tempDir) throws IOException {
+        File oldRoot = new File(tempDir, "old");
+        File newRoot = new File(tempDir, "new");
+        oldRoot.mkdirs();
+        newRoot.mkdirs();
+
+        File file = new File(oldRoot, "subdir/file.css");
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+
+        String result = FileUtils.changeRoot(file.getPath(), oldRoot.getPath(), newRoot.getPath());
+        assertNotNull(result);
+        assertTrue(result.contains("file.css"), "Should contain filename: " + result);
+        assertTrue(result.contains(newRoot.getPath()), "Should contain new root: " + result);
+    }
+
+    /**
+     * Delete throwing exceptions with null array does nothing.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void deleteThrowingExceptionsWithNullArrayDoesNothing() throws IOException {
+        FileUtils.deleteThrowingExceptions((File[]) null);
+    }
+
+    /**
+     * Delete throwing exceptions with null element skips it.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void deleteThrowingExceptionsWithNullElementSkipsIt() throws IOException {
+        FileUtils.deleteThrowingExceptions((File) null);
+    }
+
+    /**
+     * Delete throwing exceptions deletes existing file.
+     *
+     * @param tempDir
+     *            the temp dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void deleteThrowingExceptionsDeletesExistingFile(@TempDir File tempDir) throws IOException {
+        File file = new File(tempDir, "todelete.txt");
+        file.createNewFile();
+        assertTrue(file.exists());
+
+        FileUtils.deleteThrowingExceptions(file);
+
+        assertFalse(file.exists(), "File should have been deleted");
+    }
+
+    /**
+     * Mkdirs throwing exceptions creates directories.
+     *
+     * @param tempDir
+     *            the temp dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void mkdirsThrowingExceptionsCreatesDirectories(@TempDir File tempDir) throws IOException {
+        File newDir = new File(tempDir, "a/b/c");
+        assertFalse(newDir.exists());
+
+        FileUtils.mkdirsThrowingExceptions(newDir);
+
+        assertTrue(newDir.exists(), "Directory should have been created");
+    }
+
+    /**
+     * Mkdirs throwing exceptions does nothing when directory already exists.
+     *
+     * @param tempDir
+     *            the temp dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void mkdirsThrowingExceptionsDoesNothingWhenAlreadyExists(@TempDir File tempDir) throws IOException {
+        // tempDir already exists - should not throw
+        FileUtils.mkdirsThrowingExceptions(tempDir);
+    }
+
+    /**
+     * Is file in parent returns true for direct child.
+     *
+     * @param tempDir
+     *            the temp dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void isFileInParentReturnsTrueForDirectChild(@TempDir File tempDir) throws IOException {
+        File child = new File(tempDir, "child.txt");
+        child.createNewFile();
+
+        assertTrue(FileUtils.isFileInParent(child, tempDir));
+    }
+
+    /**
+     * Is file in parent returns true for nested child.
+     *
+     * @param tempDir
+     *            the temp dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void isFileInParentReturnsTrueForNestedChild(@TempDir File tempDir) throws IOException {
+        File subdir = new File(tempDir, "sub");
+        subdir.mkdirs();
+        File child = new File(subdir, "child.txt");
+        child.createNewFile();
+
+        assertTrue(FileUtils.isFileInParent(child, tempDir));
+    }
+
+    /**
+     * Is file in parent returns false for unrelated file.
+     *
+     * @param tempDir
+     *            the temp dir
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void isFileInParentReturnsFalseForUnrelatedFile(@TempDir File tempDir) throws IOException {
+        File otherDir = new File(tempDir, "other");
+        File parent = new File(tempDir, "parent");
+        File child = new File(otherDir, "child.txt");
+
+        assertFalse(FileUtils.isFileInParent(child, parent));
+    }
+
+    /**
+     * Is file in parent returns false when file has no parent.
+     */
+    @Test
+    void isFileInParentReturnsFalseWhenFileHasNoParent() {
+        File file = new File("file.txt");
+        File parent = new File("/some/parent");
+        // A file with no parent (relative path with single segment) returns false
+        assertFalse(FileUtils.isFileInParent(file, parent));
     }
 }
