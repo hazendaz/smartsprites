@@ -201,7 +201,8 @@ class FileSystemResourceHandlerTest {
         String result = handler.getResourcePath("/css/main.css", "/images/sprite.png");
 
         // When no document root dir, it returns empty string and logs a warning
-        assertTrue(result.isEmpty() || result != null, "Result should be empty or non-null: " + result);
+        assertNotNull(result, "Result should not be null");
+        assertTrue(result.isEmpty(), "Result should be empty when no document root and absolute path: " + result);
         assertNotNull(memorySink.messages, "Should have logged messages");
     }
 }

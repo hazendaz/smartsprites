@@ -44,7 +44,7 @@ import org.carrot2.labs.smartsprites.message.Message.MessageType;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test cases for {@link MessageTest}.
+ * Test cases for {@link Message}.
  */
 class MessageTest {
 
