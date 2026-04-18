@@ -159,7 +159,7 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
     }
 
     /**
-     * Test unpack url JSF expression.
+     * Test unpack URL with JSF expression containing nested single quotes within double quotes.
      */
     @Test
     void testUnpackUrlJsfExpression() {

@@ -60,6 +60,15 @@ public class CssSyntaxUtils {
     private static final Pattern URL_PATTERN = Pattern
             .compile("[uU][rR][lL]\\(\\s*(?:'([^']*)'|\"([^\"]*)\"|([^'\"\\)]*))\\s*\\)");
 
+    /** URL matcher group index for single-quoted values. */
+    private static final int URL_GROUP_SINGLE_QUOTED = 1;
+
+    /** URL matcher group index for double-quoted values. */
+    private static final int URL_GROUP_DOUBLE_QUOTED = 2;
+
+    /** URL matcher group index for unquoted values. */
+    private static final int URL_GROUP_UNQUOTED = 3;
+
     /** The Constant COLOR_PATTERN. */
     private static final Pattern COLOR_PATTERN = Pattern.compile("#([0-9a-f]{6})");
 
@@ -201,12 +210,12 @@ public class CssSyntaxUtils {
             }
             return null;
         }
-        String url = matcher.group(1);
+        String url = matcher.group(URL_GROUP_SINGLE_QUOTED);
         if (url == null) {
-            url = matcher.group(2);
+            url = matcher.group(URL_GROUP_DOUBLE_QUOTED);
         }
         if (url == null) {
-            url = matcher.group(3);
+            url = matcher.group(URL_GROUP_UNQUOTED);
         }
         return url != null ? url.trim() : url;
     }
