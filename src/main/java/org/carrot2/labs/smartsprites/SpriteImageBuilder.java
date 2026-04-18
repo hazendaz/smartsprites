@@ -237,7 +237,7 @@ public class SpriteImageBuilder {
                     messageLog.warning(MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT, realImagePath);
                 }
             } catch (final IOException e) {
-                messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, "Can't read input file!");
+                messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, e.getMessage());
                 continue;
             }
 
@@ -506,7 +506,7 @@ public class SpriteImageBuilder {
 
         @Override
         public BufferedImage createImage(int width, int height) {
-            return new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+            return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         }
 
         @Override
