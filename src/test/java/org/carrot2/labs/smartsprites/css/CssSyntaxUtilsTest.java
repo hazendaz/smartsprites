@@ -159,6 +159,15 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
     }
 
     /**
+     * Test unpack url JSF expression.
+     */
+    @Test
+    void testUnpackUrlJsfExpression() {
+        assertEquals("#{resource['images:logo.png']}",
+                CssSyntaxUtils.unpackUrl("url(\"#{resource['images:logo.png']}\")"));
+    }
+
+    /**
      * Test unbalanced quotes.
      */
     @Test
