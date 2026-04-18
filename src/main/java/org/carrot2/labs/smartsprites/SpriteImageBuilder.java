@@ -49,10 +49,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.commons.math3.util.ArithmeticUtils;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageFormat;
 import org.carrot2.labs.smartsprites.SpriteImageDirective.SpriteImageLayout;
@@ -138,6 +143,61 @@ public class SpriteImageBuilder {
     }
 
     /**
+     * Reads an image from an input stream.
+     *
+     * @param imageStream
+     *            the image stream
+     * @param imagePath
+     *            the image path
+     *
+     * @return the image
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    private BufferedImage readImage(InputStream imageStream, String imagePath) throws IOException {
+        if (isSvgPath(imagePath)) {
+            return readSvgImage(imageStream, imagePath);
+        }
+        return ImageIO.read(imageStream);
+    }
+
+    /**
+     * Returns true if the image path is an SVG file.
+     *
+     * @param imagePath
+     *            the image path
+     *
+     * @return true, if is SVG path
+     */
+    private boolean isSvgPath(String imagePath) {
+        return imagePath.toLowerCase(Locale.ENGLISH).endsWith(".svg");
+    }
+
+    /**
+     * Reads an SVG image into a buffered image.
+     *
+     * @param imageStream
+     *            the image stream
+     * @param imagePath
+     *            the image path
+     *
+     * @return the buffered image
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    private BufferedImage readSvgImage(InputStream imageStream, String imagePath) throws IOException {
+        final BufferedImageTranscoder transcoder = new BufferedImageTranscoder();
+        try {
+            transcoder.transcode(new TranscoderInput(imageStream), null);
+            return transcoder.getImage();
+        } catch (TranscoderException e) {
+            throw new IOException("Can't read svg input file: " + imagePath, e);
+        }
+    }
+
+    /**
      * Builds sprite image for a single sprite image directive.
      *
      * @param spriteImageOccurrence
@@ -170,7 +230,7 @@ public class SpriteImageBuilder {
                     continue;
                 }
                 messageLog.info(MessageType.READING_IMAGE, realImagePath);
-                final BufferedImage image = ImageIO.read(is);
+                final BufferedImage image = readImage(is, realImagePath);
                 if (image != null) {
                     images.put(spriteReferenceOccurrence, image);
                 } else {
@@ -434,6 +494,34 @@ public class SpriteImageBuilder {
         }
 
         return result;
+    }
+
+    /**
+     * A Batik transcoder implementation returning a buffered image in memory.
+     */
+    private static final class BufferedImageTranscoder extends ImageTranscoder {
+
+        /** The image. */
+        private BufferedImage image;
+
+        @Override
+        public BufferedImage createImage(int width, int height) {
+            return new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+        }
+
+        @Override
+        public void writeImage(BufferedImage image, TranscoderOutput output) {
+            this.image = image;
+        }
+
+        /**
+         * Gets the image.
+         *
+         * @return the image
+         */
+        public BufferedImage getImage() {
+            return image;
+        }
     }
 
     /**

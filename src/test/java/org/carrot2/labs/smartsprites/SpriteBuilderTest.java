@@ -264,6 +264,23 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     }
 
     /**
+     * Test svg individual image format.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    void testSvgIndividualImageFormat() throws IOException {
+        final File testDir = testDir("svg-image-format");
+        buildSprites(testDir);
+
+        assertThat(processedCss()).hasSameTextualContentAs(expectedCss());
+        assertThat(testDir.toPath().resolve("img/sprite.png")).exists();
+        assertThat(sprite(testDir)).hasSize(new Dimension(24, 12));
+        assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
+    }
+
+    /**
      * Test unsupported sprite properties.
      *
      * @throws IOException
