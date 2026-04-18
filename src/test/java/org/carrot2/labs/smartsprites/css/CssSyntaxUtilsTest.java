@@ -159,6 +159,15 @@ class CssSyntaxUtilsTest extends TestWithMemoryMessageSink {
     }
 
     /**
+     * Test unpack URL with JSF expression containing nested single quotes within double quotes.
+     */
+    @Test
+    void testUnpackUrlJsfExpression() {
+        assertEquals("#{resource['images:logo.png']}",
+                CssSyntaxUtils.unpackUrl("url(\"#{resource['images:logo.png']}\")"));
+    }
+
+    /**
      * Test unbalanced quotes.
      */
     @Test
