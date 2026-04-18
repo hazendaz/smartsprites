@@ -193,7 +193,7 @@ public class SpriteImageBuilder {
             transcoder.transcode(new TranscoderInput(imageStream), null);
             return transcoder.getImage();
         } catch (TranscoderException e) {
-            throw new IOException("Can't read svg input file: " + imagePath, e);
+            throw new IOException("Cannot read SVG input file: " + imagePath, e);
         }
     }
 
