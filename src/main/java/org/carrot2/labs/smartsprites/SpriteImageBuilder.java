@@ -506,6 +506,7 @@ public class SpriteImageBuilder {
 
         @Override
         public BufferedImage createImage(int width, int height) {
+            // Preserve full alpha information from SVG content for downstream sprite composition.
             return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         }
 
