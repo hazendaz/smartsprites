@@ -73,6 +73,8 @@ import org.carrot2.util.FileUtils;
  */
 public class SpriteImageBuilder {
 
+    private static final String CANNOT_READ_INPUT_FILE_MESSAGE = "Can't read input file!";
+
     /** This builder's configuration. */
     public final SmartSpritesParameters parameters;
 
@@ -226,7 +228,8 @@ public class SpriteImageBuilder {
 
                 // Load image
                 if (is == null) {
-                    messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, "Can't read input file!");
+                    messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath,
+                            CANNOT_READ_INPUT_FILE_MESSAGE);
                     continue;
                 }
                 messageLog.info(MessageType.READING_IMAGE, realImagePath);
@@ -237,7 +240,13 @@ public class SpriteImageBuilder {
                     messageLog.warning(MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT, realImagePath);
                 }
             } catch (final IOException e) {
-                messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, e.getMessage());
+                final String errorMessage;
+                if (isSvgPath(realImagePath) && e.getMessage() != null && !e.getMessage().isBlank()) {
+                    errorMessage = e.getMessage();
+                } else {
+                    errorMessage = CANNOT_READ_INPUT_FILE_MESSAGE;
+                }
+                messageLog.warning(MessageType.CANNOT_NOT_LOAD_IMAGE, realImagePath, errorMessage);
                 continue;
             }
 
