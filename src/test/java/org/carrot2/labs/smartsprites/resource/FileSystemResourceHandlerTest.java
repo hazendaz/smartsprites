@@ -47,7 +47,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.carrot2.labs.smartsprites.message.MemoryMessageSink;
 import org.carrot2.labs.smartsprites.message.MessageLog;
@@ -82,7 +81,7 @@ class FileSystemResourceHandlerTest {
      */
     @Test
     void getResourceAsInputStreamReadsExistingFile(@TempDir File tempDir) throws IOException {
-        File file = Path.of(tempDir.getPath()).resolve("test.txt").toFile();
+        File file = tempDir.toPath().resolve("test.txt").toFile();
         Files.writeString(file.toPath(), "hello", StandardCharsets.UTF_8);
 
         FileSystemResourceHandler handler = new FileSystemResourceHandler(null, "UTF-8", messageLog);
