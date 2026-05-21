@@ -37,7 +37,8 @@
 package org.carrot2.labs.smartsprites;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import java.util.Locale;
 import java.util.Map;
@@ -140,7 +141,7 @@ public class SpriteLayoutProperties {
          * @return the string
          */
         public static String valuesAsString() {
-            final String list = Lists.newArrayList(values()).toString();
+            final String list = new ArrayList<>(Arrays.asList(values())).toString();
             return list.substring(1, list.length() - 1);
         }
     }

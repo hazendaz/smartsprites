@@ -48,7 +48,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -159,7 +158,7 @@ public class SpriteBuilder {
             // Take all css files from the root dir
             final List<File> files = Lists.newArrayList(org.apache.commons.io.FileUtils
                     .listFiles(parameters.getRootDirFile(), new String[] { "css" }, true));
-            Collections.sort(files, Comparator.comparing(File::getAbsolutePath));
+            files.sort(Comparator.comparing(File::getAbsolutePath));
 
             filePaths = new ArrayList<>();
             for (File file : files) {

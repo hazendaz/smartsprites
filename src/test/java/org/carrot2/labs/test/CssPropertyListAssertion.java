@@ -39,8 +39,8 @@ package org.carrot2.labs.test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.carrot2.labs.smartsprites.css.CssProperty;
@@ -90,7 +90,7 @@ public class CssPropertyListAssertion {
      * @return the css property list assertion
      */
     public CssPropertyListAssertion isEquivalentTo(CssProperty... properties) {
-        return isEquivalentTo(Lists.newArrayList(properties));
+        return isEquivalentTo(new ArrayList<>(Arrays.asList(properties)));
     }
 
     /**

@@ -39,14 +39,14 @@ package org.carrot2.labs.smartsprites;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.carrot2.labs.test.Assertions.assertThat;
 
-import com.google.common.collect.Lists;
-
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -664,7 +664,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     @Test
     void testIndividualCssFileDoesNotExist() throws IOException {
         final String path = testDir("does-not-exist").getPath();
-        buildSprites(Lists.newArrayList(path));
+        buildSprites(new ArrayList<>(Arrays.asList(path)));
         assertThat(messages).contains(Message.warn(MessageType.CSS_FILE_DOES_NOT_EXIST, path));
     }
 
@@ -677,7 +677,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
     @Test
     void testDirectoryProvidedAsIndividualCssFile() throws IOException {
         final String path = testDir(".").getPath();
-        buildSprites(Lists.newArrayList(path));
+        buildSprites(new ArrayList<>(Arrays.asList(path)));
         assertThat(messages).contains(Message.warn(MessageType.CSS_PATH_IS_NOT_A_FILE, path));
     }
 
@@ -695,9 +695,9 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File otherCss = testDir.toPath().resolve("css-other/style-sprite.css").toFile();
         final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
         try {
-            buildSprites(Lists.newArrayList(testDir.toPath().resolve("css/style.css").toString(),
+            buildSprites(new ArrayList<>(Arrays.asList(testDir.toPath().resolve("css/style.css").toString(),
                     testDir.toPath().resolve("css/custom/style.css").toString(),
-                    testDir.toPath().resolve("css-other/style.css").toString()));
+                    testDir.toPath().resolve("css-other/style.css").toString())));
             assertThat(messages).doesNotHaveMessagesOfLevel(MessageLevel.WARN);
             assertThat(css).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
             assertThat(customCss)
@@ -727,9 +727,8 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
         try {
             final String otherCssPath = testDir.toPath().resolve("css-other/style.css").toString();
-            buildSprites(
-                    Lists.newArrayList(testDir.toPath().resolve("css/style.css").toString(),
-                            testDir.toPath().resolve("css/custom/style.css").toString(), otherCssPath),
+            buildSprites(new ArrayList<>(Arrays.asList(testDir.toPath().resolve("css/style.css").toString(),
+                    testDir.toPath().resolve("css/custom/style.css").toString(), otherCssPath)),
                     testDir.toPath().resolve("css").toString(), outputDir.getPath());
             assertThat(css).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
             assertThat(customCss)
@@ -824,8 +823,8 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
 
         try {
-            buildSprites(Lists.newArrayList(
-                    testDir.toPath().resolve("css/style.css").toString().replace(File.separatorChar, '/')));
+            buildSprites(new ArrayList<>(Arrays.asList(
+                    testDir.toPath().resolve("css/style.css").toString().replace(File.separatorChar, '/'))));
 
             assertThat(outputCss).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
             assertThat(sprite).exists();

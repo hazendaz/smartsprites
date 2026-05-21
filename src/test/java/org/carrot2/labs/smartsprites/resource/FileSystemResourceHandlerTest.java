@@ -47,6 +47,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.carrot2.labs.smartsprites.message.MemoryMessageSink;
 import org.carrot2.labs.smartsprites.message.MessageLog;
@@ -81,7 +82,7 @@ class FileSystemResourceHandlerTest {
      */
     @Test
     void getResourceAsInputStreamReadsExistingFile(@TempDir File tempDir) throws IOException {
-        File file = new File(tempDir, "test.txt");
+        File file = Path.of(tempDir.getPath()).resolve("test.txt").toFile();
         Files.writeString(file.toPath(), "hello", StandardCharsets.UTF_8);
 
         FileSystemResourceHandler handler = new FileSystemResourceHandler(null, "UTF-8", messageLog);
@@ -103,7 +104,7 @@ class FileSystemResourceHandlerTest {
      */
     @Test
     void getResourceAsReaderReadsExistingFileContent(@TempDir File tempDir) throws IOException {
-        File file = new File(tempDir, "test.txt");
+        File file = tempDir.toPath().resolve("test.txt").toFile();
         Files.writeString(file.toPath(), "world", StandardCharsets.UTF_8);
 
         FileSystemResourceHandler handler = new FileSystemResourceHandler(null, "UTF-8", messageLog);
@@ -128,7 +129,7 @@ class FileSystemResourceHandlerTest {
      */
     @Test
     void getResourceAsOutputStreamCreatesFile(@TempDir File tempDir) throws IOException {
-        File file = new File(tempDir, "output.txt");
+        File file = tempDir.toPath().resolve("output.txt").toFile();
 
         FileSystemResourceHandler handler = new FileSystemResourceHandler(null, "UTF-8", messageLog);
         try (OutputStream os = handler.getResourceAsOutputStream(file.getPath())) {
@@ -150,7 +151,7 @@ class FileSystemResourceHandlerTest {
      */
     @Test
     void getResourceAsWriterWritesContent(@TempDir File tempDir) throws IOException {
-        File file = new File(tempDir, "writer.txt");
+        File file = tempDir.toPath().resolve("writer.txt").toFile();
 
         FileSystemResourceHandler handler = new FileSystemResourceHandler(null, "UTF-8", messageLog);
         try (Writer writer = handler.getResourceAsWriter(file.getPath())) {
