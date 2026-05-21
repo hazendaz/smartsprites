@@ -727,8 +727,9 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
         try {
             final String otherCssPath = testDir.toPath().resolve("css-other/style.css").toString();
-            buildSprites(new ArrayList<>(Arrays.asList(testDir.toPath().resolve("css/style.css").toString(),
-                    testDir.toPath().resolve("css/custom/style.css").toString(), otherCssPath)),
+            buildSprites(
+                    new ArrayList<>(Arrays.asList(testDir.toPath().resolve("css/style.css").toString(),
+                            testDir.toPath().resolve("css/custom/style.css").toString(), otherCssPath)),
                     testDir.toPath().resolve("css").toString(), outputDir.getPath());
             assertThat(css).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
             assertThat(customCss)
@@ -823,8 +824,8 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final File sprite = testDir.toPath().resolve("img/sprite.png").toFile();
 
         try {
-            buildSprites(new ArrayList<>(Arrays.asList(
-                    testDir.toPath().resolve("css/style.css").toString().replace(File.separatorChar, '/'))));
+            buildSprites(new ArrayList<>(Arrays
+                    .asList(testDir.toPath().resolve("css/style.css").toString().replace(File.separatorChar, '/'))));
 
             assertThat(outputCss).hasSameTextualContentAs(testDir.toPath().resolve("css/style-expected.css").toFile());
             assertThat(sprite).exists();

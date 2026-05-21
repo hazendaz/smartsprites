@@ -37,9 +37,9 @@
 package org.carrot2.labs.smartsprites;
 
 import com.google.common.collect.ImmutableSet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
