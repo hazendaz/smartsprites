@@ -3,15 +3,6 @@ BSD 3-Clause License
 Copyright (c) 2007-2009, Stanisław Osiński
 Copyright (c) ${license.git.copyrightYears}, Hazendaz
 
-All rights reserved.
-
-This project is a maintained fork of the original SmartSprites project.
-
-The original project license text has been normalized to the
-canonical SPDX BSD-3-Clause format for improved compatibility
-with automated license scanners and enterprise procurement systems.
-No material licensing restrictions were added.
-
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
