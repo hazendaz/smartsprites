@@ -40,11 +40,11 @@ import static org.carrot2.labs.test.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.google.common.collect.Lists;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.carrot2.labs.smartsprites.message.Message;
@@ -127,7 +127,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      */
     @Test
     void testValidateOutputDirNoRootDir() {
-        checkInvalid(parameters(null, Lists.newArrayList("css/file.css"), existingOutputDirPath),
+        checkInvalid(parameters(null, new ArrayList<>(Arrays.asList("css/file.css")), existingOutputDirPath),
                 Message.error(MessageType.ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR));
     }
 
@@ -136,7 +136,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      */
     @Test
     void testValidateOutputDirIsNotADirectory() {
-        checkInvalid(parameters(existingRootDirPath, Lists.newArrayList("css/file.css"), existingFilePath),
+        checkInvalid(parameters(existingRootDirPath, new ArrayList<>(Arrays.asList("css/file.css")), existingFilePath),
                 Message.error(MessageType.OUTPUT_DIR_IS_NOT_DIRECTORY, existingFilePath));
     }
 
@@ -164,9 +164,8 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      */
     @Test
     void testValidateNoOutputDirAndEmptyCssFileSuffix() {
-        checkInvalid(
-                new SmartSpritesParameters(null, Lists.newArrayList("css/file.css"), null, null, null, "", null, null),
-                Message.error(MessageType.CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR));
+        checkInvalid(new SmartSpritesParameters(null, new ArrayList<>(Arrays.asList("css/file.css")), null, null, null,
+                "", null, null), Message.error(MessageType.CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR));
     }
 
     /**
@@ -174,7 +173,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      */
     @Test
     void testValidateRootDirAndCssFilesWithoutOutputDir() {
-        checkInvalid(parameters(existingRootDirPath, Lists.newArrayList("css/file.css"), null),
+        checkInvalid(parameters(existingRootDirPath, new ArrayList<>(Arrays.asList("css/file.css")), null),
                 Message.error(MessageType.ROOT_DIR_AND_CSS_FILES_CANNOT_BE_BOTH_SPECIFIED_UNLESS_WITH_OUTPUT_DIR));
     }
 

@@ -36,8 +36,8 @@
  */
 package org.carrot2.labs.smartsprites.message;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -61,7 +61,7 @@ public class MessageLog {
      *            the sinks
      */
     public MessageLog(MessageSink... sinks) {
-        this.sinks = Lists.newArrayList(sinks);
+        this.sinks = new ArrayList<>(Arrays.asList(sinks));
     }
 
     /**

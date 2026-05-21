@@ -36,10 +36,10 @@
  */
 package org.carrot2.labs.test;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -150,7 +150,7 @@ public class MessageListAssertion {
      * @return the message list assertion
      */
     public MessageListAssertion isEquivalentTo(Message... messages) {
-        return isEquivalentTo(Lists.newArrayList(messages));
+        return isEquivalentTo(new ArrayList<>(Arrays.asList(messages)));
     }
 
     /**
@@ -164,7 +164,7 @@ public class MessageListAssertion {
      * @return the message list assertion
      */
     public MessageListAssertion isEquivalentTo(MessageLevel onlyLevel, Message... messages) {
-        return isEquivalentTo(onlyLevel, Lists.newArrayList(messages));
+        return isEquivalentTo(onlyLevel, new ArrayList<>(Arrays.asList(messages)));
     }
 
     /**

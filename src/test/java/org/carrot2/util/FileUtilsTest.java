@@ -43,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -124,7 +125,7 @@ class FileUtilsTest {
      */
     @Test
     void getCanonicalOrAbsoluteFileReturnsFile(@TempDir File tempDir) {
-        File result = FileUtils.getCanonicalOrAbsoluteFile(new File(tempDir, "test.txt").getPath());
+        File result = FileUtils.getCanonicalOrAbsoluteFile(tempDir.toPath().resolve("test.txt").toString());
         assertNotNull(result);
     }
 
@@ -139,12 +140,12 @@ class FileUtilsTest {
      */
     @Test
     void changeRootSwapsRootDirectory(@TempDir File tempDir) throws IOException {
-        File oldRoot = new File(tempDir, "old");
-        File newRoot = new File(tempDir, "new");
+        File oldRoot = tempDir.toPath().resolve("old").toFile();
+        File newRoot = tempDir.toPath().resolve("new").toFile();
         oldRoot.mkdirs();
         newRoot.mkdirs();
 
-        File file = new File(oldRoot, "subdir/file.css");
+        File file = oldRoot.toPath().resolve("subdir/file.css").toFile();
         file.getParentFile().mkdirs();
         assertTrue(file.createNewFile(), "File should have been created");
 
@@ -187,7 +188,7 @@ class FileUtilsTest {
      */
     @Test
     void deleteThrowingExceptionsDeletesExistingFile(@TempDir File tempDir) throws IOException {
-        File file = new File(tempDir, "todelete.txt");
+        File file = tempDir.toPath().resolve("todelete.txt").toFile();
         assertTrue(file.createNewFile(), "File should have been created");
         assertTrue(file.exists());
 
@@ -207,7 +208,7 @@ class FileUtilsTest {
      */
     @Test
     void mkdirsThrowingExceptionsCreatesDirectories(@TempDir File tempDir) throws IOException {
-        File newDir = new File(tempDir, "a/b/c");
+        File newDir = tempDir.toPath().resolve("a/b/c").toFile();
         assertFalse(newDir.exists());
 
         FileUtils.mkdirsThrowingExceptions(newDir);
@@ -241,7 +242,7 @@ class FileUtilsTest {
      */
     @Test
     void isFileInParentReturnsTrueForDirectChild(@TempDir File tempDir) throws IOException {
-        File child = new File(tempDir, "child.txt");
+        File child = tempDir.toPath().resolve("child.txt").toFile();
         assertTrue(child.createNewFile(), "File should have been created");
 
         assertTrue(FileUtils.isFileInParent(child, tempDir));
@@ -258,9 +259,9 @@ class FileUtilsTest {
      */
     @Test
     void isFileInParentReturnsTrueForNestedChild(@TempDir File tempDir) throws IOException {
-        File subdir = new File(tempDir, "sub");
+        File subdir = tempDir.toPath().resolve("sub").toFile();
         subdir.mkdirs();
-        File child = new File(subdir, "child.txt");
+        File child = subdir.toPath().resolve("child.txt").toFile();
         assertTrue(child.createNewFile(), "File should have been created");
 
         assertTrue(FileUtils.isFileInParent(child, tempDir));
@@ -277,9 +278,9 @@ class FileUtilsTest {
      */
     @Test
     void isFileInParentReturnsFalseForUnrelatedFile(@TempDir File tempDir) throws IOException {
-        File otherDir = new File(tempDir, "other");
-        File parent = new File(tempDir, "parent");
-        File child = new File(otherDir, "child.txt");
+        File otherDir = tempDir.toPath().resolve("other").toFile();
+        File parent = tempDir.toPath().resolve("parent").toFile();
+        File child = otherDir.toPath().resolve("child.txt").toFile();
 
         assertFalse(FileUtils.isFileInParent(child, parent));
     }
@@ -289,8 +290,8 @@ class FileUtilsTest {
      */
     @Test
     void isFileInParentReturnsFalseWhenFileHasNoParent() {
-        File file = new File("file.txt");
-        File parent = new File("/some/parent");
+        File file = Path.of("file.txt").toFile();
+        File parent = Path.of("/some/parent").toFile();
         // A file with no parent (relative path with single segment) returns false
         assertFalse(FileUtils.isFileInParent(file, parent));
     }

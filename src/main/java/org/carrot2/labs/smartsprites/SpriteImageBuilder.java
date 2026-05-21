@@ -46,7 +46,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -256,7 +255,7 @@ public class SpriteImageBuilder {
         // Build the sprite image bitmap
         final SpriteImage spriteImage = SpriteImageBuilder.buildSpriteImage(spriteImageOccurrence, images, messageLog);
         if (spriteImage == null) {
-            return Collections.<SpriteReferenceOccurrence, SpriteReferenceReplacement> emptyMap();
+            return Map.of();
         }
 
         // Render the sprite into the required formats, perform quantization if needed
