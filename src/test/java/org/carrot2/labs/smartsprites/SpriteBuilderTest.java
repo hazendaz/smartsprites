@@ -207,10 +207,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         // file, hence we have two warnings
         assertThat(messages).contains(
                 new Message(Message.MessageLevel.WARN, Message.MessageType.CANNOT_NOT_LOAD_IMAGE,
-                        testDir.toPath().resolve("css/style.css").toString(), 51,
+                        testDir.toPath().resolve("css/style.css").toString(), 22,
                         testDir.toPath().resolve("img/logo.png").toString(), "Can't read input file!"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.CANNOT_NOT_LOAD_IMAGE,
-                        testDir.toPath().resolve("css/style-expected.css").toString(), 51,
+                        testDir.toPath().resolve("css/style-expected.css").toString(), 22,
                         testDir.toPath().resolve("img/logo.png").toString(), "Can't read input file!"));
     }
 
@@ -230,7 +230,7 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(messages).contains(
                 new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT,
-                        testDir.toPath().resolve("css/style.css").toString(), 44,
+                        testDir.toPath().resolve("css/style.css").toString(), 15,
                         testDir.toPath().resolve("img/web.iff").toString()));
     }
 
@@ -269,11 +269,11 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         final String styleCssPath = testDir.toPath().resolve("css/style.css").toString();
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
                 new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath,
-                        40, "sprites-layout"),
+                        11, "sprites-layout"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath,
-                        50, "sprites-margin-top"),
+                        21, "sprites-margin-top"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.UNSUPPORTED_PROPERTIES_FOUND, styleCssPath,
-                        54, "sprites-alignment"));
+                        25, "sprites-alignment"));
     }
 
     /**
@@ -293,10 +293,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         final String styleCssPath = testDir.toPath().resolve("css/style.css").toString();
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
-                new Message(Message.MessageLevel.WARN, Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 46,
-                        "background-image", 45),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 57,
-                        "background-position", 56));
+                new Message(Message.MessageLevel.WARN, Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 17,
+                        "background-image", 16),
+                new Message(Message.MessageLevel.WARN, Message.MessageType.OVERRIDING_PROPERTY_FOUND, styleCssPath, 28,
+                        "background-position", 27));
     }
 
     /**
@@ -399,9 +399,9 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
         assertThat(ImageIO.read(absoluteSpriteFile)).hasSize(new Dimension(17, 17));
 
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
-                new Message(Message.MessageLevel.WARN, Message.MessageType.IMAGE_FRACTIONAL_SCALE_VALUE, null, 44,
+                new Message(Message.MessageLevel.WARN, Message.MessageType.IMAGE_FRACTIONAL_SCALE_VALUE, null, 15,
                         "../img/web.gif", 8.5f, 8.5f),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.FRACTIONAL_SCALE_VALUE, null, 44, "absolute",
+                new Message(Message.MessageLevel.WARN, Message.MessageType.FRACTIONAL_SCALE_VALUE, null, 15, "absolute",
                         8.5f, 8.5f));
 
         org.carrot2.util.FileUtils.deleteThrowingExceptions(absoluteSpriteFile);
@@ -523,10 +523,10 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
                 new Message(Message.MessageLevel.WARN, Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null,
-                        61, "full-alpha"),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT, null, 61,
+                        32, "full-alpha"),
+                new Message(Message.MessageLevel.WARN, Message.MessageType.USING_WHITE_MATTE_COLOR_AS_DEFAULT, null, 32,
                         "full-alpha"),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 68,
+                new Message(Message.MessageLevel.WARN, Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 39,
                         "many-colors", 293, 255));
     }
 
@@ -553,15 +553,15 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
                 .doesNotHaveAlpha();
 
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
-                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 48,
+                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 19,
                         "full-alpha-m1"),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 55,
+                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 26,
                         "full-alpha-m2"),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 62,
+                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 33,
                         "full-alpha-m3"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY,
-                        null, 69, "bit-alpha"),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 76,
+                        null, 40, "bit-alpha"),
+                new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_SUPPORT, null, 47,
                         "many-colors"));
     }
 
@@ -593,14 +593,14 @@ class SpriteBuilderTest extends TestWithMemoryMessageSink {
 
         assertThat(messages).isEquivalentTo(Message.MessageLevel.WARN,
                 new Message(Message.MessageLevel.WARN, Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null,
-                        48, "full-alpha-m1"),
+                        19, "full-alpha-m1"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null,
-                        55, "full-alpha-m2"),
+                        26, "full-alpha-m2"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR, null,
-                        62, "full-alpha-m3"),
+                        33, "full-alpha-m3"),
                 new Message(Message.MessageLevel.WARN, Message.MessageType.IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY,
-                        null, 69, "bit-alpha"),
-                new Message(Message.MessageLevel.WARN, Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 76,
+                        null, 40, "bit-alpha"),
+                new Message(Message.MessageLevel.WARN, Message.MessageType.TOO_MANY_COLORS_FOR_INDEXED_COLOR, null, 47,
                         "many-colors", 293, 255));
     }
 
