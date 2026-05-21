@@ -12,8 +12,9 @@ CSS Sprites Generator Done Right. SmartSprites maintains CSS sprites in your des
 
 Supported Fork
 --------------
+This fork continues maintenance and support of the original SmartSprites project.
 
-This fork has taken over work of supporting this software.
+Project licensing metadata and LICENSE text have been normalized to the canonical SPDX BSD-3-Clause format for improved compatibility with automated license scanners and enterprise procurement systems. No material licensing restrictions were added.
 
 Heads up, discontinued software from original author!
 -----------------------------------------------------
