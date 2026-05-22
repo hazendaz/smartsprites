@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SmartSpritesTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites.ant</a> &gt; <span class="el_source">SmartSpritesTask.java</span></div><h1>SmartSpritesTask.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.labs.smartsprites.ant;
 
@@ -58,7 +29,7 @@ import org.carrot2.util.EnumUtils;
 /**
  * Ant task for calling SmartSprites processing.
  */
-<span class="nc" id="L61">public class SmartSpritesTask extends Task {</span>
+<span class="nc" id="L32">public class SmartSpritesTask extends Task {</span>
 
     /** The root dir. */
     private String rootDir;
@@ -73,22 +44,22 @@ import org.carrot2.util.EnumUtils;
     private MessageLevel logLevel;
 
     /** The fail on level. */
-<span class="nc" id="L76">    private MessageLevel failOnLevel = MessageLevel.ERROR;</span>
+<span class="nc" id="L47">    private MessageLevel failOnLevel = MessageLevel.ERROR;</span>
 
     /** The css file suffix. */
-<span class="nc" id="L79">    private String cssFileSuffix = SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX;</span>
+<span class="nc" id="L50">    private String cssFileSuffix = SmartSpritesParameters.DEFAULT_CSS_FILE_SUFFIX;</span>
 
     /** The css file encoding. */
-<span class="nc" id="L82">    private String cssFileEncoding = SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING;</span>
+<span class="nc" id="L53">    private String cssFileEncoding = SmartSpritesParameters.DEFAULT_CSS_FILE_ENCODING;</span>
 
     /** The sprite png depth. */
-<span class="nc" id="L85">    private PngDepth spritePngDepth = SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH;</span>
+<span class="nc" id="L56">    private PngDepth spritePngDepth = SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH;</span>
 
     /** The mark sprite images. */
-<span class="nc" id="L88">    private boolean markSpriteImages = SmartSpritesParameters.DEFAULT_MARK_SPRITE_IMAGES;</span>
+<span class="nc" id="L59">    private boolean markSpriteImages = SmartSpritesParameters.DEFAULT_MARK_SPRITE_IMAGES;</span>
 
     /** The css files. */
-<span class="nc" id="L91">    private List&lt;String&gt; cssFiles = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L62">    private List&lt;String&gt; cssFiles = new ArrayList&lt;&gt;();</span>
 
     /**
      * Sets the root dir.
@@ -97,8 +68,8 @@ import org.carrot2.util.EnumUtils;
      *            the new root dir
      */
     public void setRootDir(File dir) {
-<span class="nc" id="L100">        this.rootDir = dir.getPath();</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L71">        this.rootDir = dir.getPath();</span>
+<span class="nc" id="L72">    }</span>
 
     /**
      * Sets the output dir.
@@ -107,8 +78,8 @@ import org.carrot2.util.EnumUtils;
      *            the new output dir
      */
     public void setOutputDir(File outputDir) {
-<span class="nc" id="L110">        this.outputDir = outputDir.getPath();</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L81">        this.outputDir = outputDir.getPath();</span>
+<span class="nc" id="L82">    }</span>
 
     /**
      * Sets the document root dir.
@@ -117,8 +88,8 @@ import org.carrot2.util.EnumUtils;
      *            the new document root dir
      */
     public void setDocumentRootDir(File documentRootDir) {
-<span class="nc" id="L120">        this.documentRootDir = documentRootDir.getPath();</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L91">        this.documentRootDir = documentRootDir.getPath();</span>
+<span class="nc" id="L92">    }</span>
 
     /**
      * Sets the log level.
@@ -127,8 +98,8 @@ import org.carrot2.util.EnumUtils;
      *            the new log level
      */
     public void setLogLevel(String logLevel) {
-<span class="nc" id="L130">        this.logLevel = getLogLevelFromString(logLevel, MessageLevel.INFO);</span>
-<span class="nc" id="L131">    }</span>
+<span class="nc" id="L101">        this.logLevel = getLogLevelFromString(logLevel, MessageLevel.INFO);</span>
+<span class="nc" id="L102">    }</span>
 
     /**
      * Sets the fail on level.
@@ -137,8 +108,8 @@ import org.carrot2.util.EnumUtils;
      *            the new fail on level
      */
     public void setFailOnLevel(String failOnLevel) {
-<span class="nc" id="L140">        this.failOnLevel = getLogLevelFromString(failOnLevel, MessageLevel.ERROR);</span>
-<span class="nc" id="L141">    }</span>
+<span class="nc" id="L111">        this.failOnLevel = getLogLevelFromString(failOnLevel, MessageLevel.ERROR);</span>
+<span class="nc" id="L112">    }</span>
 
     /**
      * Gets the log level from string.
@@ -152,9 +123,9 @@ import org.carrot2.util.EnumUtils;
      */
     private MessageLevel getLogLevelFromString(String logLevel, MessageLevel defaultLevel) {
         try {
-<span class="nc" id="L155">            return MessageLevel.valueOf(logLevel);</span>
-<span class="nc" id="L156">        } catch (Exception e) {</span>
-<span class="nc" id="L157">            return defaultLevel;</span>
+<span class="nc" id="L126">            return MessageLevel.valueOf(logLevel);</span>
+<span class="nc" id="L127">        } catch (Exception e) {</span>
+<span class="nc" id="L128">            return defaultLevel;</span>
         }
     }
 
@@ -165,8 +136,8 @@ import org.carrot2.util.EnumUtils;
      *            the new css file encoding
      */
     public void setCssFileEncoding(String cssFileEncoding) {
-<span class="nc" id="L168">        this.cssFileEncoding = cssFileEncoding;</span>
-<span class="nc" id="L169">    }</span>
+<span class="nc" id="L139">        this.cssFileEncoding = cssFileEncoding;</span>
+<span class="nc" id="L140">    }</span>
 
     /**
      * Sets the css file suffix.
@@ -175,8 +146,8 @@ import org.carrot2.util.EnumUtils;
      *            the new css file suffix
      */
     public void setCssFileSuffix(String cssFileSuffix) {
-<span class="nc" id="L178">        this.cssFileSuffix = cssFileSuffix;</span>
-<span class="nc" id="L179">    }</span>
+<span class="nc" id="L149">        this.cssFileSuffix = cssFileSuffix;</span>
+<span class="nc" id="L150">    }</span>
 
     /**
      * Sets the sprite png depth.
@@ -185,9 +156,9 @@ import org.carrot2.util.EnumUtils;
      *            the new sprite png depth
      */
     public void setSpritePngDepth(String spritePngDepthString) {
-<span class="nc" id="L188">        this.spritePngDepth = EnumUtils.valueOf(spritePngDepthString, PngDepth.class,</span>
+<span class="nc" id="L159">        this.spritePngDepth = EnumUtils.valueOf(spritePngDepthString, PngDepth.class,</span>
                 SmartSpritesParameters.DEFAULT_SPRITE_PNG_DEPTH);
-<span class="nc" id="L190">    }</span>
+<span class="nc" id="L161">    }</span>
 
     /**
      * Sets the mark sprite images.
@@ -196,61 +167,61 @@ import org.carrot2.util.EnumUtils;
      *            the new mark sprite images
      */
     public void setMarkSpriteImages(boolean markSpriteImages) {
-<span class="nc" id="L199">        this.markSpriteImages = markSpriteImages;</span>
-<span class="nc" id="L200">    }</span>
+<span class="nc" id="L170">        this.markSpriteImages = markSpriteImages;</span>
+<span class="nc" id="L171">    }</span>
 
     @Override
     public void execute() {
-<span class="nc" id="L204">        final SmartSpritesParameters parameters = new SmartSpritesParameters(rootDir, cssFiles, outputDir,</span>
+<span class="nc" id="L175">        final SmartSpritesParameters parameters = new SmartSpritesParameters(rootDir, cssFiles, outputDir,</span>
                 documentRootDir, logLevel, cssFileSuffix, spritePngDepth, cssFileEncoding, markSpriteImages);
 
-<span class="nc" id="L207">        final FailureDetectorMessageSink failureDetectorMessageSink = new FailureDetectorMessageSink();</span>
-<span class="nc" id="L208">        MessageLog log = new MessageLog(new AntLogMessageSink(), failureDetectorMessageSink);</span>
+<span class="nc" id="L178">        final FailureDetectorMessageSink failureDetectorMessageSink = new FailureDetectorMessageSink();</span>
+<span class="nc" id="L179">        MessageLog log = new MessageLog(new AntLogMessageSink(), failureDetectorMessageSink);</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">        if (parameters.validate(log)) {</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (parameters.validate(log)) {</span>
             try {
-<span class="nc" id="L212">                new SpriteBuilder(parameters, log).buildSprites();</span>
-<span class="nc" id="L213">            } catch (IOException e) {</span>
-<span class="nc" id="L214">                throw new BuildException(e);</span>
-<span class="nc" id="L215">            }</span>
+<span class="nc" id="L183">                new SpriteBuilder(parameters, log).buildSprites();</span>
+<span class="nc" id="L184">            } catch (IOException e) {</span>
+<span class="nc" id="L185">                throw new BuildException(e);</span>
+<span class="nc" id="L186">            }</span>
         }
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (failureDetectorMessageSink.shouldFail) {</span>
-<span class="nc" id="L219">            throw new BuildException(failureDetectorMessageSink.failureLevel.name() + &quot; messages found&quot;);</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (failureDetectorMessageSink.shouldFail) {</span>
+<span class="nc" id="L190">            throw new BuildException(failureDetectorMessageSink.failureLevel.name() + &quot; messages found&quot;);</span>
         }
-<span class="nc" id="L221">    }</span>
+<span class="nc" id="L192">    }</span>
 
     /**
      * The Class AntLogMessageSink.
      */
-<span class="nc" id="L226">    private class AntLogMessageSink implements MessageSink {</span>
+<span class="nc" id="L197">    private class AntLogMessageSink implements MessageSink {</span>
         @Override
         public void add(Message message) {
-<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (MessageLevel.COMPARATOR.compare(message.level, logLevel) &gt;= 0) {</span>
-<span class="nc" id="L230">                log(message.toString());</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (MessageLevel.COMPARATOR.compare(message.level, logLevel) &gt;= 0) {</span>
+<span class="nc" id="L201">                log(message.toString());</span>
             }
-<span class="nc" id="L232">        }</span>
+<span class="nc" id="L203">        }</span>
     }
 
     /**
      * The Class FailureDetectorMessageSink.
      */
-<span class="nc" id="L238">    private class FailureDetectorMessageSink implements MessageSink {</span>
+<span class="nc" id="L209">    private class FailureDetectorMessageSink implements MessageSink {</span>
 
         /** The should fail. */
-<span class="nc" id="L241">        boolean shouldFail = false;</span>
+<span class="nc" id="L212">        boolean shouldFail = false;</span>
 
         /** The failure level. */
-<span class="nc" id="L244">        MessageLevel failureLevel = null;</span>
+<span class="nc" id="L215">        MessageLevel failureLevel = null;</span>
 
         @Override
         public void add(Message message) {
-<span class="nc bnc" id="L248" title="All 6 branches missed.">            if (failOnLevel != null &amp;&amp; MessageLevel.COMPARATOR.compare(message.level, failOnLevel) &gt;= 0</span>
+<span class="nc bnc" id="L219" title="All 6 branches missed.">            if (failOnLevel != null &amp;&amp; MessageLevel.COMPARATOR.compare(message.level, failOnLevel) &gt;= 0</span>
                     &amp;&amp; message.level != MessageLevel.STATUS) {
-<span class="nc" id="L250">                failureLevel = message.level;</span>
-<span class="nc" id="L251">                shouldFail = true;</span>
+<span class="nc" id="L221">                failureLevel = message.level;</span>
+<span class="nc" id="L222">                shouldFail = true;</span>
             }
-<span class="nc" id="L253">        }</span>
+<span class="nc" id="L224">        }</span>
     }
 
     /**
@@ -260,9 +231,9 @@ import org.carrot2.util.EnumUtils;
      *            the fileset
      */
     public void addConfiguredFileset(FileSet fileset) {
-<span class="nc bnc" id="L263" title="All 2 branches missed.">        for (Iterator&lt;Resource&gt; it = fileset.iterator(); it.hasNext();) {</span>
-<span class="nc" id="L264">            cssFiles.add(it.next().getName());</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        for (Iterator&lt;Resource&gt; it = fileset.iterator(); it.hasNext();) {</span>
+<span class="nc" id="L235">            cssFiles.add(it.next().getName());</span>
         }
-<span class="nc" id="L266">    }</span>
+<span class="nc" id="L237">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

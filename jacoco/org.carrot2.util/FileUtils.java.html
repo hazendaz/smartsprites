@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.util</a> &gt; <span class="el_source">FileUtils.java</span></div><h1>FileUtils.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.util;
 
@@ -66,11 +37,11 @@ public class FileUtils {
      * @return the canonical or absolute file
      */
     public static File getCanonicalOrAbsoluteFile(String path) {
-<span class="fc" id="L69">        File file = Path.of(path).toFile();</span>
+<span class="fc" id="L40">        File file = Path.of(path).toFile();</span>
         try {
-<span class="fc" id="L71">            return file.getCanonicalFile();</span>
-<span class="nc" id="L72">        } catch (final IOException e) {</span>
-<span class="nc" id="L73">            return file.getAbsoluteFile();</span>
+<span class="fc" id="L42">            return file.getCanonicalFile();</span>
+<span class="nc" id="L43">        } catch (final IOException e) {</span>
+<span class="nc" id="L44">            return file.getAbsoluteFile();</span>
         }
     }
 
@@ -90,8 +61,8 @@ public class FileUtils {
     public static String changeRoot(String file, String oldRoot, String newRoot) {
         // File is assumed to be a subpath of oldRoot, so PathUtils.getRelativeFilePath()
         // shouldn't return null here.
-<span class="fc" id="L93">        final String relativePath = PathUtils.getRelativeFilePath(oldRoot, file);</span>
-<span class="fc" id="L94">        return FilenameUtils.concat(newRoot, relativePath);</span>
+<span class="fc" id="L64">        final String relativePath = PathUtils.getRelativeFilePath(oldRoot, file);</span>
+<span class="fc" id="L65">        return FilenameUtils.concat(newRoot, relativePath);</span>
     }
 
     /**
@@ -106,16 +77,16 @@ public class FileUtils {
      * @return the string
      */
     public static String canonicalize(String path, String separator) {
-<span class="fc" id="L109">        String replaced = path;</span>
-<span class="fc" id="L110">        String toReplace = null;</span>
-<span class="fc" id="L111">        final String separatorEscaped = Pattern.quote(separator);</span>
-<span class="fc" id="L112">        final Pattern pattern = Pattern</span>
-<span class="fc" id="L113">                .compile(&quot;[^&quot; + separatorEscaped + &quot;\\.]+&quot; + separatorEscaped + &quot;\\.\\.&quot; + separatorEscaped + &quot;?&quot;);</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        while (!replaced.equals(toReplace)) {</span>
-<span class="fc" id="L115">            toReplace = replaced;</span>
-<span class="fc" id="L116">            replaced = pattern.matcher(toReplace).replaceFirst(&quot;&quot;);</span>
+<span class="fc" id="L80">        String replaced = path;</span>
+<span class="fc" id="L81">        String toReplace = null;</span>
+<span class="fc" id="L82">        final String separatorEscaped = Pattern.quote(separator);</span>
+<span class="fc" id="L83">        final Pattern pattern = Pattern</span>
+<span class="fc" id="L84">                .compile(&quot;[^&quot; + separatorEscaped + &quot;\\.]+&quot; + separatorEscaped + &quot;\\.\\.&quot; + separatorEscaped + &quot;?&quot;);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        while (!replaced.equals(toReplace)) {</span>
+<span class="fc" id="L86">            toReplace = replaced;</span>
+<span class="fc" id="L87">            replaced = pattern.matcher(toReplace).replaceFirst(&quot;&quot;);</span>
         }
-<span class="fc" id="L118">        return replaced;</span>
+<span class="fc" id="L89">        return replaced;</span>
     }
 
     /**
@@ -129,25 +100,25 @@ public class FileUtils {
      *             Signals that an I/O exception has occurred.
      */
     public static void deleteThrowingExceptions(File... files) throws IOException {
-<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (files == null) {</span>
-<span class="fc" id="L133">            return;</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (files == null) {</span>
+<span class="fc" id="L104">            return;</span>
         }
 
-<span class="fc" id="L136">        final ArrayList&lt;String&gt; undeletedFiles = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">        for (File file : files) {</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">            if (file == null) {</span>
-<span class="nc" id="L139">                continue;</span>
+<span class="fc" id="L107">        final ArrayList&lt;String&gt; undeletedFiles = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        for (File file : files) {</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (file == null) {</span>
+<span class="fc" id="L110">                continue;</span>
             }
 
-<span class="pc bpc" id="L142" title="2 of 4 branches missed.">            if (file.exists() &amp;&amp; !file.delete()) {</span>
-<span class="nc" id="L143">                undeletedFiles.add(file.getPath());</span>
+<span class="pc bpc" id="L113" title="2 of 4 branches missed.">            if (file.exists() &amp;&amp; !file.delete()) {</span>
+<span class="nc" id="L114">                undeletedFiles.add(file.getPath());</span>
             }
         }
 
-<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (!undeletedFiles.isEmpty()) {</span>
-<span class="nc" id="L148">            throw new IOException(&quot;Unable to delete files: &quot; + undeletedFiles.toString());</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (!undeletedFiles.isEmpty()) {</span>
+<span class="nc" id="L119">            throw new IOException(&quot;Unable to delete files: &quot; + undeletedFiles.toString());</span>
         }
-<span class="fc" id="L150">    }</span>
+<span class="fc" id="L121">    }</span>
 
     /**
      * Calls {@link File#mkdirs()} on the provided argument and throws an {@link IOException} if the call returns
@@ -160,14 +131,14 @@ public class FileUtils {
      *             Signals that an I/O exception has occurred.
      */
     public static void mkdirsThrowingExceptions(File dirs) throws IOException {
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (dirs.exists()) {</span>
-<span class="nc" id="L164">            return;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (dirs.exists()) {</span>
+<span class="fc" id="L135">            return;</span>
         }
 
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        if (!dirs.mkdirs()) {</span>
-<span class="nc" id="L168">            throw new IOException(&quot;Unable to create directories: &quot; + dirs.getPath());</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (!dirs.mkdirs()) {</span>
+<span class="nc" id="L139">            throw new IOException(&quot;Unable to create directories: &quot; + dirs.getPath());</span>
         }
-<span class="fc" id="L170">    }</span>
+<span class="fc" id="L141">    }</span>
 
     /**
      * Returns &lt;code&gt;true&lt;/code&gt; if file is contained in the parent directory or any parent of the parent directory.
@@ -180,16 +151,16 @@ public class FileUtils {
      * @return true, if is file in parent
      */
     public static boolean isFileInParent(File file, File parent) {
-<span class="fc" id="L183">        final File fileParent = file.getParentFile();</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">        if (fileParent == null) {</span>
-<span class="fc" id="L185">            return false;</span>
+<span class="fc" id="L154">        final File fileParent = file.getParentFile();</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (fileParent == null) {</span>
+<span class="fc" id="L156">            return false;</span>
         }
 
-<span class="fc bfc" id="L188" title="All 2 branches covered.">        if (fileParent.equals(parent)) {</span>
-<span class="fc" id="L189">            return true;</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (fileParent.equals(parent)) {</span>
+<span class="fc" id="L160">            return true;</span>
         }
 
-<span class="fc" id="L192">        return isFileInParent(fileParent, parent);</span>
+<span class="fc" id="L163">        return isFileInParent(fileParent, parent);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,46 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteImageDirective.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteImageDirective.java</span></div><h1>SpriteImageDirective.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.labs.smartsprites;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -78,23 +50,23 @@ public class SpriteImageDirective {
     public static final String PROPERTY_SPRITE_SCALE = &quot;sprite-scale&quot;;
 
     /** A set of allowed properties. */
-<span class="fc" id="L81">    private static final Set&lt;String&gt; ALLOWED_PROPERTIES = ImmutableSet.of(PROPERTY_SPRITE_ID,</span>
+<span class="fc" id="L53">    private static final Set&lt;String&gt; ALLOWED_PROPERTIES = ImmutableSet.of(PROPERTY_SPRITE_ID,</span>
             PROPERTY_SPRITE_IMAGE_LAYOUT, PROPERTY_SPRITE_IMAGE_URL, PROPERTY_SPRITE_MATTE_COLOR, PROPERTY_SPRITE_SCALE,
             PROPERTY_SPRITE_IMAGE_UID_SUFFIX);
 
     /**
      * Defines the layout of this sprite.
      */
-<span class="fc" id="L88">    public enum SpriteImageLayout {</span>
+<span class="fc" id="L60">    public enum SpriteImageLayout {</span>
         /**
          * Vertical layout, images stacked on each other.
          */
-<span class="fc" id="L92">        VERTICAL,</span>
+<span class="fc" id="L64">        VERTICAL,</span>
 
         /**
          * Horizontal layout, images next to each other.
          */
-<span class="fc" id="L97">        HORIZONTAL;</span>
+<span class="fc" id="L69">        HORIZONTAL;</span>
 
         /** The value. */
         private final String value;
@@ -102,13 +74,13 @@ public class SpriteImageDirective {
         /**
          * Instantiates a new sprite image layout.
          */
-<span class="fc" id="L105">        SpriteImageLayout() {</span>
-<span class="fc" id="L106">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
-<span class="fc" id="L107">        }</span>
+<span class="fc" id="L77">        SpriteImageLayout() {</span>
+<span class="fc" id="L78">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
+<span class="fc" id="L79">        }</span>
 
         @Override
         public String toString() {
-<span class="fc" id="L111">            return value;</span>
+<span class="fc" id="L83">            return value;</span>
         }
 
         /**
@@ -117,29 +89,29 @@ public class SpriteImageDirective {
          * @return the string
          */
         public static String valuesAsString() {
-<span class="fc" id="L120">            final String list = Lists.newArrayList(values()).toString();</span>
-<span class="fc" id="L121">            return list.substring(1, list.length() - 1);</span>
+<span class="fc" id="L92">            final String list = new ArrayList&lt;&gt;(Arrays.asList(values())).toString();</span>
+<span class="fc" id="L93">            return list.substring(1, list.length() - 1);</span>
         }
     }
 
     /**
      * Defines the UID Generation Mode of this sprite.
      */
-<span class="fc" id="L128">    public enum SpriteUidType {</span>
+<span class="fc" id="L100">    public enum SpriteUidType {</span>
         /**
          * No UID extension.
          */
-<span class="fc" id="L132">        NONE,</span>
+<span class="fc" id="L104">        NONE,</span>
 
         /**
          * Append current timestamp as long.
          */
-<span class="fc" id="L137">        DATE,</span>
+<span class="fc" id="L109">        DATE,</span>
 
         /**
          * Append sha512 of the sprites file.
          */
-<span class="fc" id="L142">        SHA512;</span>
+<span class="fc" id="L114">        SHA512;</span>
 
         /** The value. */
         private final String value;
@@ -150,14 +122,14 @@ public class SpriteImageDirective {
         /**
          * Instantiates a new sprite uid type.
          */
-<span class="fc" id="L153">        SpriteUidType() {</span>
-<span class="fc" id="L154">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
-<span class="fc" id="L155">            this.pattern = Pattern.compile(&quot;${&quot; + value + &quot;}&quot;, Pattern.LITERAL);</span>
-<span class="fc" id="L156">        }</span>
+<span class="fc" id="L125">        SpriteUidType() {</span>
+<span class="fc" id="L126">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
+<span class="fc" id="L127">            this.pattern = Pattern.compile(&quot;${&quot; + value + &quot;}&quot;, Pattern.LITERAL);</span>
+<span class="fc" id="L128">        }</span>
 
         @Override
         public String toString() {
-<span class="fc" id="L160">            return value;</span>
+<span class="fc" id="L132">            return value;</span>
         }
 
         /**
@@ -166,22 +138,22 @@ public class SpriteImageDirective {
          * @return the string
          */
         public static String valuesAsString() {
-<span class="fc" id="L169">            final String list = Lists.newArrayList(values()).toString();</span>
-<span class="fc" id="L170">            return list.substring(1, list.length() - 1);</span>
+<span class="fc" id="L141">            final String list = new ArrayList&lt;&gt;(Arrays.asList(values())).toString();</span>
+<span class="fc" id="L142">            return list.substring(1, list.length() - 1);</span>
         }
     }
 
     /**
      * Defines supported image file formats.
      */
-<span class="fc" id="L177">    public enum SpriteImageFormat {</span>
+<span class="fc" id="L149">    public enum SpriteImageFormat {</span>
 
         /** The png. */
-<span class="fc" id="L180">        PNG,</span>
+<span class="fc" id="L152">        PNG,</span>
         /** The gif. */
-<span class="fc" id="L182">        GIF,</span>
+<span class="fc" id="L154">        GIF,</span>
         /** The jpg. */
-<span class="fc" id="L184">        JPG;</span>
+<span class="fc" id="L156">        JPG;</span>
 
         /** The value. */
         private final String value;
@@ -189,13 +161,13 @@ public class SpriteImageDirective {
         /**
          * Instantiates a new sprite image format.
          */
-<span class="fc" id="L192">        SpriteImageFormat() {</span>
-<span class="fc" id="L193">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
-<span class="fc" id="L194">        }</span>
+<span class="fc" id="L164">        SpriteImageFormat() {</span>
+<span class="fc" id="L165">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
+<span class="fc" id="L166">        }</span>
 
         @Override
         public String toString() {
-<span class="fc" id="L198">            return value;</span>
+<span class="fc" id="L170">            return value;</span>
         }
 
         /**
@@ -207,7 +179,7 @@ public class SpriteImageDirective {
          * @return the value
          */
         public static SpriteImageFormat getValue(String value) {
-<span class="fc" id="L210">            return valueOf(value.toUpperCase(Locale.ENGLISH));</span>
+<span class="fc" id="L182">            return valueOf(value.toUpperCase(Locale.ENGLISH));</span>
         }
 
         /**
@@ -216,8 +188,8 @@ public class SpriteImageDirective {
          * @return the string
          */
         public static String valuesAsString() {
-<span class="fc" id="L219">            final String list = Lists.newArrayList(values()).toString();</span>
-<span class="fc" id="L220">            return list.substring(1, list.length() - 1);</span>
+<span class="fc" id="L191">            final String list = new ArrayList&lt;&gt;(Arrays.asList(values())).toString();</span>
+<span class="fc" id="L192">            return list.substring(1, list.length() - 1);</span>
         }
     }
 
@@ -265,18 +237,18 @@ public class SpriteImageDirective {
     /**
      * Pattern for a simple syntactic check of the image path.
      */
-<span class="fc" id="L268">    private static final Pattern IMAGE_PATH_PATTERN = Pattern.compile(&quot;([^${}]*|\\$\\{[^}]*\\})*&quot;);</span>
+<span class="fc" id="L240">    private static final Pattern IMAGE_PATH_PATTERN = Pattern.compile(&quot;([^${}]*|\\$\\{[^}]*\\})*&quot;);</span>
 
     /**
      * Pattern for extracting variables from image path.
      */
-<span class="fc" id="L273">    private static final Pattern IMAGE_PATH_VARIABLE_PATTERN = Pattern.compile(&quot;\\$\\{([a-z]*)\\}&quot;);</span>
+<span class="fc" id="L245">    private static final Pattern IMAGE_PATH_VARIABLE_PATTERN = Pattern.compile(&quot;\\$\\{([a-z]*)\\}&quot;);</span>
 
     /**
      * Variable names allowed in image path.
      */
-<span class="fc" id="L278">    private static final Set&lt;String&gt; ALLOWED_VARIABLES = ImmutableSet.of(PROPERTY_SPRITE_ID,</span>
-<span class="fc" id="L279">            SpriteUidType.DATE.toString(), SpriteUidType.SHA512.toString());</span>
+<span class="fc" id="L250">    private static final Set&lt;String&gt; ALLOWED_VARIABLES = ImmutableSet.of(PROPERTY_SPRITE_ID,</span>
+<span class="fc" id="L251">            SpriteUidType.DATE.toString(), SpriteUidType.SHA512.toString());</span>
 
     /**
      * Instantiates a new sprite image directive.
@@ -298,8 +270,8 @@ public class SpriteImageDirective {
      */
     public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout, SpriteImageFormat format,
             Color matteColor, SpriteUidType uidType, float scale) {
-<span class="fc" id="L301">        this(id, imageUrl, layout, format, matteColor, uidType, scale, new SpriteLayoutProperties(layout));</span>
-<span class="fc" id="L302">    }</span>
+<span class="fc" id="L273">        this(id, imageUrl, layout, format, matteColor, uidType, scale, new SpriteLayoutProperties(layout));</span>
+<span class="fc" id="L274">    }</span>
 
     /**
      * Instantiates a new sprite image directive.
@@ -322,16 +294,16 @@ public class SpriteImageDirective {
      *            the sprite layout properties
      */
     public SpriteImageDirective(String id, String imageUrl, SpriteImageLayout layout, SpriteImageFormat format,
-<span class="fc" id="L325">            Color matteColor, SpriteUidType uidType, float scale, SpriteLayoutProperties spriteLayoutProperties) {</span>
-<span class="fc" id="L326">        this.spriteId = id;</span>
-<span class="fc" id="L327">        this.imagePath = imageUrl;</span>
-<span class="fc" id="L328">        this.layout = layout;</span>
-<span class="fc" id="L329">        this.format = format;</span>
-<span class="fc" id="L330">        this.matteColor = matteColor;</span>
-<span class="fc" id="L331">        this.uidType = uidType;</span>
-<span class="fc" id="L332">        this.scaleRatio = scale;</span>
-<span class="fc" id="L333">        this.spriteLayoutProperties = spriteLayoutProperties;</span>
-<span class="fc" id="L334">    }</span>
+<span class="fc" id="L297">            Color matteColor, SpriteUidType uidType, float scale, SpriteLayoutProperties spriteLayoutProperties) {</span>
+<span class="fc" id="L298">        this.spriteId = id;</span>
+<span class="fc" id="L299">        this.imagePath = imageUrl;</span>
+<span class="fc" id="L300">        this.layout = layout;</span>
+<span class="fc" id="L301">        this.format = format;</span>
+<span class="fc" id="L302">        this.matteColor = matteColor;</span>
+<span class="fc" id="L303">        this.uidType = uidType;</span>
+<span class="fc" id="L304">        this.scaleRatio = scale;</span>
+<span class="fc" id="L305">        this.spriteLayoutProperties = spriteLayoutProperties;</span>
+<span class="fc" id="L306">    }</span>
 
     /**
      * Parses a string into a {@link SpriteImageDirective}, logging messages to the provided {@link MessageLog}s.
@@ -344,90 +316,90 @@ public class SpriteImageDirective {
      * @return the sprite image directive
      */
     public static SpriteImageDirective parse(String directiveString, MessageLog messageCollector) {
-<span class="fc" id="L347">        final Map&lt;String, CssProperty&gt; rules = CssSyntaxUtils</span>
-<span class="fc" id="L348">                .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString, messageCollector));</span>
+<span class="fc" id="L319">        final Map&lt;String, CssProperty&gt; rules = CssSyntaxUtils</span>
+<span class="fc" id="L320">                .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString, messageCollector));</span>
 
-<span class="fc" id="L350">        final Set&lt;String&gt; properties = Sets.newLinkedHashSet(rules.keySet());</span>
-<span class="fc" id="L351">        properties.removeAll(ALLOWED_PROPERTIES);</span>
-<span class="fc" id="L352">        properties.removeAll(SpriteLayoutProperties.ALLOWED_PROPERTIES);</span>
-<span class="fc bfc" id="L353" title="All 2 branches covered.">        if (!properties.isEmpty()) {</span>
-<span class="fc" id="L354">            messageCollector.warning(MessageType.UNSUPPORTED_PROPERTIES_FOUND, CollectionUtils.toString(properties));</span>
+<span class="fc" id="L322">        final Set&lt;String&gt; properties = Sets.newLinkedHashSet(rules.keySet());</span>
+<span class="fc" id="L323">        properties.removeAll(ALLOWED_PROPERTIES);</span>
+<span class="fc" id="L324">        properties.removeAll(SpriteLayoutProperties.ALLOWED_PROPERTIES);</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">        if (!properties.isEmpty()) {</span>
+<span class="fc" id="L326">            messageCollector.warning(MessageType.UNSUPPORTED_PROPERTIES_FOUND, CollectionUtils.toString(properties));</span>
         }
 
-<span class="fc bfc" id="L357" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_ID)) {</span>
-<span class="fc" id="L358">            messageCollector.warning(MessageType.SPRITE_ID_NOT_FOUND);</span>
-<span class="fc" id="L359">            return null;</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_ID)) {</span>
+<span class="fc" id="L330">            messageCollector.warning(MessageType.SPRITE_ID_NOT_FOUND);</span>
+<span class="fc" id="L331">            return null;</span>
         }
 
-<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_IMAGE_URL)) {</span>
-<span class="fc" id="L363">            messageCollector.warning(MessageType.SPRITE_IMAGE_URL_NOT_FOUND);</span>
-<span class="fc" id="L364">            return null;</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_IMAGE_URL)) {</span>
+<span class="fc" id="L335">            messageCollector.warning(MessageType.SPRITE_IMAGE_URL_NOT_FOUND);</span>
+<span class="fc" id="L336">            return null;</span>
         }
 
-<span class="fc" id="L367">        final String id = rules.get(PROPERTY_SPRITE_ID).value;</span>
+<span class="fc" id="L339">        final String id = rules.get(PROPERTY_SPRITE_ID).value;</span>
 
-<span class="fc" id="L369">        final SpriteUidType uidGenerator = valueOf(CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_UID_SUFFIX),</span>
+<span class="fc" id="L341">        final SpriteUidType uidGenerator = valueOf(CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_UID_SUFFIX),</span>
                 SpriteUidType.class, SpriteUidType.NONE, messageCollector, MessageType.UNSUPPORTED_UID_TYPE);
-<span class="fc bfc" id="L371" title="All 2 branches covered.">        if (uidGenerator != SpriteUidType.NONE) {</span>
-<span class="fc" id="L372">            messageCollector.deprecation(MessageType.DEPRECATED_SPRITE_IMAGE_UID, uidGenerator.toString());</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        if (uidGenerator != SpriteUidType.NONE) {</span>
+<span class="fc" id="L344">            messageCollector.deprecation(MessageType.DEPRECATED_SPRITE_IMAGE_UID, uidGenerator.toString());</span>
         }
 
         // Image path. If the path does not match a regular expression, issue a warning.
-<span class="fc" id="L376">        final String imagePath = CssSyntaxUtils.unpackUrl(rules.get(PROPERTY_SPRITE_IMAGE_URL).value);</span>
-<span class="fc bfc" id="L377" title="All 2 branches covered.">        if (IMAGE_PATH_PATTERN.matcher(imagePath).matches()) {</span>
+<span class="fc" id="L348">        final String imagePath = CssSyntaxUtils.unpackUrl(rules.get(PROPERTY_SPRITE_IMAGE_URL).value);</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">        if (IMAGE_PATH_PATTERN.matcher(imagePath).matches()) {</span>
             // Check variable names
-<span class="fc" id="L379">            final Matcher variableMatcher = IMAGE_PATH_VARIABLE_PATTERN.matcher(imagePath);</span>
-<span class="fc bfc" id="L380" title="All 2 branches covered.">            while (variableMatcher.find()) {</span>
-<span class="pc bpc" id="L381" title="1 of 4 branches missed.">                if (variableMatcher.groupCount() == 1 &amp;&amp; !ALLOWED_VARIABLES.contains(variableMatcher.group(1))) {</span>
-<span class="fc" id="L382">                    messageCollector.warning(MessageType.UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH,</span>
-<span class="fc" id="L383">                            variableMatcher.group(1));</span>
+<span class="fc" id="L351">            final Matcher variableMatcher = IMAGE_PATH_VARIABLE_PATTERN.matcher(imagePath);</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">            while (variableMatcher.find()) {</span>
+<span class="pc bpc" id="L353" title="1 of 4 branches missed.">                if (variableMatcher.groupCount() == 1 &amp;&amp; !ALLOWED_VARIABLES.contains(variableMatcher.group(1))) {</span>
+<span class="fc" id="L354">                    messageCollector.warning(MessageType.UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH,</span>
+<span class="fc" id="L355">                            variableMatcher.group(1));</span>
                 }
             }
-<span class="fc" id="L386">        } else {</span>
+<span class="fc" id="L358">        } else {</span>
             // Just issue a warning
-<span class="fc" id="L388">            messageCollector.warning(MessageType.MALFORMED_SPRITE_IMAGE_PATH, imagePath);</span>
+<span class="fc" id="L360">            messageCollector.warning(MessageType.MALFORMED_SPRITE_IMAGE_PATH, imagePath);</span>
         }
 
         // Layout is optional
-<span class="fc" id="L392">        final SpriteImageLayout layout = valueOf(CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_LAYOUT),</span>
+<span class="fc" id="L364">        final SpriteImageLayout layout = valueOf(CssSyntaxUtils.getValue(rules, PROPERTY_SPRITE_IMAGE_LAYOUT),</span>
                 SpriteImageLayout.class, SpriteImageLayout.VERTICAL, messageCollector, MessageType.UNSUPPORTED_LAYOUT);
 
         // Infer format from image path
         SpriteImageFormat format;
-<span class="fc" id="L397">        final int lastDotIndex = imagePath.lastIndexOf('.');</span>
-<span class="pc bpc" id="L398" title="1 of 4 branches missed.">        if (lastDotIndex &lt; 0 || lastDotIndex == imagePath.length() - 1) {</span>
-<span class="fc" id="L399">            messageCollector.warning(MessageType.CANNOT_DETERMINE_IMAGE_FORMAT, imagePath);</span>
-<span class="fc" id="L400">            format = SpriteImageFormat.PNG;</span>
+<span class="fc" id="L369">        final int lastDotIndex = imagePath.lastIndexOf('.');</span>
+<span class="pc bpc" id="L370" title="1 of 4 branches missed.">        if (lastDotIndex &lt; 0 || lastDotIndex == imagePath.length() - 1) {</span>
+<span class="fc" id="L371">            messageCollector.warning(MessageType.CANNOT_DETERMINE_IMAGE_FORMAT, imagePath);</span>
+<span class="fc" id="L372">            format = SpriteImageFormat.PNG;</span>
         } else {
-<span class="fc" id="L402">            final int questionMarkIndex = imagePath.indexOf('?', lastDotIndex);</span>
-<span class="fc bfc" id="L403" title="All 2 branches covered.">            final String formatValue = questionMarkIndex &gt;= 0 ? imagePath.substring(lastDotIndex + 1, questionMarkIndex)</span>
-<span class="fc" id="L404">                    : imagePath.substring(lastDotIndex + 1);</span>
+<span class="fc" id="L374">            final int questionMarkIndex = imagePath.indexOf('?', lastDotIndex);</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">            final String formatValue = questionMarkIndex &gt;= 0 ? imagePath.substring(lastDotIndex + 1, questionMarkIndex)</span>
+<span class="fc" id="L376">                    : imagePath.substring(lastDotIndex + 1);</span>
             try {
-<span class="fc" id="L406">                format = SpriteImageFormat.getValue(formatValue);</span>
-<span class="fc" id="L407">            } catch (final IllegalArgumentException e) {</span>
-<span class="fc" id="L408">                messageCollector.warning(MessageType.UNSUPPORTED_SPRITE_IMAGE_FORMAT, formatValue);</span>
-<span class="fc" id="L409">                format = SpriteImageFormat.PNG;</span>
-<span class="fc" id="L410">            }</span>
+<span class="fc" id="L378">                format = SpriteImageFormat.getValue(formatValue);</span>
+<span class="fc" id="L379">            } catch (final IllegalArgumentException e) {</span>
+<span class="fc" id="L380">                messageCollector.warning(MessageType.UNSUPPORTED_SPRITE_IMAGE_FORMAT, formatValue);</span>
+<span class="fc" id="L381">                format = SpriteImageFormat.PNG;</span>
+<span class="fc" id="L382">            }</span>
         }
 
         // Matte color
         final Color matteColor;
-<span class="fc bfc" id="L415" title="All 2 branches covered.">        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_MATTE_COLOR)) {</span>
-<span class="fc" id="L416">            matteColor = CssSyntaxUtils.parseColor(rules.get(PROPERTY_SPRITE_MATTE_COLOR).value, messageCollector,</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_MATTE_COLOR)) {</span>
+<span class="fc" id="L388">            matteColor = CssSyntaxUtils.parseColor(rules.get(PROPERTY_SPRITE_MATTE_COLOR).value, messageCollector,</span>
                     null);
         } else {
-<span class="fc" id="L419">            matteColor = null;</span>
+<span class="fc" id="L391">            matteColor = null;</span>
         }
 
         final float scale;
-<span class="fc bfc" id="L423" title="All 2 branches covered.">        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_SCALE)) {</span>
-<span class="fc" id="L424">            scale = Float.parseFloat(rules.get(PROPERTY_SPRITE_SCALE).value);</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_SCALE)) {</span>
+<span class="fc" id="L396">            scale = Float.parseFloat(rules.get(PROPERTY_SPRITE_SCALE).value);</span>
         } else {
-<span class="fc" id="L426">            scale = 1.0f;</span>
+<span class="fc" id="L398">            scale = 1.0f;</span>
         }
 
-<span class="fc" id="L429">        return new SpriteImageDirective(id, imagePath, layout, format, matteColor, uidGenerator, scale,</span>
-<span class="fc" id="L430">                SpriteLayoutProperties.parse(directiveString, layout, messageCollector));</span>
+<span class="fc" id="L401">        return new SpriteImageDirective(id, imagePath, layout, format, matteColor, uidGenerator, scale,</span>
+<span class="fc" id="L402">                SpriteLayoutProperties.parse(directiveString, layout, messageCollector));</span>
     }
 
     /**
@@ -450,14 +422,14 @@ public class SpriteImageDirective {
      */
     private static &lt;T extends Enum&lt;T&gt;&gt; T valueOf(String stringValue, Class&lt;T&gt; enumClass, T defaultValue,
             MessageLog messageCollector, MessageType messageType) {
-<span class="fc bfc" id="L453" title="All 2 branches covered.">        if (!StringUtils.isNotBlank(stringValue)) {</span>
-<span class="fc" id="L454">            return defaultValue;</span>
+<span class="fc bfc" id="L425" title="All 2 branches covered.">        if (!StringUtils.isNotBlank(stringValue)) {</span>
+<span class="fc" id="L426">            return defaultValue;</span>
         }
         try {
-<span class="fc" id="L457">            return Enum.valueOf(enumClass, stringValue.toUpperCase(Locale.ENGLISH));</span>
-<span class="fc" id="L458">        } catch (IllegalArgumentException e) {</span>
-<span class="fc" id="L459">            messageCollector.warning(messageType, stringValue);</span>
-<span class="fc" id="L460">            return defaultValue;</span>
+<span class="fc" id="L429">            return Enum.valueOf(enumClass, stringValue.toUpperCase(Locale.ENGLISH));</span>
+<span class="fc" id="L430">        } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L431">            messageCollector.warning(messageType, stringValue);</span>
+<span class="fc" id="L432">            return defaultValue;</span>
         }
     }
 }

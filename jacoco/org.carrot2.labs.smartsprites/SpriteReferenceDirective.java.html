@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteReferenceDirective.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteReferenceDirective.java</span></div><h1>SpriteReferenceDirective.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.labs.smartsprites;
 
@@ -57,7 +28,7 @@ public class SpriteReferenceDirective {
     public static final String PROPERTY_SPRITE_REF = &quot;sprite-ref&quot;;
 
     /** Allowed properties of this directive. */
-<span class="fc" id="L60">    private static final Set&lt;String&gt; ALLOWED_PROPERTIES = ImmutableSet.of(PROPERTY_SPRITE_REF);</span>
+<span class="fc" id="L31">    private static final Set&lt;String&gt; ALLOWED_PROPERTIES = ImmutableSet.of(PROPERTY_SPRITE_REF);</span>
 
     /** Sprite id for this individual image. */
     public final String spriteRef;
@@ -75,10 +46,10 @@ public class SpriteReferenceDirective {
      * @param spriteLayoutProperties
      *            the sprite layout properties
      */
-<span class="fc" id="L78">    public SpriteReferenceDirective(String spriteImageId, SpriteLayoutProperties spriteLayoutProperties) {</span>
-<span class="fc" id="L79">        this.spriteRef = spriteImageId;</span>
-<span class="fc" id="L80">        this.spriteLayoutProperties = spriteLayoutProperties;</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L49">    public SpriteReferenceDirective(String spriteImageId, SpriteLayoutProperties spriteLayoutProperties) {</span>
+<span class="fc" id="L50">        this.spriteRef = spriteImageId;</span>
+<span class="fc" id="L51">        this.spriteLayoutProperties = spriteLayoutProperties;</span>
+<span class="fc" id="L52">    }</span>
 
     /**
      * Parses a {@link SpriteReferenceDirective} from the provided {@link String}, logging messages to the provided
@@ -95,35 +66,35 @@ public class SpriteReferenceDirective {
      */
     public static SpriteReferenceDirective parse(String directiveString, Map&lt;String, SpriteImageDirective&gt; spriteImages,
             MessageLog messageCollector) {
-<span class="fc" id="L98">        final Map&lt;String, CssProperty&gt; rules = CssSyntaxUtils</span>
-<span class="fc" id="L99">                .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString, messageCollector));</span>
+<span class="fc" id="L69">        final Map&lt;String, CssProperty&gt; rules = CssSyntaxUtils</span>
+<span class="fc" id="L70">                .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString, messageCollector));</span>
 
-<span class="fc" id="L101">        final Set&lt;String&gt; properties = Sets.newLinkedHashSet(rules.keySet());</span>
-<span class="fc" id="L102">        properties.removeAll(ALLOWED_PROPERTIES);</span>
-<span class="fc" id="L103">        properties.removeAll(SpriteLayoutProperties.ALLOWED_PROPERTIES);</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (!properties.isEmpty()) {</span>
-<span class="fc" id="L105">            messageCollector.warning(MessageType.UNSUPPORTED_PROPERTIES_FOUND, CollectionUtils.toString(properties));</span>
+<span class="fc" id="L72">        final Set&lt;String&gt; properties = Sets.newLinkedHashSet(rules.keySet());</span>
+<span class="fc" id="L73">        properties.removeAll(ALLOWED_PROPERTIES);</span>
+<span class="fc" id="L74">        properties.removeAll(SpriteLayoutProperties.ALLOWED_PROPERTIES);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (!properties.isEmpty()) {</span>
+<span class="fc" id="L76">            messageCollector.warning(MessageType.UNSUPPORTED_PROPERTIES_FOUND, CollectionUtils.toString(properties));</span>
         }
 
         // Sprite-ref is required
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_REF)) {</span>
-<span class="fc" id="L110">            messageCollector.warning(MessageType.SPRITE_REF_NOT_FOUND);</span>
-<span class="fc" id="L111">            return null;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_REF)) {</span>
+<span class="fc" id="L81">            messageCollector.warning(MessageType.SPRITE_REF_NOT_FOUND);</span>
+<span class="fc" id="L82">            return null;</span>
         }
 
-<span class="fc" id="L114">        final String spriteRef = rules.get(PROPERTY_SPRITE_REF).value;</span>
+<span class="fc" id="L85">        final String spriteRef = rules.get(PROPERTY_SPRITE_REF).value;</span>
 
         // Check if referred sprite exists
-<span class="fc" id="L117">        final SpriteImageDirective spriteImageDirective = spriteImages.get(spriteRef);</span>
+<span class="fc" id="L88">        final SpriteImageDirective spriteImageDirective = spriteImages.get(spriteRef);</span>
 
         // Referenced sprite not found
-<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (spriteImageDirective == null) {</span>
-<span class="fc" id="L121">            messageCollector.warning(MessageType.REFERENCED_SPRITE_NOT_FOUND, spriteRef);</span>
-<span class="fc" id="L122">            return null;</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (spriteImageDirective == null) {</span>
+<span class="fc" id="L92">            messageCollector.warning(MessageType.REFERENCED_SPRITE_NOT_FOUND, spriteRef);</span>
+<span class="fc" id="L93">            return null;</span>
         }
 
         // Parse sprite layout properties
-<span class="fc" id="L126">        return new SpriteReferenceDirective(spriteRef, SpriteLayoutProperties.parse(directiveString,</span>
+<span class="fc" id="L97">        return new SpriteReferenceDirective(spriteRef, SpriteLayoutProperties.parse(directiveString,</span>
                 spriteImageDirective.layout, spriteImageDirective.spriteLayoutProperties, messageCollector));
     }
 }

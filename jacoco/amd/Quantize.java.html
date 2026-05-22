@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Quantize.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">amd</a> &gt; <span class="el_source">Quantize.java</span></div><h1>Quantize.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package amd;
 
@@ -291,16 +262,16 @@ public class Quantize {
     static int[] SHIFT;
 
     static {
-<span class="fc" id="L294">        SQUARES = new int[MAX_RGB + MAX_RGB + 1];</span>
-<span class="fc bfc" id="L295" title="All 2 branches covered.">        for (int i = -MAX_RGB; i &lt;= MAX_RGB; i++) {</span>
-<span class="fc" id="L296">            SQUARES[i + MAX_RGB] = i * i;</span>
+<span class="fc" id="L265">        SQUARES = new int[MAX_RGB + MAX_RGB + 1];</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        for (int i = -MAX_RGB; i &lt;= MAX_RGB; i++) {</span>
+<span class="fc" id="L267">            SQUARES[i + MAX_RGB] = i * i;</span>
         }
 
-<span class="fc" id="L299">        SHIFT = new int[MAX_TREE_DEPTH + 1];</span>
-<span class="fc bfc" id="L300" title="All 2 branches covered.">        for (int i = 0; i &lt; MAX_TREE_DEPTH + 1; ++i) {</span>
-<span class="fc" id="L301">            SHIFT[i] = 1 &lt;&lt; (15 - i);</span>
+<span class="fc" id="L270">        SHIFT = new int[MAX_TREE_DEPTH + 1];</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        for (int i = 0; i &lt; MAX_TREE_DEPTH + 1; ++i) {</span>
+<span class="fc" id="L272">            SHIFT[i] = 1 &lt;&lt; (15 - i);</span>
         }
-<span class="fc" id="L303">    }</span>
+<span class="fc" id="L274">    }</span>
 
     /**
      * Instantiates a new quantize.
@@ -320,11 +291,11 @@ public class Quantize {
      * @return The new color palette.
      */
     public static int[] quantizeImage(int[][] pixels, int maxColors) {
-<span class="fc" id="L323">        Cube cube = new Cube(pixels, maxColors);</span>
-<span class="fc" id="L324">        cube.classification();</span>
-<span class="fc" id="L325">        cube.reduction();</span>
-<span class="fc" id="L326">        cube.assignment();</span>
-<span class="fc" id="L327">        return cube.colormap;</span>
+<span class="fc" id="L294">        Cube cube = new Cube(pixels, maxColors);</span>
+<span class="fc" id="L295">        cube.classification();</span>
+<span class="fc" id="L296">        cube.reduction();</span>
+<span class="fc" id="L297">        cube.assignment();</span>
+<span class="fc" id="L298">        return cube.colormap;</span>
     }
 
     /**
@@ -364,27 +335,27 @@ public class Quantize {
          * @param maxColors
          *            the max colors
          */
-<span class="fc" id="L367">        Cube(int[][] pixels, int maxColors) {</span>
-<span class="fc" id="L368">            this.pixels = pixels;</span>
-<span class="fc" id="L369">            this.maxColors = maxColors;</span>
+<span class="fc" id="L338">        Cube(int[][] pixels, int maxColors) {</span>
+<span class="fc" id="L339">            this.pixels = pixels;</span>
+<span class="fc" id="L340">            this.maxColors = maxColors;</span>
 
-<span class="fc" id="L371">            int i = maxColors;</span>
+<span class="fc" id="L342">            int i = maxColors;</span>
             // tree_depth = log max_colors
             // 4
-<span class="fc bfc" id="L374" title="All 2 branches covered.">            for (depth = 1; i != 0; depth++) {</span>
-<span class="fc" id="L375">                i /= 4;</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">            for (depth = 1; i != 0; depth++) {</span>
+<span class="fc" id="L346">                i /= 4;</span>
             }
-<span class="pc bpc" id="L377" title="1 of 2 branches missed.">            if (depth &gt; 1) {</span>
-<span class="fc" id="L378">                --depth;</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">            if (depth &gt; 1) {</span>
+<span class="fc" id="L349">                --depth;</span>
             }
-<span class="pc bpc" id="L380" title="1 of 2 branches missed.">            if (depth &gt; MAX_TREE_DEPTH) {</span>
-<span class="nc" id="L381">                depth = MAX_TREE_DEPTH;</span>
-<span class="pc bpc" id="L382" title="1 of 2 branches missed.">            } else if (depth &lt; 2) {</span>
-<span class="nc" id="L383">                depth = 2;</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">            if (depth &gt; MAX_TREE_DEPTH) {</span>
+<span class="nc" id="L352">                depth = MAX_TREE_DEPTH;</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">            } else if (depth &lt; 2) {</span>
+<span class="nc" id="L354">                depth = 2;</span>
             }
 
-<span class="fc" id="L386">            root = new Node(this);</span>
-<span class="fc" id="L387">        }</span>
+<span class="fc" id="L357">            root = new Node(this);</span>
+<span class="fc" id="L358">        }</span>
 
         /**
          * Procedure Classification begins by initializing a color description tree of sufficient depth to represent
@@ -413,46 +384,46 @@ public class Quantize {
          * pixels represented by this node.
          */
         void classification() {
-<span class="fc" id="L416">            int[][] pixels = this.pixels;</span>
+<span class="fc" id="L387">            int[][] pixels = this.pixels;</span>
 
-<span class="fc" id="L418">            int width = pixels.length;</span>
-<span class="fc" id="L419">            int height = pixels[0].length;</span>
+<span class="fc" id="L389">            int width = pixels.length;</span>
+<span class="fc" id="L390">            int height = pixels[0].length;</span>
 
             // convert to indexed color
-<span class="fc bfc" id="L422" title="All 2 branches covered.">            for (int x = width; x-- &gt; 0;) {</span>
-<span class="fc bfc" id="L423" title="All 2 branches covered.">                for (int y = height; y-- &gt; 0;) {</span>
-<span class="fc" id="L424">                    int pixel = pixels[x][y];</span>
-<span class="fc" id="L425">                    int red = pixel &gt;&gt; 16 &amp; 0xFF;</span>
-<span class="fc" id="L426">                    int green = pixel &gt;&gt; 8 &amp; 0xFF;</span>
-<span class="fc" id="L427">                    int blue = pixel &gt;&gt; 0 &amp; 0xFF;</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">            for (int x = width; x-- &gt; 0;) {</span>
+<span class="fc bfc" id="L394" title="All 2 branches covered.">                for (int y = height; y-- &gt; 0;) {</span>
+<span class="fc" id="L395">                    int pixel = pixels[x][y];</span>
+<span class="fc" id="L396">                    int red = pixel &gt;&gt; 16 &amp; 0xFF;</span>
+<span class="fc" id="L397">                    int green = pixel &gt;&gt; 8 &amp; 0xFF;</span>
+<span class="fc" id="L398">                    int blue = pixel &gt;&gt; 0 &amp; 0xFF;</span>
 
                     // a hard limit on the number of nodes in the tree
-<span class="pc bpc" id="L430" title="1 of 2 branches missed.">                    if (nodes &gt; MAX_NODES) {</span>
-<span class="nc" id="L431">                        System.out.println(&quot;pruning&quot;);</span>
-<span class="nc" id="L432">                        root.pruneLevel();</span>
-<span class="nc" id="L433">                        --depth;</span>
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">                    if (nodes &gt; MAX_NODES) {</span>
+<span class="nc" id="L402">                        System.out.println(&quot;pruning&quot;);</span>
+<span class="nc" id="L403">                        root.pruneLevel();</span>
+<span class="nc" id="L404">                        --depth;</span>
                     }
 
                     // walk the tree to depth, increasing the
                     // number_pixels count for each node
-<span class="fc" id="L438">                    Node node = root;</span>
-<span class="fc bfc" id="L439" title="All 2 branches covered.">                    for (int level = 1; level &lt;= depth; ++level) {</span>
-<span class="fc bfc" id="L440" title="All 4 branches covered.">                        int id = (red &gt; node.midRed ? 1 : 0) &lt;&lt; 0 | (green &gt; node.midGreen ? 1 : 0) &lt;&lt; 1</span>
-<span class="fc bfc" id="L441" title="All 2 branches covered.">                                | (blue &gt; node.midBlue ? 1 : 0) &lt;&lt; 2;</span>
-<span class="fc bfc" id="L442" title="All 2 branches covered.">                        if (node.child[id] == null) {</span>
-<span class="fc" id="L443">                            new Node(node, id, level);</span>
+<span class="fc" id="L409">                    Node node = root;</span>
+<span class="fc bfc" id="L410" title="All 2 branches covered.">                    for (int level = 1; level &lt;= depth; ++level) {</span>
+<span class="fc bfc" id="L411" title="All 4 branches covered.">                        int id = (red &gt; node.midRed ? 1 : 0) &lt;&lt; 0 | (green &gt; node.midGreen ? 1 : 0) &lt;&lt; 1</span>
+<span class="fc bfc" id="L412" title="All 2 branches covered.">                                | (blue &gt; node.midBlue ? 1 : 0) &lt;&lt; 2;</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">                        if (node.child[id] == null) {</span>
+<span class="fc" id="L414">                            new Node(node, id, level);</span>
                         }
-<span class="fc" id="L445">                        node = node.child[id];</span>
-<span class="fc" id="L446">                        node.numberPixels += SHIFT[level];</span>
+<span class="fc" id="L416">                        node = node.child[id];</span>
+<span class="fc" id="L417">                        node.numberPixels += SHIFT[level];</span>
                     }
 
-<span class="fc" id="L449">                    ++node.unique;</span>
-<span class="fc" id="L450">                    node.totalRed += red;</span>
-<span class="fc" id="L451">                    node.totalGreen += green;</span>
-<span class="fc" id="L452">                    node.totalBlue += blue;</span>
-<span class="fc" id="L453">                }</span>
+<span class="fc" id="L420">                    ++node.unique;</span>
+<span class="fc" id="L421">                    node.totalRed += red;</span>
+<span class="fc" id="L422">                    node.totalGreen += green;</span>
+<span class="fc" id="L423">                    node.totalBlue += blue;</span>
+<span class="fc" id="L424">                }</span>
             }
-<span class="fc" id="L455">        }</span>
+<span class="fc" id="L426">        }</span>
 
         /**
          * Reduction.
@@ -466,17 +437,17 @@ public class Quantize {
          * averaging.
          */
         void reduction() {
-<span class="fc" id="L469">            int threshold = 1;</span>
-<span class="pc bpc" id="L470" title="1 of 2 branches missed.">            while (colors &gt; maxColors) {</span>
-<span class="nc" id="L471">                colors = 0;</span>
-<span class="nc" id="L472">                threshold = root.reduce(threshold, Integer.MAX_VALUE);</span>
+<span class="fc" id="L440">            int threshold = 1;</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">            while (colors &gt; maxColors) {</span>
+<span class="nc" id="L442">                colors = 0;</span>
+<span class="nc" id="L443">                threshold = root.reduce(threshold, Integer.MAX_VALUE);</span>
             }
-<span class="fc" id="L474">        }</span>
+<span class="fc" id="L445">        }</span>
 
         /**
          * The result of a closest color search.
          */
-<span class="fc" id="L479">        static class Search {</span>
+<span class="fc" id="L450">        static class Search {</span>
 
             /** The distance. */
             int distance;
@@ -501,36 +472,36 @@ public class Quantize {
          * color in the color map.
          */
         void assignment() {
-<span class="fc" id="L504">            colormap = new int[colors];</span>
+<span class="fc" id="L475">            colormap = new int[colors];</span>
 
-<span class="fc" id="L506">            colors = 0;</span>
-<span class="fc" id="L507">            root.colormap();</span>
+<span class="fc" id="L477">            colors = 0;</span>
+<span class="fc" id="L478">            root.colormap();</span>
 
-<span class="fc" id="L509">            int[][] pixels = this.pixels;</span>
+<span class="fc" id="L480">            int[][] pixels = this.pixels;</span>
 
-<span class="fc" id="L511">            int width = pixels.length;</span>
-<span class="fc" id="L512">            int height = pixels[0].length;</span>
+<span class="fc" id="L482">            int width = pixels.length;</span>
+<span class="fc" id="L483">            int height = pixels[0].length;</span>
 
-<span class="fc" id="L514">            Search search = new Search();</span>
+<span class="fc" id="L485">            Search search = new Search();</span>
 
             // convert to indexed color
-<span class="fc bfc" id="L517" title="All 2 branches covered.">            for (int x = width; x-- &gt; 0;) {</span>
-<span class="fc bfc" id="L518" title="All 2 branches covered.">                for (int y = height; y-- &gt; 0;) {</span>
-<span class="fc" id="L519">                    int pixel = pixels[x][y];</span>
-<span class="fc" id="L520">                    int red = pixel &gt;&gt; 16 &amp; 0xFF;</span>
-<span class="fc" id="L521">                    int green = pixel &gt;&gt; 8 &amp; 0xFF;</span>
-<span class="fc" id="L522">                    int blue = pixel &gt;&gt; 0 &amp; 0xFF;</span>
+<span class="fc bfc" id="L488" title="All 2 branches covered.">            for (int x = width; x-- &gt; 0;) {</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">                for (int y = height; y-- &gt; 0;) {</span>
+<span class="fc" id="L490">                    int pixel = pixels[x][y];</span>
+<span class="fc" id="L491">                    int red = pixel &gt;&gt; 16 &amp; 0xFF;</span>
+<span class="fc" id="L492">                    int green = pixel &gt;&gt; 8 &amp; 0xFF;</span>
+<span class="fc" id="L493">                    int blue = pixel &gt;&gt; 0 &amp; 0xFF;</span>
 
                     // walk the tree to find the cube containing that color
-<span class="fc" id="L525">                    Node node = root;</span>
+<span class="fc" id="L496">                    Node node = root;</span>
                     for (;;) {
-<span class="fc bfc" id="L527" title="All 4 branches covered.">                        int id = (red &gt; node.midRed ? 1 : 0) &lt;&lt; 0 | (green &gt; node.midGreen ? 1 : 0) &lt;&lt; 1</span>
-<span class="fc bfc" id="L528" title="All 2 branches covered.">                                | (blue &gt; node.midBlue ? 1 : 0) &lt;&lt; 2;</span>
-<span class="fc bfc" id="L529" title="All 2 branches covered.">                        if (node.child[id] == null) {</span>
-<span class="fc" id="L530">                            break;</span>
+<span class="fc bfc" id="L498" title="All 4 branches covered.">                        int id = (red &gt; node.midRed ? 1 : 0) &lt;&lt; 0 | (green &gt; node.midGreen ? 1 : 0) &lt;&lt; 1</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">                                | (blue &gt; node.midBlue ? 1 : 0) &lt;&lt; 2;</span>
+<span class="fc bfc" id="L500" title="All 2 branches covered.">                        if (node.child[id] == null) {</span>
+<span class="fc" id="L501">                            break;</span>
                         }
-<span class="fc" id="L532">                        node = node.child[id];</span>
-<span class="fc" id="L533">                    }</span>
+<span class="fc" id="L503">                        node = node.child[id];</span>
+<span class="fc" id="L504">                    }</span>
 
                     if (QUICK) {
                         // if QUICK is set, just use that
@@ -539,13 +510,13 @@ public class Quantize {
                         pixels[x][y] = node.colorNumber;
                     } else {
                         // Find the closest color.
-<span class="fc" id="L542">                        search.distance = Integer.MAX_VALUE;</span>
-<span class="fc" id="L543">                        node.parent.closestColor(red, green, blue, search);</span>
-<span class="fc" id="L544">                        pixels[x][y] = search.colorNumber;</span>
+<span class="fc" id="L513">                        search.distance = Integer.MAX_VALUE;</span>
+<span class="fc" id="L514">                        node.parent.closestColor(red, green, blue, search);</span>
+<span class="fc" id="L515">                        pixels[x][y] = search.colorNumber;</span>
                     }
-<span class="fc" id="L546">                }</span>
+<span class="fc" id="L517">                }</span>
             }
-<span class="fc" id="L548">        }</span>
+<span class="fc" id="L519">        }</span>
 
         /**
          * A single Node in the tree.
@@ -612,19 +583,19 @@ public class Quantize {
              * @param cube
              *            the cube
              */
-<span class="fc" id="L615">            Node(Cube cube) {</span>
-<span class="fc" id="L616">                this.cube = cube;</span>
-<span class="fc" id="L617">                this.parent = this;</span>
-<span class="fc" id="L618">                this.child = new Node[8];</span>
-<span class="fc" id="L619">                this.id = 0;</span>
-<span class="fc" id="L620">                this.level = 0;</span>
+<span class="fc" id="L586">            Node(Cube cube) {</span>
+<span class="fc" id="L587">                this.cube = cube;</span>
+<span class="fc" id="L588">                this.parent = this;</span>
+<span class="fc" id="L589">                this.child = new Node[8];</span>
+<span class="fc" id="L590">                this.id = 0;</span>
+<span class="fc" id="L591">                this.level = 0;</span>
 
-<span class="fc" id="L622">                this.numberPixels = Integer.MAX_VALUE;</span>
+<span class="fc" id="L593">                this.numberPixels = Integer.MAX_VALUE;</span>
 
-<span class="fc" id="L624">                this.midRed = (MAX_RGB + 1) &gt;&gt; 1;</span>
-<span class="fc" id="L625">                this.midGreen = (MAX_RGB + 1) &gt;&gt; 1;</span>
-<span class="fc" id="L626">                this.midBlue = (MAX_RGB + 1) &gt;&gt; 1;</span>
-<span class="fc" id="L627">            }</span>
+<span class="fc" id="L595">                this.midRed = (MAX_RGB + 1) &gt;&gt; 1;</span>
+<span class="fc" id="L596">                this.midGreen = (MAX_RGB + 1) &gt;&gt; 1;</span>
+<span class="fc" id="L597">                this.midBlue = (MAX_RGB + 1) &gt;&gt; 1;</span>
+<span class="fc" id="L598">            }</span>
 
             /**
              * Instantiates a new node.
@@ -636,60 +607,60 @@ public class Quantize {
              * @param level
              *            the level
              */
-<span class="fc" id="L639">            Node(Node parent, int id, int level) {</span>
-<span class="fc" id="L640">                this.cube = parent.cube;</span>
-<span class="fc" id="L641">                this.parent = parent;</span>
-<span class="fc" id="L642">                this.child = new Node[8];</span>
-<span class="fc" id="L643">                this.id = id;</span>
-<span class="fc" id="L644">                this.level = level;</span>
+<span class="fc" id="L610">            Node(Node parent, int id, int level) {</span>
+<span class="fc" id="L611">                this.cube = parent.cube;</span>
+<span class="fc" id="L612">                this.parent = parent;</span>
+<span class="fc" id="L613">                this.child = new Node[8];</span>
+<span class="fc" id="L614">                this.id = id;</span>
+<span class="fc" id="L615">                this.level = level;</span>
 
                 // add to the cube
-<span class="fc" id="L647">                ++cube.nodes;</span>
-<span class="fc bfc" id="L648" title="All 2 branches covered.">                if (level == cube.depth) {</span>
-<span class="fc" id="L649">                    ++cube.colors;</span>
+<span class="fc" id="L618">                ++cube.nodes;</span>
+<span class="fc bfc" id="L619" title="All 2 branches covered.">                if (level == cube.depth) {</span>
+<span class="fc" id="L620">                    ++cube.colors;</span>
                 }
 
                 // add to the parent
-<span class="fc" id="L653">                ++parent.nchild;</span>
-<span class="fc" id="L654">                parent.child[id] = this;</span>
+<span class="fc" id="L624">                ++parent.nchild;</span>
+<span class="fc" id="L625">                parent.child[id] = this;</span>
 
                 // figure out our midpoint
-<span class="fc" id="L657">                int bi = 1 &lt;&lt; (MAX_TREE_DEPTH - level) &gt;&gt; 1;</span>
-<span class="fc bfc" id="L658" title="All 2 branches covered.">                midRed = parent.midRed + ((id &amp; 1) &gt; 0 ? bi : -bi);</span>
-<span class="fc bfc" id="L659" title="All 2 branches covered.">                midGreen = parent.midGreen + ((id &amp; 2) &gt; 0 ? bi : -bi);</span>
-<span class="fc bfc" id="L660" title="All 2 branches covered.">                midBlue = parent.midBlue + ((id &amp; 4) &gt; 0 ? bi : -bi);</span>
-<span class="fc" id="L661">            }</span>
+<span class="fc" id="L628">                int bi = 1 &lt;&lt; (MAX_TREE_DEPTH - level) &gt;&gt; 1;</span>
+<span class="fc bfc" id="L629" title="All 2 branches covered.">                midRed = parent.midRed + ((id &amp; 1) &gt; 0 ? bi : -bi);</span>
+<span class="fc bfc" id="L630" title="All 2 branches covered.">                midGreen = parent.midGreen + ((id &amp; 2) &gt; 0 ? bi : -bi);</span>
+<span class="fc bfc" id="L631" title="All 2 branches covered.">                midBlue = parent.midBlue + ((id &amp; 4) &gt; 0 ? bi : -bi);</span>
+<span class="fc" id="L632">            }</span>
 
             /**
              * Remove this child node, and make sure our parent absorbs our pixel statistics.
              */
             void pruneChild() {
-<span class="nc" id="L667">                --parent.nchild;</span>
-<span class="nc" id="L668">                parent.unique += unique;</span>
-<span class="nc" id="L669">                parent.totalRed += totalRed;</span>
-<span class="nc" id="L670">                parent.totalGreen += totalGreen;</span>
-<span class="nc" id="L671">                parent.totalBlue += totalBlue;</span>
-<span class="nc" id="L672">                parent.child[id] = null;</span>
-<span class="nc" id="L673">                --cube.nodes;</span>
-<span class="nc" id="L674">                cube = null;</span>
-<span class="nc" id="L675">                parent = null;</span>
-<span class="nc" id="L676">            }</span>
+<span class="nc" id="L638">                --parent.nchild;</span>
+<span class="nc" id="L639">                parent.unique += unique;</span>
+<span class="nc" id="L640">                parent.totalRed += totalRed;</span>
+<span class="nc" id="L641">                parent.totalGreen += totalGreen;</span>
+<span class="nc" id="L642">                parent.totalBlue += totalBlue;</span>
+<span class="nc" id="L643">                parent.child[id] = null;</span>
+<span class="nc" id="L644">                --cube.nodes;</span>
+<span class="nc" id="L645">                cube = null;</span>
+<span class="nc" id="L646">                parent = null;</span>
+<span class="nc" id="L647">            }</span>
 
             /**
              * Prune the lowest layer of the tree.
              */
             void pruneLevel() {
-<span class="nc bnc" id="L682" title="All 2 branches missed.">                if (nchild != 0) {</span>
-<span class="nc bnc" id="L683" title="All 2 branches missed.">                    for (int i = 0; i &lt; 8; i++) {</span>
-<span class="nc bnc" id="L684" title="All 2 branches missed.">                        if (child[i] != null) {</span>
-<span class="nc" id="L685">                            child[i].pruneLevel();</span>
+<span class="nc bnc" id="L653" title="All 2 branches missed.">                if (nchild != 0) {</span>
+<span class="nc bnc" id="L654" title="All 2 branches missed.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="nc bnc" id="L655" title="All 2 branches missed.">                        if (child[i] != null) {</span>
+<span class="nc" id="L656">                            child[i].pruneLevel();</span>
                         }
                     }
                 }
-<span class="nc bnc" id="L689" title="All 2 branches missed.">                if (level == cube.depth) {</span>
-<span class="nc" id="L690">                    pruneChild();</span>
+<span class="nc bnc" id="L660" title="All 2 branches missed.">                if (level == cube.depth) {</span>
+<span class="nc" id="L661">                    pruneChild();</span>
                 }
-<span class="nc" id="L692">            }</span>
+<span class="nc" id="L663">            }</span>
 
             /**
              * Remove any nodes that have fewer than threshold pixels. Also, as long as we're walking the tree:
@@ -707,24 +678,24 @@ public class Quantize {
              * @return the int
              */
             int reduce(int threshold, int nextThreshold) {
-<span class="nc bnc" id="L710" title="All 2 branches missed.">                if (nchild != 0) {</span>
-<span class="nc bnc" id="L711" title="All 2 branches missed.">                    for (int i = 0; i &lt; 8; i++) {</span>
-<span class="nc bnc" id="L712" title="All 2 branches missed.">                        if (child[i] != null) {</span>
-<span class="nc" id="L713">                            nextThreshold = child[i].reduce(threshold, nextThreshold);</span>
+<span class="nc bnc" id="L681" title="All 2 branches missed.">                if (nchild != 0) {</span>
+<span class="nc bnc" id="L682" title="All 2 branches missed.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">                        if (child[i] != null) {</span>
+<span class="nc" id="L684">                            nextThreshold = child[i].reduce(threshold, nextThreshold);</span>
                         }
                     }
                 }
-<span class="nc bnc" id="L717" title="All 2 branches missed.">                if (numberPixels &lt;= threshold) {</span>
-<span class="nc" id="L718">                    pruneChild();</span>
+<span class="nc bnc" id="L688" title="All 2 branches missed.">                if (numberPixels &lt;= threshold) {</span>
+<span class="nc" id="L689">                    pruneChild();</span>
                 } else {
-<span class="nc bnc" id="L720" title="All 2 branches missed.">                    if (unique != 0) {</span>
-<span class="nc" id="L721">                        cube.colors++;</span>
+<span class="nc bnc" id="L691" title="All 2 branches missed.">                    if (unique != 0) {</span>
+<span class="nc" id="L692">                        cube.colors++;</span>
                     }
-<span class="nc bnc" id="L723" title="All 2 branches missed.">                    if (numberPixels &lt; nextThreshold) {</span>
-<span class="nc" id="L724">                        nextThreshold = numberPixels;</span>
+<span class="nc bnc" id="L694" title="All 2 branches missed.">                    if (numberPixels &lt; nextThreshold) {</span>
+<span class="nc" id="L695">                        nextThreshold = numberPixels;</span>
                     }
                 }
-<span class="nc" id="L727">                return nextThreshold;</span>
+<span class="nc" id="L698">                return nextThreshold;</span>
             }
 
             /**
@@ -734,21 +705,21 @@ public class Quantize {
              * color cube tree where the number of unique colors is not zero.
              */
             void colormap() {
-<span class="fc bfc" id="L737" title="All 2 branches covered.">                if (nchild != 0) {</span>
-<span class="fc bfc" id="L738" title="All 2 branches covered.">                    for (int i = 0; i &lt; 8; i++) {</span>
-<span class="fc bfc" id="L739" title="All 2 branches covered.">                        if (child[i] != null) {</span>
-<span class="fc" id="L740">                            child[i].colormap();</span>
+<span class="fc bfc" id="L708" title="All 2 branches covered.">                if (nchild != 0) {</span>
+<span class="fc bfc" id="L709" title="All 2 branches covered.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">                        if (child[i] != null) {</span>
+<span class="fc" id="L711">                            child[i].colormap();</span>
                         }
                     }
                 }
-<span class="fc bfc" id="L744" title="All 2 branches covered.">                if (unique != 0) {</span>
-<span class="fc" id="L745">                    int r = (totalRed + (unique &gt;&gt; 1)) / unique;</span>
-<span class="fc" id="L746">                    int g = (totalGreen + (unique &gt;&gt; 1)) / unique;</span>
-<span class="fc" id="L747">                    int b = (totalBlue + (unique &gt;&gt; 1)) / unique;</span>
-<span class="fc" id="L748">                    cube.colormap[cube.colors] = 0xFF &lt;&lt; 24 | (r &amp; 0xFF) &lt;&lt; 16 | (g &amp; 0xFF) &lt;&lt; 8 | (b &amp; 0xFF) &lt;&lt; 0;</span>
-<span class="fc" id="L749">                    colorNumber = cube.colors++;</span>
+<span class="fc bfc" id="L715" title="All 2 branches covered.">                if (unique != 0) {</span>
+<span class="fc" id="L716">                    int r = (totalRed + (unique &gt;&gt; 1)) / unique;</span>
+<span class="fc" id="L717">                    int g = (totalGreen + (unique &gt;&gt; 1)) / unique;</span>
+<span class="fc" id="L718">                    int b = (totalBlue + (unique &gt;&gt; 1)) / unique;</span>
+<span class="fc" id="L719">                    cube.colormap[cube.colors] = 0xFF &lt;&lt; 24 | (r &amp; 0xFF) &lt;&lt; 16 | (g &amp; 0xFF) &lt;&lt; 8 | (b &amp; 0xFF) &lt;&lt; 0;</span>
+<span class="fc" id="L720">                    colorNumber = cube.colors++;</span>
                 }
-<span class="fc" id="L751">            }</span>
+<span class="fc" id="L722">            }</span>
 
             /**
              * Closest color.
@@ -766,23 +737,23 @@ public class Quantize {
              *            the search
              */
             void closestColor(int red, int green, int blue, Search search) {
-<span class="fc bfc" id="L769" title="All 2 branches covered.">                if (nchild != 0) {</span>
-<span class="fc bfc" id="L770" title="All 2 branches covered.">                    for (int i = 0; i &lt; 8; i++) {</span>
-<span class="fc bfc" id="L771" title="All 2 branches covered.">                        if (child[i] != null) {</span>
-<span class="fc" id="L772">                            child[i].closestColor(red, green, blue, search);</span>
+<span class="fc bfc" id="L740" title="All 2 branches covered.">                if (nchild != 0) {</span>
+<span class="fc bfc" id="L741" title="All 2 branches covered.">                    for (int i = 0; i &lt; 8; i++) {</span>
+<span class="fc bfc" id="L742" title="All 2 branches covered.">                        if (child[i] != null) {</span>
+<span class="fc" id="L743">                            child[i].closestColor(red, green, blue, search);</span>
                         }
                     }
                 }
 
-<span class="fc bfc" id="L777" title="All 2 branches covered.">                if (unique != 0) {</span>
-<span class="fc" id="L778">                    int color = cube.colormap[colorNumber];</span>
-<span class="fc" id="L779">                    int distance = distance(color, red, green, blue);</span>
-<span class="fc bfc" id="L780" title="All 2 branches covered.">                    if (distance &lt; search.distance) {</span>
-<span class="fc" id="L781">                        search.distance = distance;</span>
-<span class="fc" id="L782">                        search.colorNumber = colorNumber;</span>
+<span class="fc bfc" id="L748" title="All 2 branches covered.">                if (unique != 0) {</span>
+<span class="fc" id="L749">                    int color = cube.colormap[colorNumber];</span>
+<span class="fc" id="L750">                    int distance = distance(color, red, green, blue);</span>
+<span class="fc bfc" id="L751" title="All 2 branches covered.">                    if (distance &lt; search.distance) {</span>
+<span class="fc" id="L752">                        search.distance = distance;</span>
+<span class="fc" id="L753">                        search.colorNumber = colorNumber;</span>
                     }
                 }
-<span class="fc" id="L785">            }</span>
+<span class="fc" id="L756">            }</span>
 
             /**
              * Figure out the distance between this node and som color.
@@ -799,28 +770,28 @@ public class Quantize {
              * @return the int
              */
             static final int distance(int color, int r, int g, int b) {
-<span class="fc" id="L802">                return SQUARES[(color &gt;&gt; 16 &amp; 0xFF) - r + MAX_RGB] + SQUARES[(color &gt;&gt; 8 &amp; 0xFF) - g + MAX_RGB]</span>
+<span class="fc" id="L773">                return SQUARES[(color &gt;&gt; 16 &amp; 0xFF) - r + MAX_RGB] + SQUARES[(color &gt;&gt; 8 &amp; 0xFF) - g + MAX_RGB]</span>
                         + SQUARES[(color &gt;&gt; 0 &amp; 0xFF) - b + MAX_RGB];
             }
 
             @Override
             public String toString() {
-<span class="nc" id="L808">                StringBuilder buf = new StringBuilder();</span>
-<span class="nc bnc" id="L809" title="All 2 branches missed.">                if (parent == this) {</span>
-<span class="nc" id="L810">                    buf.append(&quot;root&quot;);</span>
+<span class="nc" id="L779">                StringBuilder buf = new StringBuilder();</span>
+<span class="nc bnc" id="L780" title="All 2 branches missed.">                if (parent == this) {</span>
+<span class="nc" id="L781">                    buf.append(&quot;root&quot;);</span>
                 } else {
-<span class="nc" id="L812">                    buf.append(&quot;node&quot;);</span>
+<span class="nc" id="L783">                    buf.append(&quot;node&quot;);</span>
                 }
-<span class="nc" id="L814">                buf.append(' ');</span>
-<span class="nc" id="L815">                buf.append(level);</span>
-<span class="nc" id="L816">                buf.append(&quot; [&quot;);</span>
-<span class="nc" id="L817">                buf.append(midRed);</span>
-<span class="nc" id="L818">                buf.append(',');</span>
-<span class="nc" id="L819">                buf.append(midGreen);</span>
-<span class="nc" id="L820">                buf.append(',');</span>
-<span class="nc" id="L821">                buf.append(midBlue);</span>
-<span class="nc" id="L822">                buf.append(']');</span>
-<span class="nc" id="L823">                return new String(buf);</span>
+<span class="nc" id="L785">                buf.append(' ');</span>
+<span class="nc" id="L786">                buf.append(level);</span>
+<span class="nc" id="L787">                buf.append(&quot; [&quot;);</span>
+<span class="nc" id="L788">                buf.append(midRed);</span>
+<span class="nc" id="L789">                buf.append(',');</span>
+<span class="nc" id="L790">                buf.append(midGreen);</span>
+<span class="nc" id="L791">                buf.append(',');</span>
+<span class="nc" id="L792">                buf.append(midBlue);</span>
+<span class="nc" id="L793">                buf.append(']');</span>
+<span class="nc" id="L794">                return new String(buf);</span>
             }
         }
     }

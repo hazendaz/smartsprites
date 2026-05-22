@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ColorQuantizer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.util</a> &gt; <span class="el_source">ColorQuantizer.java</span></div><h1>ColorQuantizer.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.util;
 
@@ -69,7 +40,7 @@ public class ColorQuantizer {
      * @return {@link BufferedImage} with type {@link BufferedImage#TYPE_BYTE_INDEXED} and quantized colors
      */
     public static BufferedImage quantize(BufferedImage source) {
-<span class="fc" id="L72">        return quantize(source, Color.WHITE);</span>
+<span class="fc" id="L43">        return quantize(source, Color.WHITE);</span>
     }
 
     /**
@@ -84,7 +55,7 @@ public class ColorQuantizer {
      * @return {@link BufferedImage} with type {@link BufferedImage#TYPE_BYTE_INDEXED} and quantized colors
      */
     public static BufferedImage quantize(BufferedImage source, Color matteColor) {
-<span class="fc" id="L87">        return quantize(source, matteColor, MAX_INDEXED_COLORS);</span>
+<span class="fc" id="L58">        return quantize(source, matteColor, MAX_INDEXED_COLORS);</span>
     }
 
     /**
@@ -101,37 +72,37 @@ public class ColorQuantizer {
      * @return {@link BufferedImage} with type {@link BufferedImage#TYPE_BYTE_INDEXED} and quantized colors
      */
     public static BufferedImage quantize(BufferedImage source, Color matteColor, int maxColors) {
-<span class="fc" id="L104">        final int width = source.getWidth();</span>
-<span class="fc" id="L105">        final int height = source.getHeight();</span>
+<span class="fc" id="L75">        final int width = source.getWidth();</span>
+<span class="fc" id="L76">        final int height = source.getHeight();</span>
 
         // First put the matte color so that we have a sensible result
         // for images with full alpha transparencies
-<span class="fc" id="L109">        final BufferedImage mattedSource = BufferedImageUtils.matte(source, matteColor);</span>
+<span class="fc" id="L80">        final BufferedImage mattedSource = BufferedImageUtils.matte(source, matteColor);</span>
 
         // Get two copies of RGB data (quantization will overwrite one)
-<span class="fc" id="L112">        final int[][] bitmap = BufferedImageUtils.getRgb(mattedSource);</span>
+<span class="fc" id="L83">        final int[][] bitmap = BufferedImageUtils.getRgb(mattedSource);</span>
 
         // Quantize colors and shift palette by one for transparency color
         // We'll keep transparency color black for now.
-<span class="fc" id="L116">        final int[] colors = Quantize.quantizeImage(bitmap, maxColors);</span>
-<span class="fc" id="L117">        final int[] colorsWithAlpha = new int[colors.length + 1];</span>
-<span class="fc" id="L118">        System.arraycopy(colors, 0, colorsWithAlpha, 1, colors.length);</span>
-<span class="fc" id="L119">        colorsWithAlpha[0] = matteColor.getRGB();</span>
-<span class="fc" id="L120">        final IndexColorModel colorModel = new IndexColorModel(8, colorsWithAlpha.length, colorsWithAlpha, 0, false, 0,</span>
+<span class="fc" id="L87">        final int[] colors = Quantize.quantizeImage(bitmap, maxColors);</span>
+<span class="fc" id="L88">        final int[] colorsWithAlpha = new int[colors.length + 1];</span>
+<span class="fc" id="L89">        System.arraycopy(colors, 0, colorsWithAlpha, 1, colors.length);</span>
+<span class="fc" id="L90">        colorsWithAlpha[0] = matteColor.getRGB();</span>
+<span class="fc" id="L91">        final IndexColorModel colorModel = new IndexColorModel(8, colorsWithAlpha.length, colorsWithAlpha, 0, false, 0,</span>
                 DataBuffer.TYPE_BYTE);
 
         // Write the results to an indexed image, skipping the fully transparent bits
-<span class="fc" id="L124">        final BufferedImage quantized = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, colorModel);</span>
-<span class="fc" id="L125">        final WritableRaster raster = quantized.getRaster();</span>
-<span class="fc" id="L126">        final int[][] rgb = BufferedImageUtils.getRgb(source);</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int x = 0; x &lt; width; x++) {</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">            for (int y = 0; y &lt; height; y++) {</span>
-<span class="fc bfc" id="L129" title="All 2 branches covered.">                final int value = (rgb[x][y] &amp; 0xff000000) != 0x00000000 ? bitmap[x][y] + 1 : 0;</span>
-<span class="fc" id="L130">                raster.setPixel(x, y, new int[] { value });</span>
+<span class="fc" id="L95">        final BufferedImage quantized = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, colorModel);</span>
+<span class="fc" id="L96">        final WritableRaster raster = quantized.getRaster();</span>
+<span class="fc" id="L97">        final int[][] rgb = BufferedImageUtils.getRgb(source);</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (int x = 0; x &lt; width; x++) {</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">                final int value = (rgb[x][y] &amp; 0xff000000) != 0x00000000 ? bitmap[x][y] + 1 : 0;</span>
+<span class="fc" id="L101">                raster.setPixel(x, y, new int[] { value });</span>
             }
         }
 
-<span class="fc" id="L134">        return quantized;</span>
+<span class="fc" id="L105">        return quantized;</span>
     }
 
     /**
@@ -147,35 +118,35 @@ public class ColorQuantizer {
      *             if the application of this method would result in image quality loss
      */
     public static BufferedImage reduce(BufferedImage source) {
-<span class="fc" id="L150">        final int width = source.getWidth();</span>
-<span class="fc" id="L151">        final int height = source.getHeight();</span>
+<span class="fc" id="L121">        final int width = source.getWidth();</span>
+<span class="fc" id="L122">        final int height = source.getHeight();</span>
 
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        if (BufferedImageUtils.hasPartialTransparency(source)) {</span>
-<span class="nc" id="L154">            throw new IllegalArgumentException(&quot;The source image cannot contain translucent areas&quot;);</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (BufferedImageUtils.hasPartialTransparency(source)) {</span>
+<span class="nc" id="L125">            throw new IllegalArgumentException(&quot;The source image cannot contain translucent areas&quot;);</span>
         }
 
-<span class="fc" id="L157">        final int[] colorsWithAlpha = BufferedImageUtils.getDistinctColors(source, 1);</span>
-<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (colorsWithAlpha.length - 1 &gt; MAX_INDEXED_COLORS) {</span>
-<span class="fc" id="L159">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L128">        final int[] colorsWithAlpha = BufferedImageUtils.getDistinctColors(source, 1);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (colorsWithAlpha.length - 1 &gt; MAX_INDEXED_COLORS) {</span>
+<span class="fc" id="L130">            throw new IllegalArgumentException(</span>
                     &quot;The source image cannot contain more than &quot; + MAX_INDEXED_COLORS + &quot; colors&quot;);
         }
 
-<span class="fc" id="L163">        final IndexColorModel colorModel = new IndexColorModel(8, colorsWithAlpha.length, colorsWithAlpha, 0, false, 0,</span>
+<span class="fc" id="L134">        final IndexColorModel colorModel = new IndexColorModel(8, colorsWithAlpha.length, colorsWithAlpha, 0, false, 0,</span>
                 DataBuffer.TYPE_BYTE);
 
         // Write the results to an indexed image, skipping the fully transparent bits
-<span class="fc" id="L167">        final BufferedImage quantized = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, colorModel);</span>
-<span class="fc" id="L168">        final int[][] rgb = BufferedImageUtils.getRgb(source);</span>
+<span class="fc" id="L138">        final BufferedImage quantized = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, colorModel);</span>
+<span class="fc" id="L139">        final int[][] rgb = BufferedImageUtils.getRgb(source);</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">        for (int x = 0; x &lt; width; x++) {</span>
-<span class="fc bfc" id="L171" title="All 2 branches covered.">            for (int y = 0; y &lt; height; y++) {</span>
-<span class="fc bfc" id="L172" title="All 2 branches covered.">                if ((rgb[x][y] &amp; 0xff000000) != 0x00000000) {</span>
-<span class="fc" id="L173">                    quantized.setRGB(x, y, source.getRGB(x, y));</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (int x = 0; x &lt; width; x++) {</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">                if ((rgb[x][y] &amp; 0xff000000) != 0x00000000) {</span>
+<span class="fc" id="L144">                    quantized.setRGB(x, y, source.getRGB(x, y));</span>
                 }
             }
         }
 
-<span class="fc" id="L178">        return quantized;</span>
+<span class="fc" id="L149">        return quantized;</span>
     }
 
     /**
@@ -187,8 +158,8 @@ public class ColorQuantizer {
      * @return the color reduction info
      */
     public static ColorReductionInfo getColorReductionInfo(BufferedImage source) {
-<span class="fc" id="L190">        return new ColorReductionInfo(BufferedImageUtils.hasPartialTransparency(source),</span>
-<span class="fc" id="L191">                BufferedImageUtils.countDistinctColors(source));</span>
+<span class="fc" id="L161">        return new ColorReductionInfo(BufferedImageUtils.hasPartialTransparency(source),</span>
+<span class="fc" id="L162">                BufferedImageUtils.countDistinctColors(source));</span>
     }
 
     /**
@@ -210,10 +181,10 @@ public class ColorQuantizer {
          * @param distinctColors
          *            the distinct colors
          */
-<span class="fc" id="L213">        public ColorReductionInfo(boolean hasPartialTransparency, int distinctColors) {</span>
-<span class="fc" id="L214">            this.hasPartialTransparency = hasPartialTransparency;</span>
-<span class="fc" id="L215">            this.distinctColors = distinctColors;</span>
-<span class="fc" id="L216">        }</span>
+<span class="fc" id="L184">        public ColorReductionInfo(boolean hasPartialTransparency, int distinctColors) {</span>
+<span class="fc" id="L185">            this.hasPartialTransparency = hasPartialTransparency;</span>
+<span class="fc" id="L186">            this.distinctColors = distinctColors;</span>
+<span class="fc" id="L187">        }</span>
 
         /**
          * Returns true if the image can be saved in a 8-bit indexed color format with 1-bit transparency without
@@ -222,7 +193,7 @@ public class ColorQuantizer {
          * @return true, if successful
          */
         public boolean canReduceWithoutQualityLoss() {
-<span class="fc bfc" id="L225" title="All 4 branches covered.">            return !hasPartialTransparency &amp;&amp; distinctColors &lt;= MAX_INDEXED_COLORS;</span>
+<span class="fc bfc" id="L196" title="All 4 branches covered.">            return !hasPartialTransparency &amp;&amp; distinctColors &lt;= MAX_INDEXED_COLORS;</span>
         }
     }
 }

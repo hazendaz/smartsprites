@@ -1,44 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteLayoutProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteLayoutProperties.java</span></div><h1>SpriteLayoutProperties.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.labs.smartsprites;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -71,41 +43,41 @@ public class SpriteLayoutProperties {
     public static final String PROPERTY_SPRITE_MARGIN_LEFT = &quot;sprite-margin-left&quot;;
 
     /** Allowed properties of this directive. */
-<span class="fc" id="L74">    static final Set&lt;String&gt; ALLOWED_PROPERTIES = ImmutableSet.of(PROPERTY_SPRITE_ALIGNMENT,</span>
+<span class="fc" id="L46">    static final Set&lt;String&gt; ALLOWED_PROPERTIES = ImmutableSet.of(PROPERTY_SPRITE_ALIGNMENT,</span>
             PROPERTY_SPRITE_MARGIN_LEFT, PROPERTY_SPRITE_MARGIN_RIGHT, PROPERTY_SPRITE_MARGIN_TOP,
             PROPERTY_SPRITE_MARGIN_BOTTOM);
 
     /**
      * Alignment of the individual image within the sprite image.
      */
-<span class="fc" id="L81">    public enum SpriteAlignment {</span>
+<span class="fc" id="L53">    public enum SpriteAlignment {</span>
         /**
          * To the left edge of a vertical sprite.
          */
-<span class="fc" id="L85">        LEFT,</span>
+<span class="fc" id="L57">        LEFT,</span>
 
         /**
          * To the right edge of a vertical sprite.
          */
-<span class="fc" id="L90">        RIGHT,</span>
+<span class="fc" id="L62">        RIGHT,</span>
 
         /**
          * To the top edge of a horizontal sprite.
          */
-<span class="fc" id="L95">        TOP,</span>
+<span class="fc" id="L67">        TOP,</span>
 
         /**
          * To the bottom edge of a horizontal sprite.
          */
-<span class="fc" id="L100">        BOTTOM,</span>
+<span class="fc" id="L72">        BOTTOM,</span>
 
         /**
          * Repeated across the full width/ height of the sprite image.
          */
-<span class="fc" id="L105">        REPEAT,</span>
+<span class="fc" id="L77">        REPEAT,</span>
 
         /** To the center of a vertical or horizontal sprite. */
-<span class="fc" id="L108">        CENTER;</span>
+<span class="fc" id="L80">        CENTER;</span>
 
         /** The value. */
         private final String value;
@@ -113,13 +85,13 @@ public class SpriteLayoutProperties {
         /**
          * Instantiates a new sprite alignment.
          */
-<span class="fc" id="L116">        SpriteAlignment() {</span>
-<span class="fc" id="L117">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
-<span class="fc" id="L118">        }</span>
+<span class="fc" id="L88">        SpriteAlignment() {</span>
+<span class="fc" id="L89">            this.value = name().toLowerCase(Locale.ENGLISH);</span>
+<span class="fc" id="L90">        }</span>
 
         @Override
         public String toString() {
-<span class="fc" id="L122">            return value;</span>
+<span class="fc" id="L94">            return value;</span>
         }
 
         /**
@@ -131,7 +103,7 @@ public class SpriteLayoutProperties {
          * @return the value
          */
         public static SpriteAlignment getValue(String value) {
-<span class="fc" id="L134">            return valueOf(value.toUpperCase(Locale.ENGLISH));</span>
+<span class="fc" id="L106">            return valueOf(value.toUpperCase(Locale.ENGLISH));</span>
         }
 
         /**
@@ -140,8 +112,8 @@ public class SpriteLayoutProperties {
          * @return the string
          */
         public static String valuesAsString() {
-<span class="fc" id="L143">            final String list = Lists.newArrayList(values()).toString();</span>
-<span class="fc" id="L144">            return list.substring(1, list.length() - 1);</span>
+<span class="fc" id="L115">            final String list = new ArrayList&lt;&gt;(Arrays.asList(values())).toString();</span>
+<span class="fc" id="L116">            return list.substring(1, list.length() - 1);</span>
         }
     }
 
@@ -175,13 +147,13 @@ public class SpriteLayoutProperties {
      *            the margin bottom
      */
     public SpriteLayoutProperties(SpriteAlignment alignment, int marginLeft, int marginRight, int marginTop,
-<span class="fc" id="L178">            int marginBottom) {</span>
-<span class="fc" id="L179">        this.alignment = alignment;</span>
-<span class="fc" id="L180">        this.marginLeft = marginLeft;</span>
-<span class="fc" id="L181">        this.marginRight = marginRight;</span>
-<span class="fc" id="L182">        this.marginTop = marginTop;</span>
-<span class="fc" id="L183">        this.marginBottom = marginBottom;</span>
-<span class="fc" id="L184">    }</span>
+<span class="fc" id="L150">            int marginBottom) {</span>
+<span class="fc" id="L151">        this.alignment = alignment;</span>
+<span class="fc" id="L152">        this.marginLeft = marginLeft;</span>
+<span class="fc" id="L153">        this.marginRight = marginRight;</span>
+<span class="fc" id="L154">        this.marginTop = marginTop;</span>
+<span class="fc" id="L155">        this.marginBottom = marginBottom;</span>
+<span class="fc" id="L156">    }</span>
 
     /**
      * Creates an instance with default values.
@@ -190,8 +162,8 @@ public class SpriteLayoutProperties {
      *            the layout
      */
     SpriteLayoutProperties(SpriteImageLayout layout) {
-<span class="fc" id="L193">        this(getDefaultAlignment(layout), 0, 0, 0, 0);</span>
-<span class="fc" id="L194">    }</span>
+<span class="fc" id="L165">        this(getDefaultAlignment(layout), 0, 0, 0, 0);</span>
+<span class="fc" id="L166">    }</span>
 
     /**
      * Parses a {@link SpriteLayoutProperties} from the provided {@link String} logging messages to the provided
@@ -208,7 +180,7 @@ public class SpriteLayoutProperties {
      */
     public static SpriteLayoutProperties parse(String directiveString, SpriteImageLayout spriteImageLayout,
             MessageLog messageCollector) {
-<span class="fc" id="L211">        return parse(directiveString, spriteImageLayout, new SpriteLayoutProperties(spriteImageLayout),</span>
+<span class="fc" id="L183">        return parse(directiveString, spriteImageLayout, new SpriteLayoutProperties(spriteImageLayout),</span>
                 messageCollector);
     }
 
@@ -229,8 +201,8 @@ public class SpriteLayoutProperties {
      */
     public static SpriteLayoutProperties parse(String directiveString, SpriteImageLayout spriteImageLayout,
             SpriteLayoutProperties defaults, MessageLog messageCollector) {
-<span class="fc" id="L232">        final Map&lt;String, CssProperty&gt; rules = CssSyntaxUtils</span>
-<span class="fc" id="L233">                .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString, messageCollector));</span>
+<span class="fc" id="L204">        final Map&lt;String, CssProperty&gt; rules = CssSyntaxUtils</span>
+<span class="fc" id="L205">                .propertiesAsMap(CssSyntaxUtils.extractRules(directiveString, messageCollector));</span>
 
         // We don't check for allowed properties here. The check, including
         // sprite layout properties will be done when parsing the directive
@@ -238,27 +210,27 @@ public class SpriteLayoutProperties {
 
         // Alignment is optional
         SpriteAlignment alignment;
-<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_ALIGNMENT)) {</span>
-<span class="fc" id="L242">            final String alignmentValue = rules.get(PROPERTY_SPRITE_ALIGNMENT).value;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (CssSyntaxUtils.hasNonBlankValue(rules, PROPERTY_SPRITE_ALIGNMENT)) {</span>
+<span class="fc" id="L214">            final String alignmentValue = rules.get(PROPERTY_SPRITE_ALIGNMENT).value;</span>
             try {
-<span class="fc" id="L244">                alignment = correctAlignment(spriteImageLayout, SpriteAlignment.getValue(alignmentValue),</span>
+<span class="fc" id="L216">                alignment = correctAlignment(spriteImageLayout, SpriteAlignment.getValue(alignmentValue),</span>
                         messageCollector);
-<span class="fc" id="L246">            } catch (final IllegalArgumentException e) {</span>
-<span class="fc" id="L247">                messageCollector.warning(MessageType.UNSUPPORTED_ALIGNMENT, alignmentValue);</span>
-<span class="fc" id="L248">                alignment = getDefaultAlignment(spriteImageLayout);</span>
-<span class="fc" id="L249">            }</span>
-<span class="fc" id="L250">        } else {</span>
-<span class="fc" id="L251">            alignment = defaults.alignment;</span>
+<span class="fc" id="L218">            } catch (final IllegalArgumentException e) {</span>
+<span class="fc" id="L219">                messageCollector.warning(MessageType.UNSUPPORTED_ALIGNMENT, alignmentValue);</span>
+<span class="fc" id="L220">                alignment = getDefaultAlignment(spriteImageLayout);</span>
+<span class="fc" id="L221">            }</span>
+<span class="fc" id="L222">        } else {</span>
+<span class="fc" id="L223">            alignment = defaults.alignment;</span>
         }
 
         // Parse margins
-<span class="fc" id="L255">        final int marginLeft = getMargin(PROPERTY_SPRITE_MARGIN_LEFT, rules, defaults.marginLeft, messageCollector);</span>
-<span class="fc" id="L256">        final int marginRight = getMargin(PROPERTY_SPRITE_MARGIN_RIGHT, rules, defaults.marginRight, messageCollector);</span>
-<span class="fc" id="L257">        final int marginTop = getMargin(PROPERTY_SPRITE_MARGIN_TOP, rules, defaults.marginTop, messageCollector);</span>
-<span class="fc" id="L258">        final int marginBottom = getMargin(PROPERTY_SPRITE_MARGIN_BOTTOM, rules, defaults.marginBottom,</span>
+<span class="fc" id="L227">        final int marginLeft = getMargin(PROPERTY_SPRITE_MARGIN_LEFT, rules, defaults.marginLeft, messageCollector);</span>
+<span class="fc" id="L228">        final int marginRight = getMargin(PROPERTY_SPRITE_MARGIN_RIGHT, rules, defaults.marginRight, messageCollector);</span>
+<span class="fc" id="L229">        final int marginTop = getMargin(PROPERTY_SPRITE_MARGIN_TOP, rules, defaults.marginTop, messageCollector);</span>
+<span class="fc" id="L230">        final int marginBottom = getMargin(PROPERTY_SPRITE_MARGIN_BOTTOM, rules, defaults.marginBottom,</span>
                 messageCollector);
 
-<span class="fc" id="L261">        return new SpriteLayoutProperties(alignment, marginLeft, marginRight, marginTop, marginBottom);</span>
+<span class="fc" id="L233">        return new SpriteLayoutProperties(alignment, marginLeft, marginRight, marginTop, marginBottom);</span>
     }
 
     /**
@@ -275,17 +247,17 @@ public class SpriteLayoutProperties {
      */
     private static SpriteAlignment correctAlignment(SpriteImageLayout spriteImageLayout, SpriteAlignment alignment,
             MessageLog messageCollector) {
-<span class="fc bfc" id="L278" title="All 2 branches covered.">        if (spriteImageLayout.equals(SpriteImageLayout.HORIZONTAL)) {</span>
-<span class="fc bfc" id="L279" title="All 4 branches covered.">            if (alignment.equals(SpriteAlignment.LEFT) || alignment.equals(SpriteAlignment.RIGHT)) {</span>
-<span class="fc" id="L280">                messageCollector.warning(MessageType.ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED, alignment.value);</span>
-<span class="fc" id="L281">                return SpriteAlignment.TOP;</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        if (spriteImageLayout.equals(SpriteImageLayout.HORIZONTAL)) {</span>
+<span class="fc bfc" id="L251" title="All 4 branches covered.">            if (alignment.equals(SpriteAlignment.LEFT) || alignment.equals(SpriteAlignment.RIGHT)) {</span>
+<span class="fc" id="L252">                messageCollector.warning(MessageType.ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED, alignment.value);</span>
+<span class="fc" id="L253">                return SpriteAlignment.TOP;</span>
             }
-<span class="fc bfc" id="L283" title="All 4 branches covered.">        } else if (alignment.equals(SpriteAlignment.TOP) || alignment.equals(SpriteAlignment.BOTTOM)) {</span>
-<span class="fc" id="L284">            messageCollector.warning(MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED, alignment.value);</span>
-<span class="fc" id="L285">            return SpriteAlignment.LEFT;</span>
+<span class="fc bfc" id="L255" title="All 4 branches covered.">        } else if (alignment.equals(SpriteAlignment.TOP) || alignment.equals(SpriteAlignment.BOTTOM)) {</span>
+<span class="fc" id="L256">            messageCollector.warning(MessageType.ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED, alignment.value);</span>
+<span class="fc" id="L257">            return SpriteAlignment.LEFT;</span>
         }
 
-<span class="fc" id="L288">        return alignment;</span>
+<span class="fc" id="L260">        return alignment;</span>
     }
 
     /**
@@ -297,10 +269,10 @@ public class SpriteLayoutProperties {
      * @return the default alignment
      */
     private static SpriteAlignment getDefaultAlignment(SpriteImageLayout spriteImageLayout) {
-<span class="fc bfc" id="L300" title="All 2 branches covered.">        if (spriteImageLayout.equals(SpriteImageLayout.HORIZONTAL)) {</span>
-<span class="fc" id="L301">            return SpriteAlignment.TOP;</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">        if (spriteImageLayout.equals(SpriteImageLayout.HORIZONTAL)) {</span>
+<span class="fc" id="L273">            return SpriteAlignment.TOP;</span>
         }
-<span class="fc" id="L303">        return SpriteAlignment.LEFT;</span>
+<span class="fc" id="L275">        return SpriteAlignment.LEFT;</span>
     }
 
     /**
@@ -319,25 +291,25 @@ public class SpriteLayoutProperties {
      */
     private static int getMargin(String marginRule, Map&lt;String, CssProperty&gt; rules, int defaultMargin,
             MessageLog messageLog) {
-<span class="fc bfc" id="L322" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, marginRule)) {</span>
-<span class="fc" id="L323">            return defaultMargin;</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        if (!CssSyntaxUtils.hasNonBlankValue(rules, marginRule)) {</span>
+<span class="fc" id="L295">            return defaultMargin;</span>
         }
-<span class="fc" id="L325">        final String rawMarginValue = rules.get(marginRule).value;</span>
-<span class="fc" id="L326">        String marginValue = rawMarginValue;</span>
-<span class="fc bfc" id="L327" title="All 2 branches covered.">        if (marginValue.toLowerCase(Locale.ENGLISH).endsWith(&quot;px&quot;)) {</span>
-<span class="fc" id="L328">            marginValue = marginValue.substring(0, marginValue.length() - 2);</span>
+<span class="fc" id="L297">        final String rawMarginValue = rules.get(marginRule).value;</span>
+<span class="fc" id="L298">        String marginValue = rawMarginValue;</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">        if (marginValue.toLowerCase(Locale.ENGLISH).endsWith(&quot;px&quot;)) {</span>
+<span class="fc" id="L300">            marginValue = marginValue.substring(0, marginValue.length() - 2);</span>
         }
         try {
-<span class="fc" id="L331">            int marginIntValue = Integer.parseInt(marginValue);</span>
-<span class="fc bfc" id="L332" title="All 2 branches covered.">            if (marginIntValue &lt; 0) {</span>
-<span class="fc" id="L333">                messageLog.warning(MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, marginRule);</span>
-<span class="fc" id="L334">                marginIntValue = 0;</span>
+<span class="fc" id="L303">            int marginIntValue = Integer.parseInt(marginValue);</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">            if (marginIntValue &lt; 0) {</span>
+<span class="fc" id="L305">                messageLog.warning(MessageType.IGNORING_NEGATIVE_MARGIN_VALUE, marginRule);</span>
+<span class="fc" id="L306">                marginIntValue = 0;</span>
             }
 
-<span class="fc" id="L337">            return marginIntValue;</span>
-<span class="fc" id="L338">        } catch (final NumberFormatException e) {</span>
-<span class="fc" id="L339">            messageLog.warning(MessageType.CANNOT_PARSE_MARGIN_VALUE, rawMarginValue);</span>
-<span class="fc" id="L340">            return 0;</span>
+<span class="fc" id="L309">            return marginIntValue;</span>
+<span class="fc" id="L310">        } catch (final NumberFormatException e) {</span>
+<span class="fc" id="L311">            messageLog.warning(MessageType.CANNOT_PARSE_MARGIN_VALUE, rawMarginValue);</span>
+<span class="fc" id="L312">            return 0;</span>
         }
     }
 }

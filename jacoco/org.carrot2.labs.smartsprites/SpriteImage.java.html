@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpriteImage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites</a> &gt; <span class="el_source">SpriteImage.java</span></div><h1>SpriteImage.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.labs.smartsprites;
 
@@ -85,7 +56,7 @@ public class SpriteImage {
     public float scaleRatio;
 
     /** The Constant SPRITE_VARIABLE. */
-<span class="fc" id="L88">    private static final Pattern SPRITE_VARIABLE = Pattern.compile(&quot;${sprite}&quot;, Pattern.LITERAL);</span>
+<span class="fc" id="L59">    private static final Pattern SPRITE_VARIABLE = Pattern.compile(&quot;${sprite}&quot;, Pattern.LITERAL);</span>
 
     /**
      * Instantiates a new sprite image.
@@ -105,18 +76,18 @@ public class SpriteImage {
      */
     public SpriteImage(BufferedImage sprite, SpriteImageOccurrence spriteImageOccurrence,
             Map&lt;SpriteReferenceOccurrence, SpriteReferenceReplacement&gt; spriteReplacements, int width, int height,
-<span class="fc" id="L108">            float scale) {</span>
-<span class="fc" id="L109">        this.sprite = sprite;</span>
-<span class="fc" id="L110">        this.spriteReferenceReplacements = spriteReplacements;</span>
-<span class="fc" id="L111">        this.spriteImageOccurrence = spriteImageOccurrence;</span>
-<span class="fc" id="L112">        this.spriteWidth = width;</span>
-<span class="fc" id="L113">        this.spriteHeight = height;</span>
-<span class="fc" id="L114">        this.scaleRatio = scale;</span>
+<span class="fc" id="L79">            float scale) {</span>
+<span class="fc" id="L80">        this.sprite = sprite;</span>
+<span class="fc" id="L81">        this.spriteReferenceReplacements = spriteReplacements;</span>
+<span class="fc" id="L82">        this.spriteImageOccurrence = spriteImageOccurrence;</span>
+<span class="fc" id="L83">        this.spriteWidth = width;</span>
+<span class="fc" id="L84">        this.spriteHeight = height;</span>
+<span class="fc" id="L85">        this.scaleRatio = scale;</span>
 
-<span class="fc bfc" id="L116" title="All 2 branches covered.">        for (SpriteReferenceReplacement replacement : spriteReplacements.values()) {</span>
-<span class="fc" id="L117">            replacement.spriteImage = this;</span>
-<span class="fc" id="L118">        }</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        for (SpriteReferenceReplacement replacement : spriteReplacements.values()) {</span>
+<span class="fc" id="L88">            replacement.spriteImage = this;</span>
+<span class="fc" id="L89">        }</span>
+<span class="fc" id="L90">    }</span>
 
     /**
      * Resolve image path.
@@ -132,32 +103,32 @@ public class SpriteImage {
      *             Signals that an I/O exception has occurred.
      */
     String resolveImagePath(byte[] image, String timestamp) throws IOException {
-<span class="fc" id="L135">        String imagePath = spriteImageOccurrence.spriteImageDirective.imagePath;</span>
+<span class="fc" id="L106">        String imagePath = spriteImageOccurrence.spriteImageDirective.imagePath;</span>
 
         // Backwards compatibility: if there are no place holders in the path
         // and the UID type is defined, append the UID as a query string just like
         // the previous versions did. To be removed in 0.4.0.
-<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (spriteImageOccurrence.spriteImageDirective.uidType != SpriteUidType.NONE</span>
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">                &amp;&amp; !SpriteUidType.SHA512.pattern.matcher(imagePath).find()</span>
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">                &amp;&amp; !SpriteUidType.DATE.pattern.matcher(imagePath).find()) {</span>
-<span class="fc" id="L143">            imagePath += &quot;?${&quot; + spriteImageOccurrence.spriteImageDirective.uidType.toString() + &quot;}&quot;;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (spriteImageOccurrence.spriteImageDirective.uidType != SpriteUidType.NONE</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">                &amp;&amp; !SpriteUidType.SHA512.pattern.matcher(imagePath).find()</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">                &amp;&amp; !SpriteUidType.DATE.pattern.matcher(imagePath).find()) {</span>
+<span class="fc" id="L114">            imagePath += &quot;?${&quot; + spriteImageOccurrence.spriteImageDirective.uidType.toString() + &quot;}&quot;;</span>
         }
 
         // Resolve SHA512 hash
-<span class="fc" id="L147">        Matcher sha512Matcher = SpriteUidType.SHA512.pattern.matcher(imagePath);</span>
-<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (sha512Matcher.find()) {</span>
+<span class="fc" id="L118">        Matcher sha512Matcher = SpriteUidType.SHA512.pattern.matcher(imagePath);</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (sha512Matcher.find()) {</span>
             // Compute SHA512 only when necessary
-<span class="fc" id="L150">            imagePath = sha512Matcher.replaceAll(computeSha512(image));</span>
+<span class="fc" id="L121">            imagePath = sha512Matcher.replaceAll(computeSha512(image));</span>
         }
 
         // Resolve timestamp
-<span class="fc" id="L154">        imagePath = SpriteUidType.DATE.pattern.matcher(imagePath).replaceAll(timestamp);</span>
+<span class="fc" id="L125">        imagePath = SpriteUidType.DATE.pattern.matcher(imagePath).replaceAll(timestamp);</span>
 
         // Resolve sprite name
-<span class="fc" id="L157">        imagePath = SPRITE_VARIABLE.matcher(imagePath).replaceAll(spriteImageOccurrence.spriteImageDirective.spriteId);</span>
+<span class="fc" id="L128">        imagePath = SPRITE_VARIABLE.matcher(imagePath).replaceAll(spriteImageOccurrence.spriteImageDirective.spriteId);</span>
 
-<span class="fc" id="L159">        this.resolvedPath = imagePath;</span>
-<span class="fc" id="L160">        return this.resolvedPath;</span>
+<span class="fc" id="L130">        this.resolvedPath = imagePath;</span>
+<span class="fc" id="L131">        return this.resolvedPath;</span>
     }
 
     /**
@@ -169,7 +140,7 @@ public class SpriteImage {
      * @return the string
      */
     private static String computeSha512(byte[] image) {
-<span class="fc" id="L172">        return Hashing.sha512().hashBytes(image).toString();</span>
+<span class="fc" id="L143">        return Hashing.sha512().hashBytes(image).toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

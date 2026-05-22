@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Message.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">smartsprites</a> &gt; <a href="index.source.html" class="el_package">org.carrot2.labs.smartsprites.message</a> &gt; <span class="el_source">Message.java</span></div><h1>Message.java</h1><pre class="source lang-java linenums">/*
- * SmartSprites Project
+ * SPDX-License-Identifier: BSD-3-Clause
+ * See LICENSE file for details.
  *
+ * Copyright 2021-2026 Hazendaz
  * Copyright (C) 2007-2009, Stanisław Osiński.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * - Redistributions of  source code must  retain the above  copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following  disclaimer in  the documentation  and/or
- *   other materials provided with the distribution.
- *
- * - Neither the name of the SmartSprites Project nor the names of its contributors
- *   may  be used  to endorse  or  promote  products derived   from  this  software
- *   without specific prior written permission.
- *
- * - We kindly request that you include in the end-user documentation provided with
- *   the redistribution and/or in the software itself an acknowledgement equivalent
- *   to  the  following: &quot;This product includes software developed by the SmartSprites
- *   Project.&quot;
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;  AND
- * ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED
- * WARRANTIES  OF  MERCHANTABILITY  AND  FITNESS  FOR  A  PARTICULAR  PURPOSE   ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE  FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL  DAMAGES
- * (INCLUDING, BUT  NOT LIMITED  TO, PROCUREMENT  OF SUBSTITUTE  GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON
- * ANY  THEORY  OF  LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY  OUT OF THE USE  OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.carrot2.labs.smartsprites.message;
 
@@ -57,31 +28,31 @@ public class Message implements Serializable {
     /**
      * The importance of the message.
      */
-<span class="fc" id="L60">    public enum MessageLevel {</span>
+<span class="fc" id="L31">    public enum MessageLevel {</span>
         /**
          * Information message, can be ignored.
          */
-<span class="fc" id="L64">        INFO(1),</span>
+<span class="fc" id="L35">        INFO(1),</span>
 
         /**
          * Notice messages related to deprecated features.
          */
-<span class="fc" id="L69">        DEPRECATION(2),</span>
+<span class="fc" id="L40">        DEPRECATION(2),</span>
 
         /**
          * Warning messages, ignoring can lead to the converted designs looking broken.
          */
-<span class="fc" id="L74">        WARN(4),</span>
+<span class="fc" id="L45">        WARN(4),</span>
 
         /**
          * Error messages, SmartSprites cannot perform processing.
          */
-<span class="fc" id="L79">        ERROR(5),</span>
+<span class="fc" id="L50">        ERROR(5),</span>
 
         /**
          * Status messages displayed at the end of processing.
          */
-<span class="fc" id="L84">        STATUS(6);</span>
+<span class="fc" id="L55">        STATUS(6);</span>
 
         /** Numeric level for comparisons. */
         private final int level;
@@ -92,15 +63,15 @@ public class Message implements Serializable {
          * @param level
          *            the level
          */
-<span class="fc" id="L95">        MessageLevel(int level) {</span>
-<span class="fc" id="L96">            this.level = level;</span>
-<span class="fc" id="L97">        }</span>
+<span class="fc" id="L66">        MessageLevel(int level) {</span>
+<span class="fc" id="L67">            this.level = level;</span>
+<span class="fc" id="L68">        }</span>
 
         /** The Constant COMPARATOR. */
-<span class="fc" id="L100">        public static final Comparator&lt;MessageLevel&gt; COMPARATOR = new Comparator&lt;MessageLevel&gt;() {</span>
+<span class="fc" id="L71">        public static final Comparator&lt;MessageLevel&gt; COMPARATOR = new Comparator&lt;MessageLevel&gt;() {</span>
             @Override
             public int compare(MessageLevel levelA, MessageLevel levelB) {
-<span class="fc" id="L103">                return levelA.level - levelB.level;</span>
+<span class="fc" id="L74">                return levelA.level - levelB.level;</span>
             }
         };
 
@@ -109,200 +80,200 @@ public class Message implements Serializable {
     /**
      * Defines all the possible information and warning messages.
      */
-<span class="fc" id="L112">    public enum MessageType {</span>
+<span class="fc" id="L83">    public enum MessageType {</span>
 
         /** The cannot determine image format. */
-<span class="fc" id="L115">        CANNOT_DETERMINE_IMAGE_FORMAT(&quot;Cannot determine image format from file name: %s&quot;),</span>
+<span class="fc" id="L86">        CANNOT_DETERMINE_IMAGE_FORMAT(&quot;Cannot determine image format from file name: %s&quot;),</span>
 
         /** The cannot not load image. */
-<span class="fc" id="L118">        CANNOT_NOT_LOAD_IMAGE(&quot;Cannot load image: %s due to: %s&quot;),</span>
+<span class="fc" id="L89">        CANNOT_NOT_LOAD_IMAGE(&quot;Cannot load image: %s due to: %s&quot;),</span>
 
         /** The cannot parse margin value. */
-<span class="fc" id="L121">        CANNOT_PARSE_MARGIN_VALUE(&quot;Cannot parse margin value: %s. Only 'px' units are supported.&quot;),</span>
+<span class="fc" id="L92">        CANNOT_PARSE_MARGIN_VALUE(&quot;Cannot parse margin value: %s. Only 'px' units are supported.&quot;),</span>
 
         /** The cannot write sprite image. */
-<span class="fc" id="L124">        CANNOT_WRITE_SPRITE_IMAGE(&quot;Cannot write sprite image: %s due to %s&quot;),</span>
+<span class="fc" id="L95">        CANNOT_WRITE_SPRITE_IMAGE(&quot;Cannot write sprite image: %s due to %s&quot;),</span>
 
         /** The cannot create directories. */
-<span class="fc" id="L127">        CANNOT_CREATE_DIRECTORIES(&quot;Cannot create directories: %s&quot;),</span>
+<span class="fc" id="L98">        CANNOT_CREATE_DIRECTORIES(&quot;Cannot create directories: %s&quot;),</span>
 
         /** The creating css style sheet. */
-<span class="fc" id="L130">        CREATING_CSS_STYLE_SHEET(&quot;Creating CSS style sheet: %s&quot;),</span>
+<span class="fc" id="L101">        CREATING_CSS_STYLE_SHEET(&quot;Creating CSS style sheet: %s&quot;),</span>
 
         /** The writing css. */
-<span class="fc" id="L133">        WRITING_CSS(&quot;Writing CSS to %s&quot;),</span>
+<span class="fc" id="L104">        WRITING_CSS(&quot;Writing CSS to %s&quot;),</span>
 
         /** The writing sprite image. */
-<span class="fc" id="L136">        WRITING_SPRITE_IMAGE(&quot;Writing sprite image of size %s x %s for sprite '%s' to %s&quot;),</span>
+<span class="fc" id="L107">        WRITING_SPRITE_IMAGE(&quot;Writing sprite image of size %s x %s for sprite '%s' to %s&quot;),</span>
 
         /** The ignoring sprite image redefinition. */
-<span class="fc" id="L139">        IGNORING_SPRITE_IMAGE_REDEFINITION(&quot;Ignoring sprite image redefinition&quot;),</span>
+<span class="fc" id="L110">        IGNORING_SPRITE_IMAGE_REDEFINITION(&quot;Ignoring sprite image redefinition&quot;),</span>
 
         /** The malformed css rule. */
-<span class="fc" id="L142">        MALFORMED_CSS_RULE(&quot;Malformed CSS rule: %s&quot;),</span>
+<span class="fc" id="L113">        MALFORMED_CSS_RULE(&quot;Malformed CSS rule: %s&quot;),</span>
 
         /** The malformed color. */
-<span class="fc" id="L145">        MALFORMED_COLOR(&quot;Malformed color: %s&quot;),</span>
+<span class="fc" id="L116">        MALFORMED_COLOR(&quot;Malformed color: %s&quot;),</span>
 
         /** The malformed url. */
-<span class="fc" id="L148">        MALFORMED_URL(&quot;Malformed URL: %s&quot;),</span>
+<span class="fc" id="L119">        MALFORMED_URL(&quot;Malformed URL: %s&quot;),</span>
 
         /** The malformed sprite image path. */
-<span class="fc" id="L151">        MALFORMED_SPRITE_IMAGE_PATH(&quot;Malformed sprite-image path: %s&quot;),</span>
+<span class="fc" id="L122">        MALFORMED_SPRITE_IMAGE_PATH(&quot;Malformed sprite-image path: %s&quot;),</span>
 
         /** The unsupported variable in sprite image path. */
-<span class="fc" id="L154">        UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH(&quot;Unsupported variable in sprite-image path: %s&quot;),</span>
+<span class="fc" id="L125">        UNSUPPORTED_VARIABLE_IN_SPRITE_IMAGE_PATH(&quot;Unsupported variable in sprite-image path: %s&quot;),</span>
 
         /** The more than one rule next to sprite reference directive. */
-<span class="fc" id="L157">        MORE_THAN_ONE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE(</span>
+<span class="fc" id="L128">        MORE_THAN_ONE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE(</span>
                 &quot;Found more than one CSS rule next to sprite reference comment: %s&quot;),
 
         /** The no background image rule next to sprite reference directive. */
-<span class="fc" id="L161">        NO_BACKGROUND_IMAGE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE(</span>
+<span class="fc" id="L132">        NO_BACKGROUND_IMAGE_RULE_NEXT_TO_SPRITE_REFERENCE_DIRECTIVE(</span>
                 &quot;No 'background-image' CSS rule next to sprite reference comment: %s&quot;),
 
         /** The either root dir or css files is required. */
-<span class="fc" id="L165">        EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQUIRED(</span>
+<span class="fc" id="L136">        EITHER_ROOT_DIR_OR_CSS_FILES_IS_REQUIRED(</span>
                 &quot;Either root directory or non-empty list of individual CSS files is required&quot;),
 
         /** The root dir and css files cannot be both specified unless with output dir. */
-<span class="fc" id="L169">        ROOT_DIR_AND_CSS_FILES_CANNOT_BE_BOTH_SPECIFIED_UNLESS_WITH_OUTPUT_DIR(</span>
+<span class="fc" id="L140">        ROOT_DIR_AND_CSS_FILES_CANNOT_BE_BOTH_SPECIFIED_UNLESS_WITH_OUTPUT_DIR(</span>
                 &quot;Root directory and individual CSS files cannot be both specified, unless output dir is also specified&quot;),
 
         /** The root dir is required for output dir. */
-<span class="fc" id="L173">        ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR(&quot;If output directory is specified, root directory must also be provided&quot;),</span>
+<span class="fc" id="L144">        ROOT_DIR_IS_REQUIRED_FOR_OUTPUT_DIR(&quot;If output directory is specified, root directory must also be provided&quot;),</span>
 
         /** The root dir does not exist or is not directory. */
-<span class="fc" id="L176">        ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY(&quot;Root directory must exist and be a directory: %s&quot;),</span>
+<span class="fc" id="L147">        ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY(&quot;Root directory must exist and be a directory: %s&quot;),</span>
 
         /** The css file does not exist. */
-<span class="fc" id="L179">        CSS_FILE_DOES_NOT_EXIST(&quot;Ignoring CSS file %s, it does not exist&quot;),</span>
+<span class="fc" id="L150">        CSS_FILE_DOES_NOT_EXIST(&quot;Ignoring CSS file %s, it does not exist&quot;),</span>
 
         /** The css path is not a file. */
-<span class="fc" id="L182">        CSS_PATH_IS_NOT_A_FILE(&quot;Ignoring CSS path %s, it is not a file&quot;),</span>
+<span class="fc" id="L153">        CSS_PATH_IS_NOT_A_FILE(&quot;Ignoring CSS path %s, it is not a file&quot;),</span>
 
         /** The output dir is not directory. */
-<span class="fc" id="L185">        OUTPUT_DIR_IS_NOT_DIRECTORY(&quot;Output directory must be a directory: %s&quot;),</span>
+<span class="fc" id="L156">        OUTPUT_DIR_IS_NOT_DIRECTORY(&quot;Output directory must be a directory: %s&quot;),</span>
 
         /** The document root dir does not exist or is not directory. */
-<span class="fc" id="L188">        DOCUMENT_ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY(</span>
+<span class="fc" id="L159">        DOCUMENT_ROOT_DIR_DOES_NOT_EXIST_OR_IS_NOT_DIRECTORY(</span>
                 &quot;Document root directory must exist and be a directory: %s&quot;),
 
         /** The ignoring css file outside of root dir. */
-<span class="fc" id="L192">        IGNORING_CSS_FILE_OUTSIDE_OF_ROOT_DIR(&quot;Ignoring a CSS file outside of root directory: %s&quot;),</span>
+<span class="fc" id="L163">        IGNORING_CSS_FILE_OUTSIDE_OF_ROOT_DIR(&quot;Ignoring a CSS file outside of root directory: %s&quot;),</span>
 
         /** The css file suffix is required if no output dir. */
-<span class="fc" id="L195">        CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR(</span>
+<span class="fc" id="L166">        CSS_FILE_SUFFIX_IS_REQUIRED_IF_NO_OUTPUT_DIR(</span>
                 &quot;A non-empty CSS file suffix is required when no output directory is specified&quot;),
 
         /** The only left or right alignment allowed. */
-<span class="fc" id="L199">        ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED(</span>
+<span class="fc" id="L170">        ONLY_LEFT_OR_RIGHT_ALIGNMENT_ALLOWED(</span>
                 &quot;Only 'left' or 'right' alignment allowed on vertical sprites, found: %s. Using 'left'.&quot;),
 
         /** The only top or bottom alignment allowed. */
-<span class="fc" id="L203">        ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED(</span>
+<span class="fc" id="L174">        ONLY_TOP_OR_BOTTOM_ALIGNMENT_ALLOWED(</span>
                 &quot;Only 'top' or 'bottom' alignment allowed on horizontal sprites, found: %s. Using 'top'.&quot;),
 
         /** The reading sprite image directives. */
-<span class="fc" id="L207">        READING_SPRITE_IMAGE_DIRECTIVES(&quot;Reading sprite image directives from %s&quot;),</span>
+<span class="fc" id="L178">        READING_SPRITE_IMAGE_DIRECTIVES(&quot;Reading sprite image directives from %s&quot;),</span>
 
         /** The reading sprite reference directives. */
-<span class="fc" id="L210">        READING_SPRITE_REFERENCE_DIRECTIVES(&quot;Reading sprite reference directives from %s&quot;),</span>
+<span class="fc" id="L181">        READING_SPRITE_REFERENCE_DIRECTIVES(&quot;Reading sprite reference directives from %s&quot;),</span>
 
         /** The reading css. */
-<span class="fc" id="L213">        READING_CSS(&quot;Reading CSS from %s&quot;),</span>
+<span class="fc" id="L184">        READING_CSS(&quot;Reading CSS from %s&quot;),</span>
 
         /** The reading image. */
-<span class="fc" id="L216">        READING_IMAGE(&quot;Reading image from %s&quot;),</span>
+<span class="fc" id="L187">        READING_IMAGE(&quot;Reading image from %s&quot;),</span>
 
         /** The referenced sprite not found. */
-<span class="fc" id="L219">        REFERENCED_SPRITE_NOT_FOUND(&quot;Referenced sprite: %s not found&quot;),</span>
+<span class="fc" id="L190">        REFERENCED_SPRITE_NOT_FOUND(&quot;Referenced sprite: %s not found&quot;),</span>
 
         /** The sprite id not found. */
-<span class="fc" id="L222">        SPRITE_ID_NOT_FOUND(&quot;'&quot; + SpriteImageDirective.PROPERTY_SPRITE_ID + &quot;' rule is required&quot;),</span>
+<span class="fc" id="L193">        SPRITE_ID_NOT_FOUND(&quot;'&quot; + SpriteImageDirective.PROPERTY_SPRITE_ID + &quot;' rule is required&quot;),</span>
 
         /** The sprite image url not found. */
-<span class="fc" id="L225">        SPRITE_IMAGE_URL_NOT_FOUND(&quot;'&quot; + SpriteImageDirective.PROPERTY_SPRITE_IMAGE_URL + &quot;' rule is required&quot;),</span>
+<span class="fc" id="L196">        SPRITE_IMAGE_URL_NOT_FOUND(&quot;'&quot; + SpriteImageDirective.PROPERTY_SPRITE_IMAGE_URL + &quot;' rule is required&quot;),</span>
 
         /** The sprite ref not found. */
-<span class="fc" id="L228">        SPRITE_REF_NOT_FOUND(&quot;'&quot; + SpriteReferenceDirective.PROPERTY_SPRITE_REF + &quot;' rule is required&quot;),</span>
+<span class="fc" id="L199">        SPRITE_REF_NOT_FOUND(&quot;'&quot; + SpriteReferenceDirective.PROPERTY_SPRITE_REF + &quot;' rule is required&quot;),</span>
 
         /** The unsupported alignment. */
-<span class="fc" id="L231">        UNSUPPORTED_ALIGNMENT(</span>
-<span class="fc" id="L232">                &quot;Unsupported alignment: %s. Supported alignments are: &quot; + SpriteAlignment.valuesAsString() + &quot;.&quot;),</span>
+<span class="fc" id="L202">        UNSUPPORTED_ALIGNMENT(</span>
+<span class="fc" id="L203">                &quot;Unsupported alignment: %s. Supported alignments are: &quot; + SpriteAlignment.valuesAsString() + &quot;.&quot;),</span>
 
         /** The unsupported individual image format. */
-<span class="fc" id="L235">        UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT(&quot;Unsupported format of image loaded from: %s&quot;),</span>
+<span class="fc" id="L206">        UNSUPPORTED_INDIVIDUAL_IMAGE_FORMAT(&quot;Unsupported format of image loaded from: %s&quot;),</span>
 
         /** The unsupported sprite image format. */
-<span class="fc" id="L238">        UNSUPPORTED_SPRITE_IMAGE_FORMAT(&quot;Format of image: %s is not supported. Supported formats are: &quot;</span>
-<span class="fc" id="L239">                + SpriteImageFormat.valuesAsString() + &quot;.&quot;),</span>
+<span class="fc" id="L209">        UNSUPPORTED_SPRITE_IMAGE_FORMAT(&quot;Format of image: %s is not supported. Supported formats are: &quot;</span>
+<span class="fc" id="L210">                + SpriteImageFormat.valuesAsString() + &quot;.&quot;),</span>
 
         /** The unsupported layout. */
-<span class="fc" id="L242">        UNSUPPORTED_LAYOUT(</span>
-<span class="fc" id="L243">                &quot;Unsupported layout: %s. Supported layouts are: &quot; + SpriteImageLayout.valuesAsString() + &quot;.&quot;),</span>
+<span class="fc" id="L213">        UNSUPPORTED_LAYOUT(</span>
+<span class="fc" id="L214">                &quot;Unsupported layout: %s. Supported layouts are: &quot; + SpriteImageLayout.valuesAsString() + &quot;.&quot;),</span>
 
         /** The unsupported uid type. */
-<span class="fc" id="L246">        UNSUPPORTED_UID_TYPE(</span>
-<span class="fc" id="L247">                &quot;Unsupported uid type: %s. Supported uid types are: &quot; + SpriteUidType.valuesAsString() + &quot;.&quot;),</span>
+<span class="fc" id="L217">        UNSUPPORTED_UID_TYPE(</span>
+<span class="fc" id="L218">                &quot;Unsupported uid type: %s. Supported uid types are: &quot; + SpriteUidType.valuesAsString() + &quot;.&quot;),</span>
 
         /** The jpg does not support indexed color. */
-<span class="fc" id="L250">        JPG_DOES_NOT_SUPPORT_INDEXED_COLOR(&quot;JPG format does not support indexed color&quot;),</span>
+<span class="fc" id="L221">        JPG_DOES_NOT_SUPPORT_INDEXED_COLOR(&quot;JPG format does not support indexed color&quot;),</span>
 
         /** The too many colors for indexed color. */
-<span class="fc" id="L253">        TOO_MANY_COLORS_FOR_INDEXED_COLOR(</span>
+<span class="fc" id="L224">        TOO_MANY_COLORS_FOR_INDEXED_COLOR(</span>
                 &quot;Sprite '%s' requires %d colors, but the maximum for indexed color mode is %d. Image quality will be degraded.&quot;),
 
         /** The alpha channel loss in indexed color. */
-<span class="fc" id="L257">        ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR(</span>
+<span class="fc" id="L228">        ALPHA_CHANNEL_LOSS_IN_INDEXED_COLOR(</span>
                 &quot;Alpha channel of sprite '%s' cannot be encoded in indexed color mode. Image quality will be degraded.&quot;),
 
         /** The using white matte color as default. */
-<span class="fc" id="L261">        USING_WHITE_MATTE_COLOR_AS_DEFAULT(</span>
+<span class="fc" id="L232">        USING_WHITE_MATTE_COLOR_AS_DEFAULT(</span>
                 &quot;Defaulting to white matte color to render partial transparencies of sprite '%s'&quot;),
 
         /** The ignoring matte color no partial transparency. */
-<span class="fc" id="L265">        IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY(</span>
+<span class="fc" id="L236">        IGNORING_MATTE_COLOR_NO_PARTIAL_TRANSPARENCY(</span>
                 &quot;Ignoring sprite-mate-color on sprite '%s' because the sprite image does not contain partially transparent areas&quot;),
 
         /** The ignoring matte color no support. */
-<span class="fc" id="L269">        IGNORING_MATTE_COLOR_NO_SUPPORT(</span>
+<span class="fc" id="L240">        IGNORING_MATTE_COLOR_NO_SUPPORT(</span>
                 &quot;Ignoring sprite-mate-color on sprite '%s' because its output format does not require matting or does not support transparency&quot;),
 
         /** The ignoring negative margin value. */
-<span class="fc" id="L273">        IGNORING_NEGATIVE_MARGIN_VALUE(&quot;Values of %s must not be negative, using 0&quot;),</span>
+<span class="fc" id="L244">        IGNORING_NEGATIVE_MARGIN_VALUE(&quot;Values of %s must not be negative, using 0&quot;),</span>
 
         /** The processing completed. */
-<span class="fc" id="L276">        PROCESSING_COMPLETED(&quot;SmartSprites processing completed in %d ms&quot;),</span>
+<span class="fc" id="L247">        PROCESSING_COMPLETED(&quot;SmartSprites processing completed in %d ms&quot;),</span>
 
         /** The processing completed with warnings. */
-<span class="fc" id="L279">        PROCESSING_COMPLETED_WITH_WARNINGS(&quot;SmartSprites processing completed in %d ms with %d warning(s)&quot;),</span>
+<span class="fc" id="L250">        PROCESSING_COMPLETED_WITH_WARNINGS(&quot;SmartSprites processing completed in %d ms with %d warning(s)&quot;),</span>
 
         /** The unsupported properties found. */
-<span class="fc" id="L282">        UNSUPPORTED_PROPERTIES_FOUND(&quot;Unsupported properties found: %s&quot;),</span>
+<span class="fc" id="L253">        UNSUPPORTED_PROPERTIES_FOUND(&quot;Unsupported properties found: %s&quot;),</span>
 
         /** The overriding property found. */
-<span class="fc" id="L285">        OVERRIDING_PROPERTY_FOUND(</span>
+<span class="fc" id="L256">        OVERRIDING_PROPERTY_FOUND(</span>
                 &quot;Found a '%s' property that overrides the generated one. Move it before the sprite reference directive on line %d.&quot;),
 
         /** The absolute path and no document root. */
-<span class="fc" id="L289">        ABSOLUTE_PATH_AND_NO_DOCUMENT_ROOT(</span>
+<span class="fc" id="L260">        ABSOLUTE_PATH_AND_NO_DOCUMENT_ROOT(</span>
                 &quot;Found an absolute image path '%s' and no document.root.dir.path was defined. Taking relative to the CSS file.&quot;),
 
         /** The deprecated sprite image uid. */
-<span class="fc" id="L293">        DEPRECATED_SPRITE_IMAGE_UID(</span>
+<span class="fc" id="L264">        DEPRECATED_SPRITE_IMAGE_UID(</span>
                 &quot;The sprite-image-uid property is deprecated and will be removed in version 0.4.0. Please insert the ${%s} variable into the sprite-image property instead.&quot;),
 
         /** The fractional scale value. */
-<span class="fc" id="L297">        FRACTIONAL_SCALE_VALUE(</span>
+<span class="fc" id="L268">        FRACTIONAL_SCALE_VALUE(</span>
                 &quot;The sprite-scale value applied to '%s' results in a scaled sprite with fractional dimensions (%fpx %fpx).&quot;),
 
         /** The image fractional scale value. */
-<span class="fc" id="L301">        IMAGE_FRACTIONAL_SCALE_VALUE(</span>
+<span class="fc" id="L272">        IMAGE_FRACTIONAL_SCALE_VALUE(</span>
                 &quot;The sprite-scale value applied to '%s' results in a scaled image with fractional dimensions (%fpx %fpx).&quot;),
 
         /** The generic. */
-<span class="fc" id="L305">        GENERIC(&quot;%s&quot;);</span>
+<span class="fc" id="L276">        GENERIC(&quot;%s&quot;);</span>
 
         /**
          * Human readable text of the message.
@@ -315,9 +286,9 @@ public class Message implements Serializable {
          * @param text
          *            the text
          */
-<span class="fc" id="L318">        MessageType(String text) {</span>
-<span class="fc" id="L319">            this.text = text;</span>
-<span class="fc" id="L320">        }</span>
+<span class="fc" id="L289">        MessageType(String text) {</span>
+<span class="fc" id="L290">            this.text = text;</span>
+<span class="fc" id="L291">        }</span>
 
         /**
          * Returns a human readable version of this message.
@@ -325,7 +296,7 @@ public class Message implements Serializable {
          * @return the text
          */
         public String getText() {
-<span class="nc" id="L328">            return text;</span>
+<span class="fc" id="L299">            return text;</span>
         }
     }
 
@@ -368,14 +339,14 @@ public class Message implements Serializable {
      * @param arguments
      *            the arguments
      */
-<span class="fc" id="L371">    public Message(MessageLevel level, MessageType type, String cssPath, int line, Object... arguments) {</span>
-<span class="fc" id="L372">        this.level = level;</span>
-<span class="fc" id="L373">        this.type = type;</span>
-<span class="fc" id="L374">        this.cssPath = cssPath;</span>
-<span class="fc" id="L375">        this.line = line;</span>
-<span class="fc" id="L376">        this.arguments = new Object[arguments.length];</span>
-<span class="fc" id="L377">        System.arraycopy(arguments, 0, this.arguments, 0, arguments.length);</span>
-<span class="fc" id="L378">    }</span>
+<span class="fc" id="L342">    public Message(MessageLevel level, MessageType type, String cssPath, int line, Object... arguments) {</span>
+<span class="fc" id="L343">        this.level = level;</span>
+<span class="fc" id="L344">        this.type = type;</span>
+<span class="fc" id="L345">        this.cssPath = cssPath;</span>
+<span class="fc" id="L346">        this.line = line;</span>
+<span class="fc" id="L347">        this.arguments = new Object[arguments.length];</span>
+<span class="fc" id="L348">        System.arraycopy(arguments, 0, this.arguments, 0, arguments.length);</span>
+<span class="fc" id="L349">    }</span>
 
     /**
      * Warn.
@@ -388,7 +359,7 @@ public class Message implements Serializable {
      * @return the message
      */
     public static Message warn(MessageType type, Object... arguments) {
-<span class="fc" id="L391">        return new Message(MessageLevel.WARN, type, null, 0, arguments);</span>
+<span class="fc" id="L362">        return new Message(MessageLevel.WARN, type, null, 0, arguments);</span>
     }
 
     /**
@@ -402,26 +373,26 @@ public class Message implements Serializable {
      * @return the message
      */
     public static Message error(MessageType type, Object... arguments) {
-<span class="fc" id="L405">        return new Message(MessageLevel.ERROR, type, null, 0, arguments);</span>
+<span class="fc" id="L376">        return new Message(MessageLevel.ERROR, type, null, 0, arguments);</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L410">        final StringBuilder stringBuilder = new StringBuilder();</span>
+<span class="fc" id="L381">        final StringBuilder stringBuilder = new StringBuilder();</span>
 
-<span class="nc" id="L412">        stringBuilder.append(level);</span>
-<span class="nc" id="L413">        stringBuilder.append(&quot;: &quot;);</span>
-<span class="nc" id="L414">        stringBuilder.append(getFormattedMessage());</span>
+<span class="fc" id="L383">        stringBuilder.append(level);</span>
+<span class="fc" id="L384">        stringBuilder.append(&quot;: &quot;);</span>
+<span class="fc" id="L385">        stringBuilder.append(getFormattedMessage());</span>
 
-<span class="nc bnc" id="L416" title="All 2 branches missed.">        if (cssPath != null) {</span>
-<span class="nc" id="L417">            stringBuilder.append(&quot; (&quot;);</span>
-<span class="nc" id="L418">            stringBuilder.append(cssPath);</span>
-<span class="nc" id="L419">            stringBuilder.append(&quot;, line: &quot;);</span>
-<span class="nc" id="L420">            stringBuilder.append(line + 1);</span>
-<span class="nc" id="L421">            stringBuilder.append(&quot;)&quot;);</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">        if (cssPath != null) {</span>
+<span class="fc" id="L388">            stringBuilder.append(&quot; (&quot;);</span>
+<span class="fc" id="L389">            stringBuilder.append(cssPath);</span>
+<span class="fc" id="L390">            stringBuilder.append(&quot;, line: &quot;);</span>
+<span class="fc" id="L391">            stringBuilder.append(line + 1);</span>
+<span class="fc" id="L392">            stringBuilder.append(&quot;)&quot;);</span>
         }
 
-<span class="nc" id="L424">        return stringBuilder.toString();</span>
+<span class="fc" id="L395">        return stringBuilder.toString();</span>
     }
 
     /**
@@ -430,7 +401,7 @@ public class Message implements Serializable {
      * @return the formatted message
      */
     public String getFormattedMessage() {
-<span class="nc" id="L433">        return String.format(type.getText(), arguments);</span>
+<span class="fc" id="L404">        return String.format(type.getText(), arguments);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
