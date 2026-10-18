@@ -11,7 +11,8 @@ import com.google.common.base.Strings;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * This class defines utilities methods helping to determine path-related information such as relative paths.
@@ -122,61 +123,50 @@ public class PathUtils {
      * @return the string
      */
     private static String buildRelativePath(String toPath, String fromPath, final char separatorChar) {
-        // use tokenizer to traverse paths and for lazy checking
-        StringTokenizer toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));
-        StringTokenizer fromTokenizer = new StringTokenizer(fromPath, String.valueOf(separatorChar));
+        String separator = String.valueOf(separatorChar);
+        String[] toTokens = Arrays.stream(toPath.split(Pattern.quote(separator))).filter(token -> !token.isEmpty())
+                .toArray(String[]::new);
+        String[] fromTokens = Arrays.stream(fromPath.split(Pattern.quote(separator))).filter(token -> !token.isEmpty())
+                .toArray(String[]::new);
 
         int count = 0;
 
-        // walk along the to path looking for divergence from the from path
-        while (toTokenizer.hasMoreTokens() && fromTokenizer.hasMoreTokens()) {
-            if (separatorChar == '\\') {
-                if (!fromTokenizer.nextToken().equalsIgnoreCase(toTokenizer.nextToken())) {
-                    break;
-                }
-            } else if (!fromTokenizer.nextToken().equals(toTokenizer.nextToken())) {
+        // Walk along the to path looking for divergence from the from path.
+        while (count < toTokens.length && count < fromTokens.length) {
+            boolean matches = separatorChar == '\\' ? fromTokens[count].equalsIgnoreCase(toTokens[count])
+                    : fromTokens[count].equals(toTokens[count]);
+
+            if (!matches) {
                 break;
             }
 
             count++;
         }
 
-        // Reinitialize the tokenizers to count positions to retrieve the
-        // gobbled token
-
-        toTokenizer = new StringTokenizer(toPath, String.valueOf(separatorChar));
-        fromTokenizer = new StringTokenizer(fromPath, String.valueOf(separatorChar));
-
-        while (count-- > 0) {
-            fromTokenizer.nextToken();
-            toTokenizer.nextToken();
-        }
-
         StringBuilder relativePath = new StringBuilder();
 
-        // add back refs for the rest of from location.
-        while (fromTokenizer.hasMoreTokens()) {
-            fromTokenizer.nextToken();
-
+        // Add back references for the rest of the from location.
+        for (int i = count; i < fromTokens.length; i++) {
             relativePath.append("..");
 
-            if (fromTokenizer.hasMoreTokens()) {
+            if (i < fromTokens.length - 1) {
                 relativePath.append(separatorChar);
             }
         }
 
-        if (relativePath.length() != 0 && toTokenizer.hasMoreTokens()) {
+        if (relativePath.length() != 0 && count < toTokens.length) {
             relativePath.append(separatorChar);
         }
 
-        // add fwd fills for whatevers left of newPath.
-        while (toTokenizer.hasMoreTokens()) {
-            relativePath.append(toTokenizer.nextToken());
+        // Add forward components for whatever remains of the to path.
+        for (int i = count; i < toTokens.length; i++) {
+            relativePath.append(toTokens[i]);
 
-            if (toTokenizer.hasMoreTokens()) {
+            if (i < toTokens.length - 1) {
                 relativePath.append(separatorChar);
             }
         }
+
         return relativePath.toString();
     }
 }

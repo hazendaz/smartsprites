@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +57,7 @@ class SmartSpritesParametersTest extends TestWithMemoryMessageSink {
      */
     @BeforeEach
     void prepareFiles() throws IOException {
-        existingFile = File.createTempFile("smartsprites", null);
+        existingFile = Files.createTempFile("smartsprites", null).toFile();
         existingFilePath = existingFile.getPath();
         existingRootDir = mkdirInTemp("rootdir");
         existingRootDirPath = existingRootDir.getPath();
